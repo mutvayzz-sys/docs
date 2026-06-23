@@ -1,9 +1,9 @@
 ---
-title: "Personality & voice definition"
-description: "These files are injected into the system prompt alongside the personality file and memory, giving the agent full context"
+title: "Personality & Voice Definition"
+description: "Define the agent's global tone, style, and identity through a SOUL.md personality file — the broadest layer in the system prompt stack."
 ---
 
-# Personality & voice definition
+# Personality & Voice Definition
 
 Headmaster lets you define the agent's personality, tone, and voice through a personality file — a Markdown document that sits at the top of the system prompt and shapes every response.
 
@@ -23,15 +23,20 @@ The personality file is injected as slot #1 in the system prompt — it's the fi
 
 ---
 
-## Where it lives
+## Editing the personality file
 
-The personality file is stored in the runtime's data directory. You normally don't edit it directly — the specialist's rules and your profile settings shape the personality. But you can customize it:
+<Steps>
+  <Step title="Open Personality settings">
+    Go to **Settings → My Headmaster → Profile → Personality**.
+  </Step>
+  <Step title="Edit the Markdown">
+    Write your personality definition. Save.
+  </Step>
+</Steps>
 
-1. Open **Settings → My Headmaster → Profile → Personality**.
-2. Edit the personality Markdown.
-3. Save.
-
-The change applies to the next conversation. Existing conversations keep their original personality.
+<Note>
+  The change applies to the next conversation. Existing conversations keep their original personality.
+</Note>
 
 ---
 
@@ -69,7 +74,7 @@ You sound best when you're not thinking about how you sound. Stay in the lane, b
 
 ---
 
-## Personality vs. specialist rules
+## The system prompt stack
 
 | Layer | What it controls | Scope |
 |---|---|---|
@@ -78,60 +83,68 @@ You sound best when you're not thinking about how you sound. Stay in the lane, b
 | **Memory** | Facts about you, your projects, your preferences | All conversations |
 | **Skills** | Procedural knowledge for specific tasks | Per-specialist, per-conversation |
 
-The personality file is the broadest layer — it applies to everything. Specialist rules narrow it for a specific role. Memory adds personal context. Skills add task-specific knowledge.
+The personality file is the broadest layer — it applies to everything. Specialist rules narrow it for a specific role.
 
 ---
 
-## Multiple personalities
+## Multiple personalities with profiles
 
-If you have multiple profiles (see [Profiles](profiles.md)), each profile can have its own personality file. This lets you have:
+If you have multiple profiles, each can have its own personality file:
 
-- A **work profile** with a professional, concise personality.
-- A **personal profile** with a casual, friendly personality.
-- A **research profile** with an academic, thorough personality.
+- **Work profile** — professional, concise personality.
+- **Personal profile** — casual, friendly personality.
+- **Research profile** — academic, thorough personality.
 
-Switch profiles to switch personalities.
+Switch profiles to switch personalities. See [Profiles](/profiles).
 
 ---
 
 ## Context files
 
-In addition to the personality file, Headmaster supports project-level context files:
+In addition to the personality file, Headmaster supports project-level context files that the agent reads at the start of every conversation in that project:
 
-### AGENTS.md
+<AccordionGroup>
+  <Accordion title="AGENTS.md">
+    If your project folder has an `AGENTS.md` file, the agent reads it at the start of every conversation.
 
-If your project folder has an `AGENTS.md` file, the agent reads it at the start of every conversation. Use it for:
+    ```markdown
+    # AGENTS.md — My Project
 
-- Project structure and conventions.
-- Build commands and test commands.
-- Things to avoid in this codebase.
-- Cross-references to other docs.
+    ## Build
+    Run tests with `pytest -n 4`.
+    Build with `bun run build`.
 
-```markdown
-# AGENTS.md — My Project
+    ## Conventions
+    - Use tabs, not spaces.
+    - 120-char line width.
+    - Google-style docstrings.
 
-## Build
-Run tests with `pytest -n 4`.
-Build with `bun run build`.
+    ## Things to avoid
+    - Don't modify the migrations folder — use Alembic.
+    - Don't commit .env files.
+    ```
+  </Accordion>
 
-## Conventions
-- Use tabs, not spaces.
-- 120-char line width.
-- Google-style docstrings.
+  <Accordion title="CLAUDE.md">
+    If your project folder has a `CLAUDE.md` file, the agent also reads it. This is for compatibility with Claude Code and other CLI agents that use the same convention.
+  </Accordion>
 
-## Things to avoid
-- Don't modify the migrations folder — use Alembic.
-- Don't commit .env files.
-```
+  <Accordion title="Other context files">
+    The agent also recognizes:
+    - `.cursorrules` — Cursor AI rules.
+    - Any file specified in the runtime config under `context_files`.
 
-### CLAUDE.md
+    These are injected into the system prompt alongside the personality file and memory.
+  </Accordion>
+</AccordionGroup>
 
-If your project folder has a `CLAUDE.md` file, the agent also reads it. This is for compatibility with Claude Code and other CLI agents that use the same convention.
+---
 
-### Other context files
-
-The agent also recognizes:
-- `.cursorrules` — Cursor AI rules.
-- Any file specified in the runtime config under `context_files`.
-
-These files are injected into the system prompt alongside the personality file and memory, giving the agent full context about your project before it starts working.
+<CardGroup cols={2}>
+  <Card title="Specialists" icon="users" href="/specialists">
+    Configure specialist-level rules that narrow the global personality.
+  </Card>
+  <Card title="Profiles" icon="user" href="/profiles">
+    Give each profile its own personality.
+  </Card>
+</CardGroup>

@@ -1,6 +1,6 @@
 ---
 title: "Kanban — task board"
-description: "See [The Council](the-council.md) for details."
+description: "A shared visual task board between you and the agent — track multi-step work as cards move from Backlog through Done."
 ---
 
 # Kanban — task board
@@ -19,7 +19,7 @@ The Kanban board is a shared task board between you and the agent. The agent cre
 
 | Column | Meaning |
 |---|---|
-| **Backlog** | Tasks identified but not started. The agent hasn't picked them up yet. |
+| **Backlog** | Tasks identified but not started — the agent hasn't picked them up yet. |
 | **In Progress** | Tasks the agent is actively working on right now. |
 | **Review** | Tasks that are done but need your review or approval. |
 | **Done** | Completed tasks. |
@@ -30,10 +30,14 @@ You can customize the columns — add, rename, reorder, or remove them to match 
 
 ## Creating a card
 
-Two approaches:
-
-1. **Manually:** Click **Add card** in any column. Type a title and description. The agent sees it and can pick it up.
-2. **From chat:** When you give the agent a complex task, it breaks it into subtasks and creates cards automatically. Each card shows in the board with a link back to the conversation.
+<CardGroup cols={2}>
+  <Card title="Manually" icon="plus">
+    Click **Add card** in any column. Type a title and description. The agent sees it and can pick it up.
+  </Card>
+  <Card title="From chat" icon="message">
+    When you give the agent a complex task, it breaks it into subtasks and creates cards automatically. Each card links back to the conversation.
+  </Card>
+</CardGroup>
 
 ---
 
@@ -54,22 +58,32 @@ Click a card to open its detail view — full description, comments, activity lo
 
 ## Drag and drop
 
-Drag cards between columns to change their status. The agent respects the board state — if you move a card back to Backlog, the agent stops working on it. If you move a card to Review, the agent knows it's waiting for your sign-off.
+Drag cards between columns to change their status. The agent respects the board state:
+
+- Move a card back to **Backlog** → the agent stops working on it.
+- Move a card to **Review** → the agent knows it's waiting for your sign-off.
 
 ---
 
-## Agent interaction
+## Agent interaction by mode
 
-The agent reads the board to decide what to work on next:
-
-- In **Run It Yourself** mode, the agent pulls the next card from Backlog, moves it to In Progress, works on it, and moves it to Review or Done.
-- In **Work Along** mode, the agent proposes pulling a card and asks for your approval before starting.
-- In **Autopilot**, the agent works through cards in Backlog order without asking.
+| Mode | How the agent uses the board |
+|---|---|
+| **Work Along** | The agent proposes pulling a card and asks for your approval before starting. |
+| **Run It Yourself** | The agent pulls the next card from Backlog, moves it to In Progress, works on it, then moves it to Review or Done. |
+| **Autopilot** | The agent works through cards in Backlog order without asking. |
 
 ---
 
-## The Council Chamber and Kanban
+## The Council Chamber
 
 When the Council is active, the Kanban board becomes the Council Chamber — the shared task board where specialists claim cards, work in parallel, and report back. Each specialist's card shows their avatar and live status.
 
-See [The Council](the-council.md) for details.
+<CardGroup cols={2}>
+  <Card title="The Council" icon="users" href="/the-council">
+    Multi-specialist parallel deliberation — the Kanban board becomes the Council Chamber.
+  </Card>
+  <Card title="Modes" icon="sliders" href="/modes">
+    Which mode controls whether the agent asks before pulling a card.
+  </Card>
+</CardGroup>

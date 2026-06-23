@@ -1,12 +1,9 @@
 ---
-title: "Getting started"
-description: "| Topic | Link |
-|---|---|
-| LLM configuration | [Models & providers](models-providers.md) |
-| Multi-agent mode | [Your "
+title: "Getting Started"
+description: "Download, install, and run your first Headmaster conversation in about 5 minutes."
 ---
 
-# Getting started
+# Getting Started
 
 Setup time: about 5 minutes from download to your first conversation.
 
@@ -26,46 +23,63 @@ Setup time: about 5 minutes from download to your first conversation.
 
 ## Download and install
 
-### Windows
+<Tabs>
+  <Tab title="macOS">
+    **Homebrew (recommended)**
 
-1. Download the installer (`.exe`) from the Headmaster site.
-2. Run the installer. Headmaster installs to the standard location and creates a desktop shortcut.
-3. Or: download the portable `.zip`, extract to any folder, and run `Headmaster.exe` directly. No admin rights needed.
+    ```bash
+    brew install headmaster
+    ```
 
-### macOS
+    **Direct download**
 
-**Homebrew (recommended)**
+    <Steps>
+      <Step title="Download the .dmg">
+        Download the `.dmg` file from the Headmaster site.
+      </Step>
+      <Step title="Open and install">
+        Open the `.dmg`, drag Headmaster to your Applications folder.
+      </Step>
+      <Step title="First launch">
+        On first launch, macOS may warn about an unidentified developer. Right-click → **Open** to bypass Gatekeeper.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Windows">
+    <Steps>
+      <Step title="Download the installer">
+        Download the `.exe` installer from the Headmaster site.
+      </Step>
+      <Step title="Run the installer">
+        Run the installer. Headmaster installs to the standard location and creates a desktop shortcut.
+      </Step>
+    </Steps>
 
-```bash
-brew install headmaster
-```
+    <Tip>
+      Prefer portable mode? Download the `.zip` instead, extract to any folder, and run `Headmaster.exe` directly. No admin rights needed.
+    </Tip>
+  </Tab>
+  <Tab title="Linux">
+    **.deb package**
 
-**Direct download**
+    ```bash
+    sudo dpkg -i Headmaster-<version>-linux-amd64.deb
+    ```
 
-1. Download the `.dmg` file from the Headmaster site.
-2. Open the `.dmg`, drag Headmaster to Applications.
-3. On first launch, macOS may warn about an unidentified developer. Right-click → **Open** to bypass.
+    **.AppImage**
 
-### Linux
+    ```bash
+    chmod +x Headmaster-<version>-linux-x86_64.AppImage
+    ./Headmaster-<version>-linux-x86_64.AppImage
+    ```
 
-**.deb package**
+    **Homebrew (Linuxbrew)**
 
-```bash
-sudo dpkg -i Headmaster-<version>-linux-amd64.deb
-```
-
-**.AppImage**
-
-```bash
-chmod +x Headmaster-<version>-linux-x86_64.AppImage
-./Headmaster-<version>-linux-x86_64.AppImage
-```
-
-**Method 3: Homebrew (Linuxbrew)**
-
-```bash
-brew install headmaster
-```
+    ```bash
+    brew install headmaster
+    ```
+  </Tab>
+</Tabs>
 
 ---
 
@@ -73,13 +87,21 @@ brew install headmaster
 
 On first launch, Headmaster:
 
-1. **Starts the local runtime** — the background service that runs your agents. This takes a few seconds. You'll see a splash screen while it initializes.
-2. **Opens the main window.** You'll see a sidebar with your conversations and a chat composer at the bottom.
-3. **Walks you through one-time setup.** Pick a default model, and (optionally) sign in to a model provider. You can skip this and do it later.
+<Steps>
+  <Step title="Starts the local runtime">
+    The background service that runs your agents initializes. You'll see a splash screen for a few seconds.
+  </Step>
+  <Step title="Opens the main window">
+    You'll see a sidebar with your conversations and a chat composer at the bottom.
+  </Step>
+  <Step title="One-time setup">
+    Pick a default model and optionally sign in to a model provider. You can skip this and do it later.
+  </Step>
+</Steps>
 
-You do not need to configure anything else to send your first message. If you already have a CLI agent installed (Claude Code, Codex, Gemini CLI, etc.), Headmaster auto-detects it and lights it up on the welcome screen.
-
-The default experience uses Headmaster's **built-in agent** — ready to use immediately. No external CLI needed. See [Your Crew](your-crew.md) if you want to connect external CLI agents.
+<Note>
+  If you already have a CLI agent installed (Claude Code, Codex, Gemini CLI, etc.), Headmaster auto-detects it and shows it on the welcome screen. No extra setup needed.
+</Note>
 
 ---
 
@@ -87,30 +109,52 @@ The default experience uses Headmaster's **built-in agent** — ready to use imm
 
 The built-in agent needs at least one model provider before it can chat. Add an API key:
 
-1. Click **Settings** in the left sidebar.
-2. Open **Headmaster's Library → Connections**.
-3. Click **Add provider** and pick one — supported: Gemini, OpenAI, Anthropic, DeepSeek, OpenRouter, and 25+ more.
-4. Paste your API key and save.
+<Steps>
+  <Step title="Open Settings">
+    Click **Settings** in the left sidebar.
+  </Step>
+  <Step title="Go to Connections">
+    Open **Headmaster's Library → Connections**.
+  </Step>
+  <Step title="Add a provider">
+    Click **Add provider** and pick one — supported: Gemini, OpenAI, Anthropic, DeepSeek, OpenRouter, and 25+ more.
+  </Step>
+  <Step title="Paste your API key">
+    Paste your API key and click **Save**.
+  </Step>
+</Steps>
 
-> **Multi-key rotation:** Paste multiple API keys (comma-separated or one per line). Headmaster auto-rotates and skips invalid or rate-limited keys. See [Models & providers](models-providers.md) for details.
+<Tip>
+  **Multi-key rotation:** Paste multiple API keys (comma-separated or one per line). Headmaster auto-rotates and skips invalid or rate-limited keys. See [Models & providers](/models-providers).
+</Tip>
 
-The Connections area is PIN-protected. The default PIN is set on first run. You can change it any time in **Headmaster's Library → Advanced → Change PIN**.
-
-**Already using a CLI agent?** Claude Code, Codex, Gemini CLI, etc. are detected automatically — no extra setup needed. They appear on the welcome screen alongside the built-in agent.
+<Note>
+  The Connections area is PIN-protected. The default PIN is set on first run. Change it anytime in **Headmaster's Library → Advanced → Change PIN**.
+</Note>
 
 ---
 
 ## Send your first message
 
-### Create a new conversation
+<Steps>
+  <Step title="Create a new conversation">
+    Click **New chat** in the left sidebar.
+  </Step>
+  <Step title="Pick an agent">
+    Choose the built-in engine (default) or any detected CLI agent shown on the welcome screen.
+  </Step>
+  <Step title="Pick a model">
+    Use the selector at the bottom-left of the input box. Each agent has its own model list.
+  </Step>
+  <Step title="Pick a specialist (optional)">
+    A pre-configured persona with a specific role. See [Specialists](/specialists).
+  </Step>
+  <Step title="Type your message and send">
+    Press Enter. The agent streams its response into the chat.
+  </Step>
+</Steps>
 
-1. Click **New chat** in the left sidebar.
-2. **Pick an agent** — built-in (default) or any detected CLI agent on the welcome screen.
-3. **Pick a model** — use the selector at the bottom-left of the input box. Each agent has its own model list.
-4. **Pick a specialist** (optional) — a pre-configured persona. See [Specialists](specialists.md).
-5. Type your message and press Enter.
-
-### Try these prompts
+### Example prompts to try
 
 ```
 Hello, please introduce yourself.
@@ -124,81 +168,93 @@ Help me write a Python function to calculate the Fibonacci sequence.
 Please analyze the contents of this file.
 ```
 
-The agent streams its response into the chat. Tool calls (web searches, file reads, code execution) appear as expandable blocks.
+Tool calls (web searches, file reads, code execution) appear as expandable blocks in the response.
 
 ---
 
-## Explore the built-in tools
+## Explore the built-in features
 
 ### File upload
 
-- **Drag and drop** into the input box.
+- **Drag and drop** files directly into the input box.
 - **Pick from disk:** click the `+` button to choose files or folders.
 - **Supported:** text files, images, code, PDFs, Office documents.
 
 ### Multiple conversations
 
-- **New conversation:** click **New chat**.
-- **Switch:** pick any conversation in the left history list — each has independent memory.
-- **Search:** type in the search bar to filter conversations by title or content.
+- **New conversation:** click **New chat** — each conversation has independent memory.
+- **Switch:** pick any conversation in the left sidebar.
+- **Search:** type in the search bar to filter by title or content.
 
 ### Project (working folder)
 
-- **Open a project:** click the `+` button → **Open folder**.
-- **Workspace panel:** appears on the right with the folder tree once opened.
-- **Quick file picking:** browse and attach files directly from the panel.
-- **Locked per conversation:** the folder cannot change mid-conversation — start a new chat for a different folder.
+Open a project folder to give the agent scoped file access:
 
-### Undo
+1. Click the `+` button → **Open folder**.
+2. Pick a folder. The Workspace panel appears on the right with the folder tree.
+3. The agent can read and write files inside the folder without per-file approval.
 
-- Back up recent turns. Edit a message and re-send. The conversation continues from the edited point.
+<Warning>
+  A folder is locked per conversation. To work in a different folder, start a new chat — this prevents the agent from mixing up two projects' file trees.
+</Warning>
 
 ### Approvals
 
-When the agent wants to run a tool or access a file, it asks for your approval in the chat. Click **Approve** or **Deny**. See [Approvals & human-in-the-loop](approvals-human-in-the-loop.md).
-
-### Specialists
-
-20+ built-in assistants, each with a specific role. Pick one from the specialist picker. See [Specialists](specialists.md).
+When the agent wants to run a tool or access a file, it asks for your approval. Click **Approve** or **Deny**. See [Approvals & human-in-the-loop](/approvals-human-in-the-loop).
 
 ---
 
 ## First launch FAQ
 
-**I don't see any models after launch.**
-Open **Settings → Headmaster's Library → Connections** and add at least one provider's API key. If a CLI agent is installed, it's auto-detected on the welcome page — you can use it without adding a key.
+<AccordionGroup>
+  <Accordion title="I don't see any models after launch.">
+    Open **Settings → Headmaster's Library → Connections** and add at least one provider's API key. If a CLI agent is installed, it's auto-detected on the welcome page — you can use it without adding a key.
+  </Accordion>
 
-**Image generation isn't working.**
-Check:
-- Image generation is enabled in **Settings → Advanced → Tools**.
-- A model supporting image generation is selected.
-- See [Image generation](image-generation.md) for the full configuration guide.
+  <Accordion title="Image generation isn't working.">
+    Check:
+    - Image generation is enabled in **Settings → Advanced → Tools**.
+    - A model supporting image generation is selected.
+    - See [Image generation](/image-generation) for the full configuration guide.
+  </Accordion>
 
-**How do I switch between AI models?**
-Use the **model selector at the bottom-left of the input box**. Each agent (built-in, Claude Code, Codex, etc.) exposes its own model list — switching the agent also switches the model list.
+  <Accordion title="How do I switch between AI models?">
+    Use the **model selector at the bottom-left of the input box**. Each agent (built-in, Claude Code, Codex, etc.) exposes its own model list — switching the agent also switches the model list.
+  </Accordion>
 
-**Where are my conversations stored?**
-All local:
-- **macOS:** `~/Library/Application Support/Headmaster/`
-- **Windows:** `%APPDATA%\Headmaster\`
-- **Linux:** `~/.config/Headmaster/`
+  <Accordion title="Where are my conversations stored?">
+    All stored locally:
+    - **macOS:** `~/Library/Application Support/Headmaster/`
+    - **Windows:** `%APPDATA%\Headmaster\`
+    - **Linux:** `~/.config/Headmaster/`
+  </Accordion>
 
-**The runtime won't start.**
-Check `<data folder>/logs/<today>.log` for the startup error. Most common: a port conflict or a missing system dependency on Linux. See [Troubleshooting](troubleshooting.md).
+  <Accordion title="The runtime won't start.">
+    Check `<data folder>/logs/<today>.log` for the startup error. Most common causes: a port conflict or a missing system dependency on Linux. See [Troubleshooting](/troubleshooting).
+  </Accordion>
+</AccordionGroup>
 
 ---
 
 ## Next steps
 
-| Topic | Link |
-|---|---|
-| LLM configuration | [Models & providers](models-providers.md) |
-| Multi-agent mode | [Your Crew](your-crew.md) |
-| Specialists | [Specialists](specialists.md) |
-| MCP configuration | [Connections (MCP)](connections-mcp-servers.md) |
-| WebUI / remote access | [Headmaster on the Go](headmaster-on-the-go.md) |
-| Scheduled tasks | [The Schedule](the-schedule.md) |
-| Channels | [Channels](channels.md) |
-| Image generation | [Image generation](image-generation.md) |
-| Use cases | [Use cases & user stories](use-cases-user-stories.md) |
-| FAQ | [FAQ](faq.md) |
+<CardGroup cols={2}>
+  <Card title="Models & Providers" icon="cpu" href="/models-providers">
+    Connect to 28+ LLM platforms and configure multi-key rotation.
+  </Card>
+  <Card title="Specialists" icon="users" href="/specialists">
+    Explore the 20+ built-in personas or create your own.
+  </Card>
+  <Card title="The Schedule" icon="clock" href="/the-schedule">
+    Set up recurring automated tasks with cron scheduling.
+  </Card>
+  <Card title="Channels" icon="message" href="/channels">
+    Connect Telegram, WhatsApp, iMessage, and more.
+  </Card>
+  <Card title="Your Crew" icon="user-group" href="/your-crew">
+    Connect external CLI agents (Claude Code, Codex, Gemini CLI, etc.).
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/troubleshooting">
+    Common issues and how to fix them.
+  </Card>
+</CardGroup>

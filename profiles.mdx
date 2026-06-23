@@ -1,6 +1,6 @@
 ---
 title: "Profiles"
-description: "Provider keys, MCP servers, and integrations are global because they're infrastructure — you don't want to re-enter your"
+description: "Run multiple independent agent configurations from one Headmaster installation — each profile has its own personality, memory, skills, and channel connections."
 ---
 
 # Profiles
@@ -11,82 +11,81 @@ Profiles let you run multiple independent agent configurations from one Headmast
 
 ## What a profile is
 
-A profile is a complete agent configuration:
+A profile is a complete, isolated agent configuration:
 
-- **Personality** — the agent's tone and identity.
-- **Memory** — facts the agent knows, separate from other profiles.
-- **Skills** — which skills are installed and enabled.
-- **Model defaults** — which model new chats start on.
-- **Specialists** — custom specialists created under this profile.
-- **Channel connections** — which messaging platforms this profile is connected to.
-- **Scheduled tasks** — cron jobs defined under this profile.
-- **Session history** — conversations, separate from other profiles.
+| Setting | Per-profile? |
+|---|---|
+| Personality | Yes |
+| Memory | Yes |
+| Skills (installed) | Yes |
+| Custom specialists | Yes |
+| Scheduled tasks | Yes |
+| Channel connections | Yes |
+| Session history | Yes |
+| Model providers (API keys) | No — shared globally |
+| MCP servers | No — shared globally |
+| Integrations | No — shared globally |
+| Built-in specialists (20+) | No — shared globally |
 
-Profiles are isolated from each other. Switching profiles is like switching users — the agent's memory, personality, and skills all change.
-
----
-
-## Default profile
-
-Every Headmaster installation starts with a `default` profile. This is the profile you use for your main work. You don't need to create additional profiles unless you want separation.
+Provider keys, MCP servers, and integrations are global because they're infrastructure — you don't want to re-enter your API keys for every profile.
 
 ---
 
 ## Creating a profile
 
-1. Open **Settings → My Headmaster → Profile → Manage profiles**.
-2. Click **Create profile**.
-3. Enter a name (e.g., "work", "personal", "research").
-4. Choose whether to seed it with built-in skills (default: yes).
-5. Save.
-
-The new profile starts with:
-- A blank personality (copy from default or write your own).
-- Empty memory.
-- Built-in skills (if seeded).
-- No channel connections.
-- No scheduled tasks.
-
-Switch to the new profile from the profile selector in the sidebar or the specialist picker.
+<Steps>
+  <Step title="Open Manage profiles">
+    Go to **Settings → My Headmaster → Profile → Manage profiles**.
+  </Step>
+  <Step title="Click Create profile">
+    Enter a name (e.g., "work", "personal", "research").
+  </Step>
+  <Step title="Configure">
+    Choose whether to seed it with built-in skills. The new profile starts with a blank personality, empty memory, and no channel connections.
+  </Step>
+  <Step title="Switch to the new profile">
+    Pick it from the profile selector in the sidebar or the specialist picker.
+  </Step>
+</Steps>
 
 ---
 
 ## Switching profiles
 
-Switch profiles from:
+Switch from:
 
-- **The sidebar** — click the profile name at the top of the sidebar, pick a different one.
+- **The sidebar** — click the profile name at the top, pick a different one.
 - **The specialist picker** — the profile selector is next to the specialist dropdown.
 - **Slash command** — `/profile <name>` in the composer.
 
-When you switch, the sidebar reloads with the new profile's conversation history, the model defaults change, and the personality updates.
+When you switch, the sidebar reloads with the new profile's conversation history, model defaults change, and the personality updates.
 
 ---
 
 ## Use cases for multiple profiles
 
-### Work vs. personal
+<AccordionGroup>
+  <Accordion title="Work vs. personal">
+    - **Work profile:** Professional tone, connected to Slack and email, scheduled tasks for daily reports, memory focused on work projects.
+    - **Personal profile:** Casual tone, connected to Telegram and iMessage, memory focused on personal preferences, no scheduled tasks.
+  </Accordion>
 
-- **Work profile:** Professional tone, connected to Slack and email, scheduled tasks for daily reports, memory focused on your work projects.
-- **Personal profile:** Casual tone, connected to Telegram and iMessage, memory focused on personal preferences, no scheduled tasks.
+  <Accordion title="Multiple team members">
+    Each family member or team member gets their own profile — their own Telegram bot (or shared bot with different trigger words), their own memory and personality. The agent treats each person differently.
+  </Accordion>
 
-### Multiple team members
-
-- Each family member or team member gets their own profile.
-- Each profile has its own Telegram bot (or shared bot with different trigger words).
-- Memory and personality are isolated — the agent treats each person differently.
-
-### Specialized agents
-
-- **Research profile:** Connected to academic databases, uses The Researcher specialist, deep memory of research topics.
-- **DevOps profile:** Connected to servers via SSH, uses The DevOps specialist, scheduled tasks for monitoring.
-- **Content profile:** Uses The Writer and The Wordsmith, connected to social media integrations.
+  <Accordion title="Specialized agent configurations">
+    - **Research profile:** Connected to academic databases, uses The Researcher specialist, deep memory of research topics.
+    - **DevOps profile:** Connected to servers via SSH, uses The DevOps specialist, scheduled tasks for monitoring.
+    - **Content profile:** Uses The Writer and The Wordsmith, connected to social media integrations.
+  </Accordion>
+</AccordionGroup>
 
 ---
 
 ## Profile model fallback
 
-Each profile can specify a primary model and a fallback model. If the primary is unavailable (provider outage, all keys rate-limited), the runtime falls back to the secondary automatically.
+Each profile can specify a primary model and a fallback. If the primary is unavailable (provider outage, all keys rate-limited), the runtime falls back to the secondary automatically.
 
 ```
 Profile: work
@@ -94,7 +93,7 @@ Primary model: claude-sonnet-4
 Fallback model: gpt-4o
 ```
 
-This ensures the agent keeps working even if one provider goes down.
+Configure in **Settings → My Headmaster → Profile → Model fallback**.
 
 ---
 
@@ -106,48 +105,28 @@ If you switch profiles, you see only that profile's scheduled tasks in the Sched
 
 ---
 
-## Profile-specific channel connections
-
-Channel connections are per-profile. If your work profile is connected to Slack and your personal profile is connected to Telegram, switching profiles changes which channel the agent listens on.
-
-This means you can have one Telegram bot for work and a different one for personal — each on its own profile.
-
----
-
 ## Deleting a profile
 
-1. Open **Settings → My Headmaster → Profile → Manage profiles**.
-2. Click the profile you want to delete.
-3. Click **Delete profile**.
-4. Confirm.
+<Steps>
+  <Step title="Open Manage profiles">
+    Go to **Settings → My Headmaster → Profile → Manage profiles**.
+  </Step>
+  <Step title="Select and delete">
+    Click the profile, then **Delete profile**. Confirm.
+  </Step>
+</Steps>
 
-Deleting a profile removes:
-- All conversations in that profile.
-- All memory for that profile.
-- All scheduled tasks for that profile.
-- All custom specialists created under that profile.
-- All channel connections for that profile.
-
-This is permanent. The default profile cannot be deleted.
+<Warning>
+  Deleting a profile permanently removes all its conversations, memory, scheduled tasks, custom specialists, and channel connections. This cannot be undone. The default profile cannot be deleted.
+</Warning>
 
 ---
 
-## Profile isolation
-
-Profiles are fully isolated:
-
-| Resource | Shared across profiles? |
-|---|---|
-| Personality | No — each profile has its own |
-| Memory | No — each profile has its own |
-| Skills (installed) | No — each profile has its own |
-| Model providers (API keys) | Yes — configured globally in Connections |
-| MCP servers | Yes — configured globally in Connections |
-| Integrations | Yes — configured globally in Connections |
-| Specialists (built-in) | Yes — all profiles see the 20+ built-in specialists |
-| Custom specialists | No — each profile has its own |
-| Scheduled tasks | No — each profile has its own |
-| Channel connections | No — each profile has its own |
-| Session history | No — each profile has its own |
-
-Provider keys, MCP servers, and integrations are global because they're infrastructure — you don't want to re-enter your OpenAI key for every profile. Everything agent-facing (personality, memory, skills, tasks, channels) is per-profile.
+<CardGroup cols={2}>
+  <Card title="Personality & Voice" icon="pen" href="/personality-voice">
+    Give each profile its own SOUL.md personality file.
+  </Card>
+  <Card title="Channels" icon="message" href="/channels">
+    Channel connections are per-profile — each profile can have its own messaging bots.
+  </Card>
+</CardGroup>

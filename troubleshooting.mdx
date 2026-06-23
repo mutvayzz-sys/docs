@@ -1,135 +1,138 @@
 ---
 title: "Troubleshooting"
-description: "---"
+description: "The most common Headmaster issues and the shortest fix that works — runtime errors, crashes, update failures, and Linux-specific gotchas."
 ---
 
 # Troubleshooting
 
-The most common Headmaster Desktop issues, with the shortest fix that works.
+The most common Headmaster issues, with the shortest fix that works.
 
-### "Runtime not connected" banner
+---
 
-The runtime is the background service. When it stops responding, the app shows a banner at the top of the chat.
+## Common issues
 
-**Quick fix:**
-1. Open **Settings → Headmaster's Library → Runtime → Restart**.
-2. Wait five seconds.
-3. The status indicator should flip back to Connected.
+<AccordionGroup>
+  <Accordion title='"Runtime not connected" banner'>
+    The runtime is the background service. When it stops responding, the app shows a banner at the top of the chat.
 
-**If the restart doesn't help:**
-1. Open the log file at `<data folder>/logs/<today>.log`.
-2. Look for the last error before the banner appeared. Most common: missing provider credentials, a port conflict, or a runtime that crashed on startup.
-3. If you see a port conflict, close any other Headmaster windows and any other app that might be holding the port.
+    **Quick fix:**
+    1. Open **Settings → Headmaster's Library → Runtime → Restart**.
+    2. Wait five seconds.
+    3. The status indicator should flip back to Connected.
 
-**Last resort:**
-1. Quit Headmaster fully (close all windows; on macOS also `Cmd+Q`).
-2. Wait ten seconds.
-3. Reopen.
+    **If the restart doesn't help:**
+    1. Open the log file at `<data folder>/logs/<today>.log`.
+    2. Look for the last error before the banner appeared. Most common causes: missing provider credentials, a port conflict, or a runtime that crashed on startup.
+    3. If you see a port conflict, close any other Headmaster windows and any other app that might be holding the port.
 
-### "401 Unauthorized" on Memory, Skills, or Runtime tabs
+    **Last resort:** Quit Headmaster fully (on macOS, `Cmd+Q`), wait ten seconds, then reopen.
+  </Accordion>
 
-A 401 means the app and the runtime have lost their shared session token. This usually happens after a runtime restart that the app didn't see.
+  <Accordion title='"401 Unauthorized" on Memory, Skills, or Runtime tabs'>
+    A 401 means the app and the runtime have lost their shared session token. This usually happens after a runtime restart the app didn't see.
 
-**Quick fix:**
-1. Open **Settings → Headmaster's Library → Runtime → Restart**.
-2. The new runtime issues a fresh token.
-3. Reload the page you were on.
+    **Quick fix:**
+    1. Open **Settings → Headmaster's Library → Runtime → Restart**.
+    2. The new runtime issues a fresh token.
+    3. Reload the page you were on.
 
-**If 401s keep coming back:**
-The runtime is restarting in a loop. Open the log and look for the error before each restart. Most common cause: a malformed `config.yaml` from a manual edit. Fix the config file and restart.
+    **If 401s keep coming back:** The runtime is restarting in a loop. Open the log and look for the error before each restart. Most common cause: a malformed `config.yaml` from a manual edit. Fix the config and restart.
+  </Accordion>
 
-### Runtime crash-restart loop
+  <Accordion title="Runtime crash-restart loop">
+    If the runtime exits immediately after starting (you see "runtime exited code=1" repeatedly in the logs):
 
-If the runtime exits immediately after starting (you see "runtime exited code=1" repeatedly in the logs):
+    1. Check the log file for the last error before the exit.
+    2. Common causes:
+       - **Missing dependency** — on Linux, a missing `libgtk-3` or `libnss3` package.
+       - **Corrupted config** — a syntax error in `config.yaml`.
+       - **Port conflict** — another process is holding the port Headmaster needs.
+       - **Permission issue** — the data folder is not writable by the current user.
+    3. Fix the underlying issue, then restart Headmaster.
+  </Accordion>
 
-1. Check the log file for the last error before the exit.
-2. Common causes:
-   - **Missing dependency** — on Linux, a missing `libgtk-3` or `libnss3` package.
-   - **Corrupted config** — a syntax error in `config.yaml`.
-   - **Port conflict** — another process is holding the port Headmaster needs.
-   - **Permission issue** — the data folder is not writable by the current user.
-3. Fix the underlying issue.
-4. Restart Headmaster.
+  <Accordion title='"Check for updates" returns nothing'>
+    The updater talks to the Headmaster release endpoint. If it can't reach it, you see an error in the update modal.
 
-### "Check for updates" returns nothing
+    **Quick fix:**
+    1. Check your network connection.
+    2. On a corporate network, the release endpoint may be blocked. Ask your network admin to allow `gcaplabs.com`.
 
-The updater talks to the Headmaster release endpoint. If it can't reach it, you see an error in the update modal.
+    **Manual update:** Download the latest installer from the Headmaster site and run it over the existing install. Your data is preserved.
+  </Accordion>
 
-**Quick fix:**
-1. Check your network connection.
-2. If you're on a corporate network with a proxy, the release endpoint may be blocked. Ask your network admin to allow `gcaplabs.com`.
+  <Accordion title='"Update available" but won't install'>
+    The installer needs write access to the install location. If you installed as an admin user and are now running as a non-admin user, the install will fail.
 
-**Manual update:**
-1. Download the latest installer from the Headmaster site.
-2. Run it over the existing install.
-3. Your data is preserved.
+    **Fix:** Run Headmaster as the same user that installed it, or reinstall in portable mode and copy your data folder over.
+  </Accordion>
 
-### Update Modal says "Update available" but won't install
+  <Accordion title="A chat won't load">
+    If a specific conversation won't open but others do:
 
-The installer needs write access to the install location. If you installed as an admin user and are now running as a non-admin user, the install will fail.
+    - **Interrupted session** — the session may have been interrupted mid-stream. Click the conversation, wait for the recover prompt, and click **Recover**.
+    - **Corrupted transcript** — open **Settings → Headmaster's Library → Runtime → Sessions**, find the session ID, and delete the local cache. The conversation will reload from the runtime's copy.
+    - **Missing model** — if the model used in that conversation is no longer available (provider key revoked, model deprecated), add the provider back or switch the conversation's model.
+  </Accordion>
 
-**Fix:** Run Headmaster as the same user that installed it, or reinstall in portable mode and copy your data folder over.
+  <Accordion title="White screen on launch">
+    If the main window shows a blank white screen:
 
-### A chat won't load
+    1. Check the log file for renderer errors.
+    2. Most common cause: corrupted renderer cache. Delete it:
+       - **Windows:** `%APPDATA%\Headmaster\cache\renderer`
+       - **macOS:** `~/Library/Application Support/Headmaster/cache/renderer`
+       - **Linux:** `~/.config/Headmaster/cache/renderer`
+    3. Restart Headmaster.
+  </Accordion>
 
-If a specific conversation won't open but others do:
+  <Accordion title="Port conflict">
+    If another application is using the port Headmaster needs:
 
-- **Interrupted session:** The session may have been interrupted mid-stream. The chat composer's draft is preserved. Click the conversation, wait for the recover prompt, and click **Recover**.
-- **Corrupted transcript:** The transcript on the runtime may be corrupted. Open **Settings → Headmaster's Library → Runtime → Sessions**, find the session ID, and delete the local cache. The conversation will reload from the runtime's copy.
-- **Missing model:** If the model used in the conversation is no longer available (provider key revoked, model deprecated), the conversation may fail to load. Add the provider back or switch the conversation's model.
+    1. Open the log file and look for "port already in use" or "EADDRINUSE".
+    2. Find the process holding the port:
+       - **Windows:** `netstat -ano | findstr :<port>`
+       - **macOS/Linux:** `lsof -i :<port>`
+    3. Stop the conflicting process or configure it to use a different port.
+    4. Restart Headmaster.
+  </Accordion>
 
-### White screen on launch
+  <Accordion title="Runtime won't start on Linux">
+    Common Linux-specific issues:
 
-If the main window shows a blank white screen after launch:
+    - 📦 **Missing libraries** — install `libgtk-3-0`, `libnss3`, `libasound2`, `libxss1`.
+    - 🔐 **Permission denied** — ensure the data folder is owned by the current user: `sudo chown -R $USER:$USER ~/.config/Headmaster`.
+    - ▶️ **AppImage won't run** — ensure it's executable: `chmod +x Headmaster-*.AppImage`.
+    - 🔓 **Running as root** — add the `--no-sandbox` flag.
+  </Accordion>
+</AccordionGroup>
 
-1. Check the log file for renderer errors.
-2. Common cause: a corrupted renderer cache. Delete the cache folder:
-   - **Windows:** `%APPDATA%\Headmaster\cache\renderer`
-   - **macOS:** `~/Library/Application Support/Headmaster/cache/renderer`
-   - **Linux:** `~/.config/Headmaster/cache/renderer`
-3. Restart Headmaster.
+---
 
-### Port conflict
+## Collecting logs for bug reports
 
-If another application is using the port Headmaster needs:
+When reporting a bug, include:
 
-1. Open the log file and look for "port already in use" or "EADDRINUSE".
-2. Find the process holding the port:
-   - **Windows:** `netstat -ano | findstr :<port>`
-   - **macOS/Linux:** `lsof -i :<port>`
-3. Stop the conflicting process or reconfigure it to use a different port.
-4. Restart Headmaster.
+1. 📄 The most recent log file from `<data folder>/logs/`.
+2. 🏷️ The Headmaster version (from **Settings → About**).
+3. 💻 Your OS and version.
+4. 🔁 Steps to reproduce the issue.
 
-### Runtime won't start on Linux
+Use **Settings → About → Report a bug** to send this automatically — it attaches the log file, app version, OS info, and the last 5 conversation IDs (not content — just IDs for correlation).
 
-Common Linux-specific issues:
+---
 
-- **Missing libraries:** Install `libgtk-3-0`, `libnss3`, `libasound2`, `libxss1`.
-- **Permission denied:** Make sure the data folder is owned by the current user: `sudo chown -R $USER:$USER ~/.config/Headmaster`.
-- **AppImage won't run:** Make sure it's executable: `chmod +x Headmaster-*.AppImage`.
-- **Running as root:** Add `--no-sandbox` flag.
-
-### Log collection for bug reports
-
-When reporting a bug, attach:
-
-1. The most recent log file from `<data folder>/logs/`.
-2. The Headmaster version (from **Settings → About**).
-3. Your OS and version.
-4. Steps to reproduce the issue.
-
-Use **Settings → About → Report a bug** to send this automatically.
-
-### Report a bug
-
-Use **Settings → About → Report a bug**. The report:
-
-- Attaches the most recent log file.
-- Includes your app version and OS info.
-- Includes the last 5 conversation IDs (not the content — just the IDs, for correlation).
-
-### Still stuck
+## Still stuck
 
 Email `admin@gcaplabs.com` with the log file attached and a description of what happened.
 
 ---
+
+<CardGroup cols={2}>
+  <Card title="Updating Headmaster" icon="download" href="/updating-headmaster">
+    Update issues and rollback instructions.
+  </Card>
+  <Card title="Runtime settings" icon="server" href="/runtime-settings">
+    Restart the runtime or switch to remote mode.
+  </Card>
+</CardGroup>

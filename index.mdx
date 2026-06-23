@@ -1,52 +1,102 @@
 ---
 title: "Headmaster Documentation"
-description: "Complete guide to Headmaster Desktop — persistent AI agents for your organization"
+description: "AI specialists that do real work on your machine — no terminal setup required."
 ---
 
-Headmaster is a desktop workspace where AI specialists handle real work on your machine: reading files, writing code, browsing the web, generating images, and automating tasks through scheduled jobs.
+Headmaster is a free, open-source desktop workspace where AI specialists handle real work on your computer: reading and writing files, running code, browsing the web, generating documents, and running automated tasks on a schedule. The agent engine is built into the app — drop in an API key and you're running in minutes.
 
-## What you'll find here
-
-| Guide | What it covers | Read time |
-|---|---|---|
-| [Getting Started](getting-started) | Download, install, first conversation | 5 min |
-| [The Local Runtime](the-local-runtime) | How the agent engine works | 8 min |
-| [Models & Providers](models-providers) | Connecting to AI platforms | 12 min |
-| [Conversations](conversations) | Chat, sessions, and steering | 10 min |
-| [The Council](the-council) | Multi-agent parallel work | 6 min |
-| [Specialists](specialists) | 20+ built-in personas | 8 min |
-| [Skills & The Agency](skills-the-agency) | Installing community abilities | 7 min |
-| [Channels](channels) | Messaging platform connections | 10 min |
-| [The Schedule](the-schedule) | Recurring automated tasks | 8 min |
-| [Troubleshooting](troubleshooting) | Common issues and fixes | 10 min |
-
-## Quick links
-
-<CardGroup cols={2}>
-  <Card title="Getting Started" icon="rocket" href="/getting-started">
+<CardGroup cols={3}>
+  <Card title="Quick Start" icon="rocket" href="/getting-started">
     Install Headmaster and run your first conversation in under 5 minutes.
   </Card>
+  <Card title="Specialists" icon="users" href="/specialists">
+    20+ built-in AI personas, each with a specific role and skill set.
+  </Card>
+  <Card title="The Council" icon="brain" href="/the-council">
+    Multi-agent parallel deliberation for complex, multi-perspective problems.
+  </Card>
   <Card title="Models & Providers" icon="cpu" href="/models-providers">
-    Connect OpenAI, Anthropic, Google, OpenRouter, or local models.
+    Connect OpenAI, Anthropic, Google, OpenRouter, local models, and 25+ more.
   </Card>
-  <Card title="The Council" icon="users" href="/the-council">
-    Run multiple specialists in parallel for complex tasks.
+  <Card title="The Schedule" icon="clock" href="/the-schedule">
+    Recurring automated tasks — daily reports, inbox triage, nightly backups.
   </Card>
-  <Card title="Channels" icon="message-dots" href="/channels">
-    Connect Telegram, WeChat Work, DingTalk, Lark, and more.
+  <Card title="Channels" icon="message" href="/channels">
+    Reach your agent via Telegram, WeChat Work, DingTalk, Lark, and more.
   </Card>
 </CardGroup>
 
+---
+
+## What Headmaster does
+
+Headmaster is not a chatbot. It's a local workspace where one or more AI agents do real work:
+
+<CardGroup cols={2}>
+  <Card title="Code & Dev" icon="code">
+    Read your repo, write patches, run tests, commit — without leaving the desktop.
+  </Card>
+  <Card title="Documents" icon="file-word">
+    Generate decks, spreadsheets, reports, and PDFs in native Office formats.
+  </Card>
+  <Card title="Web Automation" icon="browser">
+    Open pages, fill forms, take screenshots, scrape content — full browser control.
+  </Card>
+  <Card title="Image Generation" icon="image">
+    Text-to-image and image editing from chat, using Gemini, OpenAI, Flux, and more.
+  </Card>
+  <Card title="Scheduled Tasks" icon="calendar">
+    Cron-based recurring work with Keep-awake for 24/7 automation.
+  </Card>
+  <Card title="Messaging Channels" icon="mobile">
+    Drive your agent from your phone via Telegram, WhatsApp, iMessage, and more.
+  </Card>
+</CardGroup>
+
+---
+
 ## System requirements
 
-- **Windows:** Windows 10 or later (64-bit)
-- **macOS:** macOS 10.14 (Mojave) or later (Intel and Apple Silicon)
-- **Linux:** Ubuntu 18.04+, Fedora 30+, Debian 10+, or equivalent
+<Tabs>
+  <Tab title="Windows">
+    - **Windows 10** or later (64-bit)
+    - 4 GB RAM minimum, 8 GB recommended
+    - 500 MB storage minimum, 2 GB recommended
+  </Tab>
+  <Tab title="macOS">
+    - **macOS 10.14 (Mojave)** or later
+    - Intel and Apple Silicon both supported
+    - 4 GB RAM minimum, 8 GB recommended
+  </Tab>
+  <Tab title="Linux">
+    - **Ubuntu 18.04+**, Fedora 30+, Debian 10+, or equivalent
+    - 4 GB RAM minimum, 8 GB recommended
+    - `.deb`, `.AppImage`, and Homebrew install options available
+  </Tab>
+</Tabs>
 
-## Version
+---
 
-These docs cover **Headmaster v0.2.1**.
+## Key sections
+
+| Section | What it covers |
+|---|---|
+| [Getting Started](/getting-started) | Download, install, first conversation |
+| [The Local Runtime](/the-local-runtime) | How the agent engine works under the hood |
+| [Models & Providers](/models-providers) | Connecting to 28+ AI platforms |
+| [Conversations](/conversations) | Chat, sessions, steering, and file uploads |
+| [Modes](/modes) | Work Along, Run It Yourself, Hands-Off, Autopilot |
+| [The Council](/the-council) | Multi-agent parallel deliberation |
+| [Skills & The Agency](/skills-the-agency) | Installing and authoring agent skills |
+| [Channels](/channels) | Messaging platform connections |
+| [The Schedule](/the-schedule) | Recurring automated tasks |
+| [Security](/security) | Approval gates, isolation, audit trails |
+| [Troubleshooting](/troubleshooting) | Common issues and fixes |
 
 <Tip>
-  New to Headmaster? Start with [Getting Started](getting-started) and come back to explore advanced features once you're running.
+  New to Headmaster? Start with [Getting Started](/getting-started). Come back to explore the advanced features once you're up and running.
 </Tip>
+
+---
+
+*These docs cover **Headmaster v0.2.1**. Open source under Apache 2.0.*

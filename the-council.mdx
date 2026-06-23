@@ -1,79 +1,131 @@
 ---
 title: "The Council"
-description: "---"
+description: "Multi-perspective deliberation mode — the orchestrator dispatches a task to multiple specialists working in parallel, then synthesizes a final answer."
 ---
 
 # The Council
 
 The Council is Headmaster's multi-perspective deliberation mode. Instead of one agent working alone, the orchestrator (the Headmaster) dispatches the task to multiple specialists, each with a different perspective. They work in parallel, share their findings, and the orchestrator synthesizes a final answer.
 
-### Good fit for the Council
+---
 
-Use the Council when:
-- A problem benefits from multiple perspectives (architecture decisions, trade-off analysis, creative work).
-- You want a thorough answer rather than a fast one.
-- The task spans multiple domains (code + design, research + writing, data + presentation).
+## When to use the Council
 
-Don't use the Council for:
-- Simple questions ("what's the syntax for X?") — a single specialist is faster.
-- Tasks with one obvious answer.
-- Time-sensitive requests.
+<CardGroup cols={2}>
+  <Card title="Good fit" icon="check">
+    - Problems that benefit from multiple perspectives (architecture decisions, trade-off analysis, creative work)
+    - Tasks that span multiple domains (code + design, research + writing, data + presentation)
+    - When you want a thorough answer rather than a fast one
+  </Card>
+  <Card title="Not a good fit" icon="x">
+    - Simple questions ("what's the syntax for X?") — a single specialist is faster
+    - Tasks with one obvious answer
+    - Time-sensitive requests
+  </Card>
+</CardGroup>
 
-### How the Council works
+---
 
-1. You send a message in the chat.
-2. The Headmaster (orchestrator) reads the task and decides which specialists to involve.
-3. Each specialist works on the task in parallel, producing their own analysis or output.
-4. The specialists share their findings in the Council Chamber — a shared task board visible in the UI.
-5. The Headmaster reviews all findings, resolves disagreements, and synthesizes a final answer.
-6. The final answer appears in your chat, with a summary of each specialist's contribution.
+## How the Council works
 
-### The Council Chamber
+<Steps>
+  <Step title="Send your message">
+    You send a message in the chat as normal.
+  </Step>
+  <Step title="Orchestrator dispatches">
+    The Headmaster (orchestrator) reads the task and decides which specialists to involve.
+  </Step>
+  <Step title="Parallel work">
+    Each specialist works on the task in parallel, independently — they don't see each other's output until they report back.
+  </Step>
+  <Step title="Specialists report">
+    Findings appear in the Council Chamber — a shared task board visible in the UI — as each specialist finishes.
+  </Step>
+  <Step title="Orchestrator synthesizes">
+    The Headmaster reviews all findings, resolves disagreements by weighing arguments, and synthesizes a final answer.
+  </Step>
+  <Step title="Final answer in chat">
+    The synthesized answer appears in your chat, with a summary of each specialist's contribution.
+  </Step>
+</Steps>
+
+---
+
+## The Council Chamber
 
 The Council Chamber is a UI panel that shows the parallel work in progress:
 
-- **Specialist cards** — one per specialist, showing their current status (thinking, working, done).
-- **Live output** — each specialist's working stream is visible as it happens.
-- **Shared task board** — the list of subtasks and who's working on what.
-- **Deliberation log** — the specialists' findings as they report back.
+- 🃏 **Specialist cards** — one per specialist, showing their current status (thinking, working, done).
+- 📡 **Live output** — each specialist's working stream visible as it happens.
+- 📋 **Shared task board** — the list of subtasks and who's working on what.
+- 🗒️ **Deliberation log** — the specialists' findings as they report back.
 
-The Council Chamber updates in real time. You can watch the deliberation happen, expand any specialist's card to see their full reasoning, and interrupt the whole Council with the stop button.
+The Council Chamber updates in real time. You can watch the deliberation, expand any specialist's card to see their full reasoning, and interrupt the whole Council with the stop button.
 
-### Starting a Council
+---
 
-Two approaches:
+## Starting a Council
 
-1. **From the chat:** Click the specialist picker and select **The Council**. Then send your message. The orchestrator dispatches it to the specialists.
-2. **With a slash command:** Type `/council` in the composer. This routes to `/team/default`, which starts the Council with the default specialist set. You can specify a different team with `/council <team-name>`.
+<Tabs>
+  <Tab title="From the specialist picker">
+    Click the specialist picker and select **The Council**. Send your message — the orchestrator dispatches it to the specialists.
+  </Tab>
+  <Tab title="With a slash command">
+    Type `/council` in the composer. This routes to `/team/default`, which starts the Council with the default specialist set.
 
-### Custom teams
+    To use a custom team: `/council <team-name>`.
+  </Tab>
+</Tabs>
+
+---
+
+## Custom teams
 
 You can define custom teams with specific specialist combinations:
 
-1. Open **Settings → My Headmaster → Teams**.
-2. Click **Create team**.
-3. Pick the specialists you want on this team.
-4. Name the team.
-5. Start a Council with this team: `/council <team-name>`.
+<Steps>
+  <Step title="Open Teams settings">
+    Go to **Settings → My Headmaster → Teams**.
+  </Step>
+  <Step title="Create a team">
+    Click **Create team**, pick the specialists you want, and name the team.
+  </Step>
+  <Step title="Use the team">
+    Start a Council with this team: `/council <team-name>`.
+  </Step>
+</Steps>
 
-This is useful when you have a recurring workflow that always needs the same set of perspectives (e.g., "Architecture Review" = The Architect + The Builder + The Designer).
+<Tip>
+  Custom teams are great for recurring workflows. Example: "Architecture Review" = The Architect + The Builder + The Designer — start it with one command.
+</Tip>
 
-### Parallel deliberation
+---
 
-When the Council runs, multiple specialists work at the same time. Each specialist:
+## Parallel deliberation in detail
 
-- Gets the same task description.
-- Works independently — they don't see each other's output until they report back.
-- Produces their own analysis, code, or document.
-- Reports back to the orchestrator.
+When the Council runs, each specialist:
+
+1. Gets the same task description.
+2. Works **independently** — doesn't see other specialists' output until they report back.
+3. Produces their own analysis, code, or document.
+4. Reports back to the orchestrator.
 
 The orchestrator then:
 
 1. Reads all specialist outputs.
 2. Identifies agreements and disagreements.
 3. Resolves conflicts by weighing the arguments.
-4. Synthesizes a final answer that incorporates the best parts of each specialist's work.
+4. Synthesizes a final answer incorporating the best parts of each specialist's work.
 
-The final answer is what you see in the chat. The individual specialist outputs are available in the Council Chamber panel for review.
+The individual specialist outputs are available in the Council Chamber panel for review.
 
 ---
+
+<CardGroup cols={2}>
+  <Card title="Specialists" icon="users" href="/specialists">
+    The 20+ built-in specialists and how to hire custom ones.
+  </Card>
+  <Card title="Subagent Delegation" icon="share-nodes" href="/subagent-delegation">
+    General-purpose parallel workstream delegation — complements the Council.
+  </Card>
+</CardGroup>

@@ -1,34 +1,44 @@
 ---
 title: "Approvals & human-in-the-loop"
-description: "---"
+description: "Stay in control of what the agent does — approval gates, clarification requests, permission prompts, and a full audit trail."
 ---
 
 # Approvals & human-in-the-loop
 
 Headmaster keeps you in control. The agent asks for your approval before doing things that affect your files, your system, or external services.
 
-### What triggers an approval
+---
 
-In Work Along mode, the agent asks before:
+## What triggers an approval
 
-- **Running a tool** — web search, code execution, file read/write, MCP call, image generation.
-- **Accessing a file outside the project folder.**
-- **Making a network request** — external API call, HTTP request, webhook.
-- **Executing code** — running a script, shell command, or code block.
+<Tabs>
+  <Tab title="Work Along mode">
+    The agent asks before every action:
 
-In Run It Yourself mode, the agent runs tools without per-action approval but still asks before **destructive actions**:
+    - 🔧 Running a tool (web search, code execution, file read/write, MCP call, image generation)
+    - 📁 Accessing a file outside the project folder
+    - 🌐 Making a network request (external API call, HTTP request, webhook)
+    - ⚙️ Executing code (running a script, shell command, or code block)
+  </Tab>
+  <Tab title="Run It Yourself mode">
+    The agent runs most tools without asking, but still asks before **destructive actions**:
 
-- Deleting a file.
-- Overwriting an existing file.
-- Sending an email or message.
-- Pushing to a remote (git push).
-- Running a command with sudo / admin privileges.
+    - 🗑️ Deleting a file
+    - ⚠️ Overwriting an existing file
+    - 📧 Sending an email or message
+    - ⬆️ Pushing to a remote (`git push`)
+    - 🔐 Running a command with sudo / admin privileges
+  </Tab>
+  <Tab title="Hands-Off / Autopilot">
+    No approval prompts. All actions are logged in the conversation transcript.
+  </Tab>
+</Tabs>
 
-In Hands-Off and Autopilot, no approval prompts. All actions are logged.
+---
 
-### The approval prompt
+## The approval prompt
 
-When the agent wants to do something that needs approval, you see a card in the chat:
+When the agent wants to do something that needs approval, a card appears in the chat:
 
 ```
 The agent wants to run: web_search
@@ -37,11 +47,15 @@ Query: "latest Python release notes"
 [Approve]  [Deny]  [Approve always for this conversation]
 ```
 
-Click **Approve** to let it run. Click **Deny** to stop it. Click **Approve always** to let the agent run this tool type without asking again for the rest of this conversation.
+- **Approve** — let the action run.
+- **Deny** — block the action. The agent stops and asks what to do instead.
+- **Approve always** — let the agent run this tool type without asking again for the rest of this conversation.
 
-### Clarification requests
+---
 
-Sometimes the agent needs more information before it can proceed. Instead of guessing, it asks you a question:
+## Clarification requests
+
+Sometimes the agent needs more information before it can proceed. Instead of guessing, it asks:
 
 ```
 The agent needs clarification:
@@ -52,9 +66,11 @@ The agent needs clarification:
 
 Click one of the suggested options, or type your own answer. The agent incorporates your response and continues.
 
-### Permission requests
+---
 
-When the agent needs elevated permissions (e.g., sudo access to install a package), it sends a permission request:
+## Permission requests
+
+When the agent needs elevated permissions (e.g., sudo to install a package), it sends a permission request:
 
 ```
 The agent needs sudo access to run: apt install postgresql-client
@@ -62,11 +78,13 @@ The agent needs sudo access to run: apt install postgresql-client
 [Grant sudo for this command]  [Deny]
 ```
 
-The request shows the exact command. You can grant sudo for this specific command only (not blanket sudo access).
+The request shows the exact command. Granting sudo is scoped to that specific command only — not blanket sudo access.
 
-### Secret requests
+---
 
-When the agent needs a secret (an API key, a password, a token) that it doesn't have stored, it asks:
+## Secret requests
+
+When the agent needs a credential it doesn't have:
 
 ```
 The agent needs your Stripe API key to list recent charges.
@@ -74,17 +92,30 @@ The agent needs your Stripe API key to list recent charges.
 [Enter key...]  [Skip]
 ```
 
-The key you enter is stored in the Connections area (encrypted at rest) and is available to the agent in future conversations. You can revoke it any time.
-
-### Audit trail
-
-Every approval, denial, clarification, and permission grant is logged in the conversation transcript. The transcript shows:
-
-- What the agent requested.
-- What you approved or denied.
-- The timestamp.
-- The parameters of the action.
-
-This audit trail is stored in the session file and can be exported for compliance reviews.
+The key you enter is stored encrypted in the Connections area and is available to the agent in future conversations. Revoke it any time from Settings.
 
 ---
+
+## Audit trail
+
+Every approval, denial, clarification, and permission grant is logged in the conversation transcript:
+
+| What's logged | Detail |
+|---|---|
+| **What was requested** | Tool name, action type, parameters |
+| **What you decided** | Approved, denied, or always-approved |
+| **Timestamp** | When the decision was made |
+| **Parameters** | The exact inputs for the action |
+
+The transcript is stored in the session file and can be exported for compliance reviews.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Modes" icon="sliders" href="/modes">
+    Approval behavior is controlled by your active mode.
+  </Card>
+  <Card title="Security" icon="shield" href="/security">
+    Container isolation, secret blocking, and the full security model.
+  </Card>
+</CardGroup>

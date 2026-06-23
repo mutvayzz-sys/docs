@@ -1,6 +1,6 @@
 ---
 title: "Integrations"
-description: "---"
+description: "Service-level connections the agent can use during conversations — file storage, calendars, issue trackers, databases, and more."
 ---
 
 # Integrations
@@ -9,29 +9,44 @@ description: "---"
 
 Integrations are external services the agent can reach during a conversation. Unlike MCP servers (which are tool-level connections), integrations are service-level connections — the agent uses them to read or write data from a specific service.
 
-Examples: a file storage bucket (S3, Google Drive), a calendar (Google Calendar, Outlook), an issue tracker (Jira, Linear), a database (Postgres, BigQuery).
+**Examples:** A file storage bucket (S3, Google Drive), a calendar (Google Calendar, Outlook), an issue tracker (Jira, Linear), a database (Postgres, BigQuery).
 
-### Adding an integration
+---
 
-1. Click **Add integration**.
-2. Pick the type (Storage, Calendar, Issue Tracker, Database, Custom).
-3. Fill in the credentials (API key, OAuth token, connection string — depends on the type).
-4. Test the connection.
-5. Save.
+## Adding an integration
 
-The integration becomes available to the agent immediately. It appears in the integrations list with a status indicator (Connected / Error).
+<Steps>
+  <Step title="Open Integrations">
+    Go to **Settings → Headmaster's Library → Integrations** and click **Add integration**.
+  </Step>
+  <Step title="Pick the type">
+    Select from: Storage, Calendar, Issue Tracker, Database, Custom.
+  </Step>
+  <Step title="Fill in credentials">
+    Enter the API key, OAuth token, or connection string — depends on the type.
+  </Step>
+  <Step title="Test and save">
+    Click **Test connection**, then **Save**. The integration is immediately available to the agent and appears in the integrations list with a status indicator.
+  </Step>
+</Steps>
 
-### Removing an integration
+---
 
-Click **Remove** on an integration card. The agent loses access to that service in its next turn. Existing conversation transcripts that referenced the integration are not edited.
-
-### Credentials
+## Credentials
 
 Credentials are stored locally, encrypted at rest. They are not synced to the cloud. If you move to a new machine, you have to add the integrations again.
 
-### When something goes wrong
+---
 
-If the agent reports it can't reach an integration, open the integration's card. The card shows:
+## Removing an integration
+
+Click **Remove** on an integration card. The agent loses access to that service in its next turn. Existing conversation transcripts that referenced the integration are not edited.
+
+---
+
+## Troubleshooting
+
+If the agent reports it can't reach an integration, open the integration's card. It shows:
 
 - The last error from the service.
 - A **Test connection** button.
@@ -40,3 +55,12 @@ If the agent reports it can't reach an integration, open the integration's card.
 The most common cause is an expired or rotated credential. Update the credential and test again.
 
 ---
+
+<CardGroup cols={2}>
+  <Card title="Connections (MCP)" icon="plug" href="/connections-mcp-servers">
+    Tool-level connections via the Model Context Protocol.
+  </Card>
+  <Card title="Settings Overview" icon="gear" href="/settings-overview">
+    Map of all settings areas and what's in each.
+  </Card>
+</CardGroup>

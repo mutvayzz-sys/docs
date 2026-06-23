@@ -1,34 +1,15 @@
 ---
-title: "Connections (MCP servers)"
-description: "- [MCP Specification](https://modelcontextprotocol.io/)
-- [MCP Server List](https://github.com/modelcontextprotocol/serv"
+title: "Connections (MCP Servers)"
+description: "Add MCP servers to extend the agent with external tools — filesystem access, GitHub, Slack, databases, and hundreds more."
 ---
 
-# Connections (MCP servers)
+# Connections (MCP Servers)
 
-Connections in Headmaster's Library covers two things: **model providers** (covered in [Models & providers](models-providers.md)) and **MCP servers** — external tools the agent can call on during a conversation.
-
----
-
-## Understanding MCP
-
-MCP (Model Context Protocol) is a protocol that gives AI agents a standard way to reach external tools and services without each one needing a custom integration. In Headmaster, it enables extending agent functionality, unified management, simplified configuration, and real-time monitoring.
+MCP (Model Context Protocol) is a protocol that gives AI agents a standard way to reach external tools and services without each one needing a custom integration. In Headmaster, adding an MCP server instantly extends the agent's capabilities.
 
 ```text
-AI Assistant ←→ MCP Protocol ←→ External Tools/Services
+AI Agent ←→ MCP Protocol ←→ External Tools / Services
 ```
-
-MCP sits between the agent and your external services — it handles discovery, calling, and result passing so the agent doesn't need to know each service's API directly.
-
----
-
-## Built-in capabilities
-
-- **Unified management interface:** Centralized management in settings.
-- **Multiple addition methods:** JSON configuration and one-click import from CLI agents.
-- **Automatic connection testing:** Validates availability after addition.
-- **Batch operations:** One-click enable/disable.
-- **Status monitoring:** Real-time display of connection status and tools.
 
 ---
 
@@ -43,27 +24,37 @@ MCP sits between the agent and your external services — it handles discovery, 
 
 ---
 
-## Getting going
+## Common MCP servers
 
-### Before you start
+| Server | What it does | Install |
+|---|---|---|
+| **Filesystem** | Give the agent access to a specific directory | `npx -y @modelcontextprotocol/server-filesystem /path` |
+| **GitHub** | Read/write repos, issues, PRs | `npx -y @modelcontextprotocol/server-github` |
+| **Slack** | Read and send messages | `npx -y @modelcontextprotocol/server-slack` |
+| **Browser** | Control a headless browser | `npx -y @modelcontextprotocol/server-chrome-devtools` |
+| **Memory** | Store important info and reminders | `npx -y @modelcontextprotocol/server-memory` |
+| **Git** | Check commit history, branches, diffs | `npx -y @modelcontextprotocol/server-git` |
+| **Postgres** | Query SQL databases | `npx -y @modelcontextprotocol/server-postgres` |
 
-- Headmaster installed and running.
-- At least one AI model configured.
-- Basic JSON knowledge (optional — the UI handles most of it).
-
-### Accessing MCP management
-
-1. Open Headmaster.
-2. Click **Settings** in the left sidebar.
-3. Open **Headmaster's Library → Connections → MCP tab**.
+See the full [MCP Server List](https://github.com/modelcontextprotocol/servers) for more.
 
 ---
 
 ## Adding an MCP server
 
-### Adding a server by JSON config
+### By JSON config
 
-Follows the standard `mcpServers` schema.
+<Steps>
+  <Step title="Open MCP management">
+    Go to **Settings → Headmaster's Library → Connections → MCP tab**.
+  </Step>
+  <Step title="Click Add MCP Service → Add via JSON">
+    Paste your server config.
+  </Step>
+  <Step title="Confirm">
+    Headmaster validates the config and tests the connection automatically.
+  </Step>
+</Steps>
 
 **stdio (local CLI server) example:**
 
@@ -82,7 +73,7 @@ Follows the standard `mcpServers` schema.
 }
 ```
 
-**Remote (sse / http / streamable_http) example:**
+**Remote (SSE / HTTP) example:**
 
 ```json
 {
@@ -99,46 +90,34 @@ Follows the standard `mcpServers` schema.
 }
 ```
 
-**Steps:** Click **Add MCP Service** → **Add via JSON** → paste config → confirm → automatic testing occurs.
+### By importing from a CLI agent
 
-### Importing from a CLI agent
+<Steps>
+  <Step title="Click Add MCP Service → Import from CLI">
+    Select which CLI agent to import from (Claude Code, Codex, Gemini CLI, Qwen Code, Cursor, etc.).
+  </Step>
+  <Step title="Review and save">
+    Headmaster reads the CLI's existing config and imports it directly.
+  </Step>
+</Steps>
 
-Import existing MCP configs from detected CLI agents (Claude Code, Codex, Gemini CLI, Qwen Code, Cursor, etc.).
-
-**Steps:** Click **Add MCP Service** → **Import from CLI** → select CLI agent → click **Import from CLI** → review & save.
-
-This is the fastest path if you already have MCP servers configured in another CLI tool — Headmaster reads their config and imports it directly.
+<Tip>
+  This is the fastest path if you already have MCP servers configured in another CLI tool.
+</Tip>
 
 ---
 
 ## Shared across all specialists
 
-When you add an MCP server, it's available to all specialists automatically. You don't need to configure it per-specialist or per-conversation. This is the shared MCP model — add once, every specialist can use it.
+When you add an MCP server, it's available to **all specialists** automatically — add once, every specialist can use it.
 
 Headmaster also syncs enabled MCP servers to all detected CLI agents. If you have Claude Code and Codex both installed, enabling a server in Headmaster makes it available to both.
 
 ---
 
-## Common MCP servers
-
-| Server | What it does | Install |
-|---|---|---|
-| Filesystem | Gives the agent access to a specific directory | `npx -y @modelcontextprotocol/server-filesystem /path` |
-| GitHub | Read and write repos, issues, PRs | `npx -y @modelcontextprotocol/server-github` (needs `GITHUB_TOKEN`) |
-| Slack | Read and send messages | `npx -y @modelcontextprotocol/server-slack` (needs `SLACK_TOKEN`) |
-| Browser | Control a headless browser | `npx -y @modelcontextprotocol/server-chrome-devtools` |
-| Memory | Store important info and reminders | `npx -y @modelcontextprotocol/server-memory` |
-| Git | Check commit history, branches, diffs | `npx -y @modelcontextprotocol/server-git` |
-| Postgres | Query SQL databases | `npx -y @modelcontextprotocol/server-postgres` (needs connection string) |
-| Custom | Any MCP-compliant server you write or install | Follow the [MCP spec](https://modelcontextprotocol.io/) |
-
-See the full [MCP Server List](https://github.com/modelcontextprotocol/servers) for more.
-
----
-
 ## Managing your servers
 
-### What each status means
+### Server status
 
 | Status | Meaning |
 |---|---|
@@ -149,38 +128,54 @@ See the full [MCP Server List](https://github.com/modelcontextprotocol/servers) 
 
 ### Operations
 
-- **Enable / Disable:** Toggle switch. Headmaster syncs enabled servers to all detected CLI agents.
-- **Test connection:** Click the refresh button to re-test.
-- **Edit:** Click edit, modify, and save (auto re-tests on save).
-- **Delete:** Click delete, confirm. Automatically removes from all synced CLI tools.
-
----
-
-## Usage examples
-
-- **File management:** Organize desktop files via the `filesystem` MCP.
-- **Browser automation:** Open sites and search via the `chrome-devtools` MCP.
-- **Git operations:** Check commit history via the `git` MCP.
-- **Memory management:** Store important info and reminders via the `memory` MCP.
-- **Database queries:** Ask questions in plain English and get SQL results via the `postgres` MCP.
+- **Enable / Disable** — toggle switch. Headmaster syncs enabled servers to all detected CLI agents.
+- **Test connection** — click the refresh button to re-test.
+- **Edit** — click edit, modify, and save (auto re-tests on save).
+- **Delete** — click delete, confirm. Automatically removes from all synced CLI tools.
 
 ---
 
 ## Troubleshooting
 
-| Issue | Possible causes | Solutions |
-|---|---|---|
-| **Service connection failed** | Incorrect path, missing deps, network, permissions | Check `command`/`args`, run `npm install -g`, check network and permissions |
-| **Empty tool list** | Bad implementation, version mismatch, missing params | Check service implementation, update version, add missing env vars |
-| **CLI sync failed** | Old CLI version, format mismatch, bad installation | Update CLI, disable/re-enable service, verify CLI installation |
-| **stdio server won't start** | Command not found, missing env vars | Verify the command runs in a terminal first, check `env` keys |
-| **Remote server timeout** | Network, firewall, wrong URL | Test with `curl -I <url>`, check firewall rules, verify URL |
+<AccordionGroup>
+  <Accordion title="Service connection failed">
+    **Possible causes:** Incorrect path, missing dependencies, network issue, permissions.
+
+    **Solutions:** Check `command`/`args`, run `npm install -g` for the server package, check network and permissions.
+  </Accordion>
+
+  <Accordion title="Empty tool list">
+    **Possible causes:** Bad implementation, version mismatch, missing parameters.
+
+    **Solutions:** Check the service implementation, update the server version, add missing env vars.
+  </Accordion>
+
+  <Accordion title="CLI sync failed">
+    **Possible causes:** Old CLI version, format mismatch, bad CLI installation.
+
+    **Solutions:** Update the CLI, disable/re-enable the service, verify CLI installation.
+  </Accordion>
+
+  <Accordion title="stdio server won't start">
+    **Possible causes:** Command not found, missing environment variables.
+
+    **Solutions:** Verify the command runs in a terminal first, check `env` keys in your config.
+  </Accordion>
+
+  <Accordion title="Remote server timeout">
+    **Possible causes:** Network, firewall, wrong URL.
+
+    **Solutions:** Test with `curl -I <url>`, check firewall rules, verify the URL is correct.
+  </Accordion>
+</AccordionGroup>
 
 ---
 
-## Going further
-
-- [MCP Specification](https://modelcontextprotocol.io/)
-- [MCP Server List](https://github.com/modelcontextprotocol/servers)
-- [Getting started](getting-started.md)
-- [Your Crew](your-crew.md) — how MCP syncs to external CLI agents
+<CardGroup cols={2}>
+  <Card title="Tools & Toolsets" icon="wrench" href="/tools-and-toolsets">
+    The 60+ built-in tools and how to configure them per specialist.
+  </Card>
+  <Card title="Your Crew" icon="users" href="/your-crew">
+    How MCP servers sync to external CLI agents.
+  </Card>
+</CardGroup>

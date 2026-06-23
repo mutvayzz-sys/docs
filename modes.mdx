@@ -1,93 +1,105 @@
 ---
 title: "Modes"
-description: "---"
+description: "The four interaction modes that control how much autonomy the agent has — from full approval gating to fully automated 24/7 operation."
 ---
 
 # Modes
 
 Headmaster has four interaction modes that control how much autonomy the agent has and how often it asks for your approval.
 
-### Work Along
+| Mode | Approvals | Destructive actions | Scheduled |
+|---|---|---|---|
+| **Work Along** | Every action | Ask | No |
+| **Run It Yourself** | No per-action | Ask | No |
+| **Hands-Off** | None | No ask | No |
+| **Autopilot** | None | No ask | Yes |
 
-**The default mode.** The agent works alongside you, asking for approval before running tools, writing files, or making external calls. You see every action before it happens and can approve or deny each one.
+Switch modes from the mode selector in the composer area. You can also switch mid-conversation — the change applies to the next action, not retroactively.
 
-Use Work Along when:
-- You're exploring a new codebase and want to see what the agent does.
-- You're working on something sensitive (production config, customer data).
-- You want to learn from the agent's approach.
+---
 
-In Work Along:
-- The agent proposes an action.
-- You see the action, its parameters, and what it will do.
-- You click **Approve** to let it run, or **Deny** to stop.
-- You can approve all future calls of the same type with **Approve always** for this conversation.
+## Work Along
 
-### Run It Yourself
+**The default mode.** The agent works alongside you, asking for approval before running tools, writing files, or making external calls. You see every action before it happens.
 
-The agent handles the task end-to-end without asking for approval on each step. It still asks before doing anything irreversible (deleting a file, sending an email, pushing to a remote).
+**Use when:**
+- 🔍 Exploring a new codebase and wanting to see what the agent does.
+- 🔒 Working on something sensitive (production config, customer data).
+- 🎓 Learning from the agent's approach.
 
-Use Run It Yourself when:
-- You've given a clear task and trust the agent to execute.
-- The task has many steps and approving each one would be tedious.
-- You're running a well-understood workflow.
+**How it works:**
+- The agent proposes an action, shows its parameters and expected outcome.
+- You click **Approve** to let it run, or **Deny** to stop it.
+- Use **Approve always** to greenlight all future calls of the same type for this conversation.
 
-In Run It Yourself:
+---
+
+## Run It Yourself
+
+The agent handles the task end-to-end without asking for approval on each step. It still asks before doing anything **irreversible**.
+
+**Use when:**
+- ✅ You've given a clear task and trust the agent to execute.
+- ⚡ The task has many steps and approving each one would be tedious.
+- 🔁 Running a well-understood workflow.
+
+**How it works:**
 - The agent runs tools and writes files without per-action approval.
 - It still asks before destructive actions (delete, overwrite, send, push).
 - You can interrupt at any time with the stop button.
 - All actions are logged in the conversation transcript for audit.
 
-### Hands-Off
+---
 
-Same as Run It Yourself, but the agent does not ask before destructive actions either. It just does them and reports what it did.
+## Hands-Off
 
-Use Hands-Off when:
-- You're running a well-tested automated workflow.
-- You're away from the keyboard and want the agent to complete a task.
-- You've set up guardrails (project folder scoping, allowed tools list) and trust the setup.
+Same as Run It Yourself, but the agent does **not** ask before destructive actions either. It just does them and reports what it did.
 
-In Hands-Off:
+**Use when:**
+- 🤖 Running a well-tested automated workflow.
+- 🚶 You're away from the keyboard.
+- 🛡️ You've set up guardrails (project folder scoping, allowed tools list) and trust the setup.
+
+**How it works:**
 - No approval prompts at all. The agent runs to completion.
 - Every action is still logged in the transcript.
-- You can review the full log after the fact.
 - If the agent encounters an error it can't resolve, it stops and reports rather than guessing.
 
-### Autopilot
+<Warning>
+  Hands-Off mode will delete files and run commands without asking. Set it up on well-understood workflows only. Test in Run It Yourself first.
+</Warning>
 
-The agent runs on a schedule, 24/7. It picks up tasks from the Schedule, executes them in Hands-Off mode, and delivers results to your Channels (messaging platforms, email, or the desktop chat).
+---
 
-Use Autopilot when:
-- You have recurring tasks (daily summaries, weekly reports, monitoring).
-- You want the agent to work while you sleep.
-- You've validated the workflow in Hands-Off first.
+## Autopilot
 
-In Autopilot:
-- The agent wakes on a schedule trigger.
-- It runs the task in Hands-Off mode (no approvals).
-- Results are delivered to the channel you configured (Telegram, email, desktop notification).
-- The agent goes back to sleep until the next trigger.
+The agent runs on a schedule, 24/7. It picks up tasks from the Schedule, executes them in Hands-Off mode, and delivers results to your configured Channels.
 
-### Switching modes
+**Use when:**
+- ⏰ You have recurring tasks (daily summaries, weekly reports, monitoring).
+- 🌙 You want the agent to work while you sleep.
+- ✅ You've validated the workflow in Hands-Off first.
 
-Switch modes from the mode selector in the composer area:
+**How it works:**
+1. The agent wakes on a schedule trigger.
+2. It runs the task in Hands-Off mode (no approvals).
+3. Results are delivered to the channel you configured (Telegram, email, desktop notification).
+4. The agent goes back to sleep until the next trigger.
 
-| Mode          | Approvals         | Destructive actions | Scheduled |
-| ------------- | ----------------- | ------------------- | --------- |
-| Work Along    | Every action      | Ask                 | No        |
-| Run It Yourself | No per-action  | Ask                 | No        |
-| Hands-Off    | None              | No ask              | No        |
-| Autopilot     | None              | No ask              | Yes       |
+<Tip>
+  Always test a workflow in Hands-Off mode manually before scheduling it in Autopilot. See [The Schedule](/the-schedule) for setup.
+</Tip>
 
-You can also switch modes mid-conversation. The change applies to the next action, not retroactively.
+---
 
-### Approval gates
+## Approval gates
 
 In Work Along and Run It Yourself, the agent asks for approval before:
 
-- **Running a tool** — web search, code execution, file read/write, MCP call.
-- **Accessing a file outside the project folder.**
-- **Making a network request** (external API call, HTTP request).
-- **Destructive actions** (delete, overwrite, send, push) — asked in all modes except Hands-Off.
+- 🔧 **Running a tool** — web search, code execution, file read/write, MCP call.
+- 📁 **Accessing a file outside the project folder.**
+- 🌐 **Making a network request** (external API call, HTTP request).
+- ⚠️ **Destructive actions** (delete, overwrite, send, push) — asked in all modes except Hands-Off.
 
 The approval prompt shows:
 - What the agent wants to do.
@@ -96,3 +108,12 @@ The approval prompt shows:
 - **Approve** / **Deny** / **Approve always** (for this conversation) buttons.
 
 ---
+
+<CardGroup cols={2}>
+  <Card title="Approvals" icon="shield-check" href="/approvals-human-in-the-loop">
+    Full details on the approval flow — clarifications, permissions, secret requests.
+  </Card>
+  <Card title="The Schedule" icon="clock" href="/the-schedule">
+    Set up Autopilot with cron-based recurring tasks.
+  </Card>
+</CardGroup>

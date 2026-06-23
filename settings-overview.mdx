@@ -1,56 +1,87 @@
 ---
 title: "HeadmasterUI Settings"
-description: "Desktop app settings — appearance, models, channels, and runtime connection"
+description: "Headmaster Settings is split into two areas — My Headmaster (user-facing, no PIN) and Headmaster's Library (advanced, PIN-protected)."
 ---
 
 # HeadmasterUI Settings
 
-These are the settings you configure in the Headmaster desktop app itself. They control how the app looks, which models you connect to, and how the app talks to the runtime engine.
+These are the settings you configure in the Headmaster desktop app. They control how the app looks, which models you connect to, and how the app talks to the runtime engine.
 
 Headmaster Settings is split into two areas, each with a clear purpose:
 
-- **My Headmaster** — the user-facing settings. No PIN required.
-- **Headmaster's Library** — the advanced settings. PIN-protected, named after the wizard's own study. Holds the things a regular user shouldn't have to touch.
+<CardGroup cols={2}>
+  <Card title="My Headmaster" icon="user">
+    The user-facing settings. No PIN required. Covers profile, model defaults, appearance, memory, and channels (preview).
+  </Card>
+  <Card title="Headmaster's Library" icon="lock">
+    The advanced settings. PIN-protected. Holds model providers, API keys, MCP connections, skills, integrations, and runtime configuration.
+  </Card>
+</CardGroup>
 
-### The PIN gate
+---
 
-The Library is protected by a PIN. The default PIN is set on first run — choose a 4-6 digit PIN. The PIN is:
+## My Headmaster
 
-- **Bcrypt-hashed locally.** Not stored in plaintext.
-- **Not recoverable.** If you forget the PIN, the only reset path is reinstalling Headmaster. Your data (conversations, memory, files) survives a reinstall, but you'll need to reconfigure the Library settings.
-- **Rate-limited.** Three wrong attempts trigger a 60-second lockout. Five wrong attempts trigger a 5-minute lockout.
+| Tab | What it does |
+|---|---|
+| **Profile** | Your display name, default profile, default model. |
+| **Model defaults** | Which model new chats start on. |
+| **Look** | Theme, font size, language, accent color. |
+| **Memory** | Your agent's memory — what it knows, what to forget, retention policy. |
+| **Channels (preview)** | Quick-connect Headmaster to messaging platforms. |
+
+---
+
+## Headmaster's Library
+
+| Tab | What it does |
+|---|---|
+| **Connections** | Model providers, API keys, multi-key rotation, MCP connections. |
+| **Skills** | Install, remove, and configure agent skills. Browse the Agency. |
+| **Integrations** | External services the agent can reach (file storage, calendars, etc.). |
+| **Channels** | Detailed configuration for messaging platforms. |
+| **Runtime** | Local or remote runtime, connection mode, restart controls, version. |
+| **Advanced** | Diagnostics, log level, environment overrides, PIN management. |
+| **Installation** | Portable vs installer, data folder location, clean uninstall, migration. |
+
+---
+
+## The PIN gate
+
+The Library is protected by a PIN. The default PIN is set on first run — choose a 4-6 digit PIN.
+
+| Property | Details |
+|---|---|
+| **Storage** | Bcrypt-hashed locally. Not stored in plaintext. |
+| **Recovery** | Not recoverable. If you forget the PIN, the only reset path is reinstalling Headmaster. Your data (conversations, memory, files) survives a reinstall. |
+| **Rate limiting** | 3 wrong attempts → 60-second lockout. 5 wrong attempts → 5-minute lockout. |
 
 Change the PIN in **Headmaster's Library → Advanced → Change PIN**.
 
-### My Headmaster
+---
 
-| Tab                  | What it does                                                              |
-| -------------------- | ------------------------------------------------------------------------- |
-| Profile              | Your display name, default profile, default model.                        |
-| Model defaults       | Which model new chats start on.                                           |
-| Look                 | Theme, font size, language, accent color.                                 |
-| Memory               | Your agent's memory — what it knows, what to forget, retention policy.    |
-| Channels (preview)   | Quick-connect Headmaster to messaging platforms.                          |
-
-### Headmaster's Library
-
-| Tab                  | What it does                                                              |
-| -------------------- | ------------------------------------------------------------------------- |
-| Connections          | Model providers, API keys, multi-key rotation, MCP connections.           |
-| Skills               | Install, remove, and configure agent skills. Browse the Agency.           |
-| Integrations         | External services the agent can reach (file storage, calendars, etc.).   |
-| Channels             | Detailed configuration for messaging platforms.                          |
-| Runtime              | Local or remote runtime, connection mode, restart controls, version.     |
-| Advanced             | Diagnostics, log level, environment overrides, PIN management.            |
-| Installation         | Portable vs installer, data folder location, clean uninstall, migration.  |
-
-### Settings modal vs. settings page
+## Settings modal vs. settings page
 
 Settings can be opened two ways:
 
-- **Settings modal** — click the gear icon in the sidebar. A modal opens with tabs for each settings area. Good for quick changes.
-- **Settings page** — click **Open as page** in the modal header. Settings open as a full-page view. Good for long configuration sessions.
+- **Settings modal** — click the gear icon in the sidebar. Good for quick changes.
+- **Settings page** — click **Open as page** in the modal header. Good for long configuration sessions.
 
-Both surfaces show the same options. The tabs in the modal match the full-page routes — any change in one is reflected in the other.
+Both surfaces show the same options. Any change in one is reflected in the other.
 
 ---
+
+<CardGroup cols={2}>
+  <Card title="Appearance & Themes" icon="palette" href="/appearance-themes">
+    Theme, font size, accent color, and custom CSS.
+  </Card>
+  <Card title="Models & Providers" icon="cpu" href="/models-providers">
+    Connect 28+ LLM platforms and configure multi-key rotation.
+  </Card>
+  <Card title="Channels" icon="message" href="/channels">
+    Telegram, WeChat Work, DingTalk, Lark, WhatsApp, and iMessage.
+  </Card>
+  <Card title="Runtime Settings" icon="server" href="/runtime-settings">
+    Local/remote runtime, connection mode, and restart controls.
+  </Card>
+</CardGroup>

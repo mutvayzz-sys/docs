@@ -1,7 +1,6 @@
 ---
 title: "Voice mode"
-description: "- **Speak clearly** — the STT model works best with clear, moderate-paced speech.
-- **Use a quiet environment** — backgr"
+description: "Talk to Headmaster with your voice and hear responses spoken aloud — powered by local or cloud STT and a choice of TTS providers."
 ---
 
 # Voice mode
@@ -10,81 +9,113 @@ Headmaster supports real-time voice interaction — talk to the agent with your 
 
 ---
 
-## Under the hood
+## How it works
 
-Voice mode uses:
+The full voice cycle:
 
-- **Speech-to-text (STT):** Your spoken audio is transcribed to text and sent to the agent as a message. Headmaster uses a local faster-whisper model by default, or OpenAI Whisper for higher accuracy.
-- **Text-to-speech (TTS):** The agent's text response is converted to speech audio and played back. Headmaster uses OpenAI TTS, xAI, MiniMax, or ElevenLabs as TTS providers.
-
-The cycle is: you speak → STT transcribes → agent processes → TTS speaks the response → you speak again.
+<Steps>
+  <Step title="You speak">
+    Click the microphone icon in the chat composer to start recording.
+  </Step>
+  <Step title="STT transcribes">
+    Your speech is converted to text by either a local faster-whisper model or OpenAI Whisper.
+  </Step>
+  <Step title="Agent processes">
+    The transcribed text is sent as a message to the agent, which generates a response.
+  </Step>
+  <Step title="TTS speaks">
+    The agent's text response is converted to speech audio and played back through your speakers.
+  </Step>
+</Steps>
 
 ---
 
 ## Enabling voice mode
 
-1. Open **Settings → My Headmaster → Look → Voice**.
-2. Turn on **Enable voice mode**.
-3. Choose a TTS provider and voice.
-4. Choose an STT backend (local faster-whisper or OpenAI Whisper).
-5. Save.
+<Steps>
+  <Step title="Open Voice settings">
+    Go to **Settings → My Headmaster → Look → Voice**.
+  </Step>
+  <Step title="Turn on voice mode">
+    Enable **Enable voice mode**.
+  </Step>
+  <Step title="Choose a TTS provider">
+    Pick a provider and voice from the dropdown.
+  </Step>
+  <Step title="Choose an STT backend">
+    Select local faster-whisper (no API key) or OpenAI Whisper (requires key).
+  </Step>
+  <Step title="Save">
+    Click Save. Voice mode is ready in your next message.
+  </Step>
+</Steps>
 
-### TTS providers
+---
 
-| Provider | Voices | Notes |
-|---|---|---|
-| OpenAI | Alloy, Echo, Fable, Onyx, Nova, Shimmer | Natural, high quality. Requires OpenAI key. |
-| xAI | Various | Requires xAI key. |
-| MiniMax | Various | Requires MiniMax key. |
-| ElevenLabs | 5k-40k voice options | Premium quality. Requires ElevenLabs key. |
-| Edge | Built-in voices | Free, no API key needed. Lower quality. |
+## Providers
 
-### STT backends
-
-| Backend | Quality | Notes |
-|---|---|---|
-| Local faster-whisper | Good | Free, runs locally, no API key. Default. |
-| OpenAI Whisper | High | Requires OpenAI key. Better accuracy for accents and noise. |
+<Tabs>
+  <Tab title="TTS providers">
+    | Provider | Voices | Notes |
+    |---|---|---|
+    | **OpenAI** | Alloy, Echo, Fable, Onyx, Nova, Shimmer | Natural, high quality. Requires OpenAI key. |
+    | **xAI** | Various | Requires xAI key. |
+    | **MiniMax** | Various | Requires MiniMax key. |
+    | **ElevenLabs** | 5k–40k voice options | Premium quality. Requires ElevenLabs key. |
+    | **Edge** | Built-in system voices | Free, no API key. Lower quality. |
+  </Tab>
+  <Tab title="STT backends">
+    | Backend | Quality | Notes |
+    |---|---|---|
+    | **Local faster-whisper** | Good | Free, runs locally, no API key. Default. |
+    | **OpenAI Whisper** | High | Requires OpenAI key. Better accuracy for accents and noise. |
+  </Tab>
+</Tabs>
 
 ---
 
 ## Using voice mode
 
-### In the desktop app
+<Tabs>
+  <Tab title="Click to talk">
+    Click the **microphone icon** in the chat composer. The icon turns red to indicate recording. Speak your message, then click the icon again (or press `Esc`) to stop. The agent transcribes, processes, and speaks the response.
+  </Tab>
+  <Tab title="Push to talk">
+    Enable **Push to talk** in voice settings. Hold the microphone button (or a configured keyboard shortcut) to talk, release to send. The agent responds with speech automatically.
+  </Tab>
+  <Tab title="Continuous mode">
+    The agent listens for your speech, responds, then automatically listens again — no need to click each time. Enable in **Settings → Voice → Continuous mode**.
 
-Click the **microphone icon** in the chat composer. The icon turns red to indicate recording. Speak your message, then click the icon again (or press `Esc`) to stop recording. The agent transcribes your speech, processes it, and speaks the response.
-
-### Push to talk
-
-Enable **Push to talk** in voice settings. Hold the microphone button (or a keyboard shortcut) to talk, release to send. The agent responds with speech automatically.
-
-### Continuous conversation
-
-In continuous mode, the agent listens for your speech, responds, then automatically listens again. You don't need to click the microphone each time — just talk.
-
-Enable in **Settings → Voice → Continuous mode**.
-
-### Interrupting
-
-While the agent is speaking, click the **stop** button or press `Esc` to interrupt. The agent stops speaking and the partial audio is discarded. You can then speak a new message.
+    To interrupt while the agent is speaking, click **Stop** or press `Esc`.
+  </Tab>
+</Tabs>
 
 ---
 
 ## Voice on messaging platforms
 
-On Telegram and Discord, voice messages you send are transcribed and processed. The agent's response is sent as text (or as a voice message if TTS is enabled for that platform).
-
-Send a voice message to your Headmaster bot on Telegram → the agent transcribes it, processes it, and responds. If TTS is enabled, the response comes back as a voice message.
+On Telegram and Discord, voice messages you send are transcribed and processed as text. If TTS is enabled for that platform, the response comes back as a voice message.
 
 ---
 
-## Voice settings
+## Microphone button states
+
+| State | Meaning |
+|---|---|
+| **Gray mic** | Voice mode is off. Click to start recording. |
+| **Red mic** | Recording in progress. Click to stop and send. |
+| **Blue mic** | Processing — transcribing or generating speech. |
+| **Green mic** | Speaking — the agent is playing the response. |
+
+---
+
+## Voice settings reference
 
 | Setting | What it controls |
 |---|---|
 | TTS provider | Which service generates speech |
 | TTS voice | Which voice to use |
-| TTS speed | How fast the agent speaks (0.5x to 2x) |
+| TTS speed | How fast the agent speaks (0.5× to 2×) |
 | STT backend | Which service transcribes your speech |
 | Auto-listen | Start listening automatically after the agent responds |
 | Push to talk | Hold to talk, release to send |
@@ -93,21 +124,24 @@ Send a voice message to your Headmaster bot on Telegram → the agent transcribe
 
 ---
 
-## Speech input button
+## Tips
 
-The microphone button in the chat composer shows the current voice state:
+<Tip>
+  Use push to talk if you're in a noisy environment — it prevents the agent from picking up background conversation as input.
+</Tip>
 
-- **Gray mic** — voice mode is off. Click to start recording.
-- **Red mic** — recording in progress. Click to stop and send.
-- **Blue mic** — processing. The agent is transcribing or generating speech.
-- **Green mic** — speaking. The agent is speaking the response.
+- 🎙️ **Speak clearly** — the STT model works best with moderate-paced, clear speech.
+- 🤫 **Use a quiet environment** — background noise reduces transcription accuracy.
+- 🔊 **Try different voices** — some TTS voices sound more natural for your use case.
+- ⚡ **Adjust speed** — if the agent speaks too fast or slow, tweak the TTS speed setting.
 
 ---
 
-## Tips for better voice interaction
-
-- **Speak clearly** — the STT model works best with clear, moderate-paced speech.
-- **Use a quiet environment** — background noise reduces transcription accuracy.
-- **Try different voices** — some TTS voices sound more natural for your use case. Try them all.
-- **Use push to talk** — prevents the agent from picking up background conversation as input.
-- **Adjust speed** — if the agent speaks too fast or slow, adjust the TTS speed setting.
+<CardGroup cols={2}>
+  <Card title="Channels" icon="message" href="/channels">
+    Voice messages on Telegram and other messaging platforms.
+  </Card>
+  <Card title="Modes" icon="sliders" href="/modes">
+    Continuous voice works best in Hands-Off or Autopilot mode.
+  </Card>
+</CardGroup>

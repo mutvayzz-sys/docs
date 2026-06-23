@@ -1,120 +1,11 @@
 ---
 title: "Browser — web automation"
-description: "The agent picks the right one based on your request. If you need visual output or form interaction, it uses the Browser."
+description: "A built-in browser the agent can control — navigate pages, fill forms, take screenshots, and download files, all visible in a side panel."
 ---
 
 # Browser — web automation
 
 The Browser panel lets the agent browse the web inside the desktop app. It opens pages, reads content, fills forms, takes screenshots, and interacts with elements — all visible to you in a side panel.
-
----
-
-## What it is
-
-The Browser is a built-in web browser that the agent can control. It's not a separate window — it opens as a panel next to the chat, so you can watch the agent browse in real time.
-
-The browser is powered by a headless Chromium instance that runs inside the runtime. It supports:
-
-- Navigation (open URLs, click links, go back/forward)
-- Page reading (extract text, find elements, scrape content)
-- Form filling (type into inputs, select options, click buttons)
-- Screenshots (capture the full page or a specific element)
-- File downloads (save files from the web to your project folder)
-- Tab management (open multiple tabs, switch between them)
-
----
-
-## Opening the Browser
-
-Two approaches:
-
-1. **From the sidebar:** Click the Browser icon. A panel opens next to the chat with a URL bar.
-2. **From chat:** Ask the agent to browse — "open github.com and find the latest release notes for Headmaster." The agent opens the URL in the Browser panel and starts working.
-
----
-
-## What the agent can do
-
-### Read a page
-
-```
-Read the page at https://example.com and summarize the key points.
-```
-
-The agent opens the URL, waits for the page to load, extracts the text content, and summarizes it in the chat.
-
-### Fill a form
-
-```
-Go to https://example.com/contact and fill in the contact form with my name and email from my profile. Don't submit — let me review first.
-```
-
-The agent navigates to the page, fills in the fields, and stops. You review the filled form in the Browser panel and tell the agent to submit or make changes.
-
-### Take a screenshot
-
-```
-Take a screenshot of the dashboard at https://app.example.com.
-```
-
-The agent opens the URL, waits for the page to load, captures a screenshot, and saves it to your project folder. The screenshot also appears in the chat.
-
-### Search the web
-
-```
-Search for "best Python testing frameworks 2026" and list the top 5 results with links.
-```
-
-The agent opens a search engine, runs the query, reads the results page, and extracts the top results.
-
-### Download a file
-
-```
-Download the PDF at https://example.com/report.pdf and save it to my project folder.
-```
-
-The agent opens the URL, downloads the file, and saves it to the project folder. The file appears in the File Manager.
-
----
-
-## Browser panel controls
-
-The Browser panel has:
-
-- **URL bar** — type a URL and press Enter to navigate. The agent sees where you navigated.
-- **Back / Forward** — standard browser navigation.
-- **Refresh** — reload the current page.
-- **Tabs** — open and switch between multiple tabs.
-- **Screenshot** — capture the current page.
-- **DevTools** — open the browser developer tools (for debugging).
-
-You can interact with the browser directly — click links, scroll, fill forms — while the agent is working. The agent sees your interactions and incorporates them.
-
----
-
-## Browser and approvals
-
-In Work Along mode, the agent asks for approval before:
-
-- Navigating to a new URL.
-- Submitting a form.
-- Downloading a file.
-- Clicking a button that triggers an action.
-
-In Run It Yourself and Hands-Off mode, the agent browses without per-action approval.
-
----
-
-## Anti-detection
-
-The browser uses anti-detection measures to avoid being blocked by websites that detect automated browsers:
-
-- Realistic user agent strings.
-- Realistic viewport sizes.
-- Human-like interaction delays.
-- Canvas and WebGL fingerprint randomization.
-
-This helps the agent access sites that would otherwise block a headless browser.
 
 ---
 
@@ -125,6 +16,106 @@ Headmaster has two web-related capabilities:
 | Feature | What it does | When to use |
 |---|---|---|
 | **Web search tool** | Runs a search query and returns text results. Fast, no visual. | "Search for X and summarize" |
-| **Browser panel** | Opens a real browser, navigates pages, fills forms, screenshots. Visual, interactive. | "Open this URL", "Fill this form", "Take a screenshot" |
+| **Browser panel** | Opens a real browser, navigates pages, fills forms, takes screenshots. Visual, interactive. | "Open this URL", "Fill this form", "Take a screenshot" |
 
 The agent picks the right one based on your request. If you need visual output or form interaction, it uses the Browser. If you just need information, it uses the web search tool.
+
+---
+
+## Opening the Browser
+
+- **From the sidebar** — click the Browser icon. A panel opens next to the chat with a URL bar.
+- **From chat** — ask the agent to browse: "open github.com and find the latest release notes." The agent opens the URL and starts working.
+
+---
+
+## What the agent can do
+
+<AccordionGroup>
+  <Accordion title="Read a page">
+    ```
+    Read the page at https://example.com and summarize the key points.
+    ```
+    The agent opens the URL, waits for the page to load, extracts the text content, and summarizes it in the chat.
+  </Accordion>
+
+  <Accordion title="Fill a form">
+    ```
+    Go to https://example.com/contact and fill in the contact form with my
+    name and email from my profile. Don't submit — let me review first.
+    ```
+    The agent navigates to the page, fills in the fields, and stops. You review the filled form in the Browser panel and tell the agent to submit or make changes.
+  </Accordion>
+
+  <Accordion title="Take a screenshot">
+    ```
+    Take a screenshot of the dashboard at https://app.example.com.
+    ```
+    The agent opens the URL, waits for the page to load, captures a screenshot, and saves it to your project folder. The screenshot also appears in the chat.
+  </Accordion>
+
+  <Accordion title="Search the web">
+    ```
+    Search for "best Python testing frameworks 2026" and list the top 5
+    results with links.
+    ```
+    The agent opens a search engine, runs the query, reads the results page, and extracts the top results.
+  </Accordion>
+
+  <Accordion title="Download a file">
+    ```
+    Download the PDF at https://example.com/report.pdf and save it to
+    my project folder.
+    ```
+    The agent downloads the file and saves it to the project folder. The file appears in the File Manager.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Browser panel controls
+
+| Control | What it does |
+|---|---|
+| **URL bar** | Type a URL and press Enter to navigate |
+| **Back / Forward** | Standard browser navigation |
+| **Refresh** | Reload the current page |
+| **Tabs** | Open and switch between multiple tabs |
+| **Screenshot** | Capture the current page |
+| **DevTools** | Open browser developer tools |
+
+You can interact with the browser directly while the agent is working — the agent sees your interactions and incorporates them.
+
+---
+
+## Browser and approvals
+
+In **Work Along** mode, the agent asks before:
+- Navigating to a new URL
+- Submitting a form
+- Downloading a file
+- Clicking a button that triggers an action
+
+In **Run It Yourself** and **Hands-Off** modes, the agent browses without per-action approval.
+
+---
+
+## Anti-detection
+
+The browser uses anti-detection measures to avoid being blocked by sites that detect automated browsers:
+
+- Realistic user agent strings
+- Realistic viewport sizes
+- Human-like interaction delays
+- Canvas and WebGL fingerprint randomization
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Approvals" icon="check" href="/approvals-human-in-the-loop">
+    Control which browser actions need your approval.
+  </Card>
+  <Card title="File management" icon="folder" href="/file-management">
+    Files downloaded by the browser appear in the File Manager.
+  </Card>
+</CardGroup>
