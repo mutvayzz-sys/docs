@@ -1,0 +1,142 @@
+---
+title: "Preview panel"
+description: "PDFs are read-only in the preview panel."
+---
+
+# Preview panel
+
+The Preview panel is Headmaster's multi-format file viewer. When the agent writes a file or you click a file in the File Manager, the preview panel opens next to the chat showing the file's contents rendered in the appropriate format.
+
+---
+
+## File types the preview handles
+
+| Format | Extension(s) | Preview type | Editable? |
+|---|---|---|---|
+| Markdown | `.md` | Rendered markdown | Yes |
+| Code | `.py`, `.js`, `.ts`, `.tsx`, `.jsx`, `.go`, `.rs`, `.java`, `.c`, `.cpp`, `.rb`, `.php`, `.sh`, `.yaml`, `.json`, etc. | Syntax-highlighted source with line numbers | Yes |
+| HTML | `.html`, `.htm` | Rendered web page | Yes |
+| PDF | `.pdf` | Page-by-page rendered PDF | No |
+| PowerPoint | `.pptx` | Slide-by-slide preview | No |
+| Excel | `.xlsx`, `.xlsm`, `.csv` | Spreadsheet with cells and formulas | No |
+| Word | `.docx` | Document preview with formatting | No |
+| Image | `.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`, `.webp`, `.bmp` | The image with metadata | No |
+| Diff | — | Side-by-side or inline diff view | No |
+| URL | — | Rendered web page (inline browser) | No |
+
+---
+
+## Panel layout
+
+The Preview panel is a tabbed interface:
+
+- **Multiple tabs** — open multiple files at once and switch between them. Each tab shows the file name and a close button.
+- **Split view** — drag a tab to split the panel into two side-by-side views. Useful for comparing two files.
+- **Pop out** — click the pop-out button to open the preview in a separate window. Useful for putting a preview on a second monitor.
+
+The panel can be:
+
+- **Docked right** (default) — preview on the right, chat on the left.
+- **Docked bottom** — preview on the bottom, chat on top.
+- **Hidden** — click the toggle to hide the panel and give the chat full width.
+
+---
+
+## Automatic previews
+
+The preview panel opens automatically when:
+
+- **The agent writes a new file** — the preview pops up showing the result.
+- **The agent creates a new Office document** — the preview shows the document.
+- **The agent edits an existing file** — the preview shows the diff.
+
+This is the default behavior. You can disable auto-open in **Settings → My Headmaster → Look → Auto-open previews**.
+
+---
+
+## Editing in the preview
+
+For Markdown, code, and HTML, the preview panel is also an editor:
+
+### Markdown editor
+
+- **Edit tab** — write markdown in a text editor with syntax highlighting.
+- **Preview tab** — see the rendered markdown in real time.
+- Switch between tabs to edit and preview.
+- Save with `Cmd/Ctrl + S` — writes the file to disk.
+
+### Code editor
+
+- Full Monaco-based code editor (the same engine that powers VS Code).
+- Syntax highlighting for 50+ languages.
+- Line numbers, code folding, multi-cursor, find and replace.
+- Save with `Cmd/Ctrl + S`.
+
+### HTML editor
+
+- **Edit tab** — write HTML/CSS/JS in a code editor.
+- **Preview tab** — see the rendered web page in real time.
+- Save with `Cmd/Ctrl + S`.
+
+---
+
+## Diff viewer
+
+When the agent edits an existing file, the preview panel shows a diff:
+
+- **Side-by-side** — original on the left, modified on the right. Added lines in green, removed lines in red.
+- **Inline** — changes shown inline in a single view. Added lines prefixed with `+`, removed with `-`.
+
+Toggle between side-by-side and inline with the toolbar button.
+
+The diff viewer supports:
+
+- Syntax highlighting in both panes.
+- Word-level diffs (not just line-level).
+- Minimap for navigating large diffs.
+
+---
+
+## Preview history
+
+The Preview panel keeps a history of recently viewed files. Click the history dropdown in the toolbar to see the last 20 files you've previewed. Click any entry to re-open it.
+
+---
+
+## Context menu
+
+Right-click in the preview panel for context menu options:
+
+- **Copy** — copy the selected text or content.
+- **Save** — save changes (for editable formats).
+- **Save as** — save a copy with a new name.
+- **Reveal in folder** — open the file's location in your OS file manager.
+- **Close tab** — close this preview tab.
+- **Close all tabs** — close all open preview tabs.
+- **Open externally** — open the file in its default OS application (e.g., open a `.pptx` in PowerPoint).
+
+---
+
+## Office document preview
+
+For Office documents (`.pptx`, `.xlsx`, `.docx`), the preview panel shows a read-only rendered view:
+
+- **PowerPoint** — slide navigator on the left, current slide on the right. Click a slide to jump to it.
+- **Excel** — sheet tabs at the bottom, cell grid in the main area. Formulas are shown as values (calculated).
+- **Word** — rendered document with headings, paragraphs, tables, and images.
+
+Office previews are read-only — to edit, click **Open externally** to open in PowerPoint, Excel, or Word.
+
+---
+
+## PDF preview
+
+The PDF viewer renders pages one at a time with:
+
+- Page navigator (jump to any page).
+- Zoom in / out.
+- Fit to width / fit to page.
+- Text selection (copy text from the PDF).
+- Search within the PDF.
+
+PDFs are read-only in the preview panel.

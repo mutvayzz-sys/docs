@@ -1,0 +1,77 @@
+---
+title: "File management"
+description: "---"
+---
+
+# File management
+
+Headmaster's agent has full file system access within your project folder. The file management features help you organize, preview, and manage the files the agent creates.
+
+### File Manager
+
+The File Manager is a panel that shows the files in your current project folder. Open it from the sidebar or with a keyboard shortcut.
+
+Features:
+
+- **Tree view** — navigate the folder hierarchy.
+- **Search** — filter files by name.
+- **Sort** — by name, date, size, or type.
+- **Batch rename** — select multiple files and rename them with a pattern.
+- **Auto-organize** — the agent can sort files into subfolders based on type, date, or content.
+- **Smart classification** — the agent tags files based on their content.
+
+### Auto-organize
+
+Click **Sort my files** in the File Manager. The agent reads the files in the folder, classifies them by type and content, and moves them into subfolders:
+
+```
+/my-project
+├── /code          ← .py, .js, .ts files
+├── /documents     ← .md, .docx, .pdf files
+├── /images        ← .png, .jpg, .svg files
+├── /data          ← .csv, .json, .xlsx files
+└── /archives      ← .zip, .tar.gz files
+```
+
+You can customize the classification rules or undo the sort if you don't like the result.
+
+### Batch rename
+
+Select multiple files, click **Rename a batch**, and enter a pattern. Patterns support:
+
+- `{n}` — sequential number (1, 2, 3...)
+- `{date}` — current date
+- `{type}` — file type
+- `{name}` — original name
+
+Example: `report_{n}_{date}` produces `report_1_2026-06-23.txt`, `report_2_2026-06-23.txt`, etc.
+
+### Preview panel
+
+When the agent writes a file or you click a file in the File Manager, the preview panel opens:
+
+| Format     | Preview                                                   |
+| ---------- | --------------------------------------------------------- |
+| Markdown   | Rendered markdown with live editing.                      |
+| Code       | Syntax-highlighted source with line numbers. Editable.   |
+| HTML       | Rendered web page. Editable.                              |
+| PDF        | Page-by-page rendered PDF. Read-only.                     |
+| Office     | Document preview (decks, spreadsheets, reports). Read-only.|
+| Image      | The image with metadata (dimensions, file size, format). |
+| Diff       | Side-by-side or inline diff view.                         |
+
+The preview panel is a tabbed interface — you can open multiple files at once and switch between them. Previews are automatically opened when the agent writes a new file or creates a new Office document.
+
+### File operations the agent can do
+
+- **Read** — the agent reads file contents into its context.
+- **Write** — the agent creates or overwrites files.
+- **Edit** — the agent makes targeted edits to specific lines or sections.
+- **Delete** — the agent deletes files (with approval in Work Along mode).
+- **Move** — the agent moves or renames files.
+- **Search** — the agent searches file contents with regex or plain text.
+- **Merge** — the agent merges multiple files into one.
+
+All file operations are logged in the conversation transcript for audit.
+
+---

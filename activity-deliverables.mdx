@@ -1,0 +1,83 @@
+---
+title: "Activity & Deliverables"
+description: "- **Find what the agent made:** Instead of hunting through your project folder, see every file the agent created in one "
+---
+
+# Activity & Deliverables
+
+The Activity page and Deliverables page track what the agent has done and what it has produced.
+
+---
+
+## Activity
+
+The Activity page is a timeline of everything the agent has done across all conversations. It shows:
+
+- **Tool calls** — web searches, file reads/writes, code execution, MCP calls, image generation.
+- **Approvals** — what was approved and denied, by whom, when.
+- **File changes** — files created, edited, or deleted.
+- **Session events** — conversations started, ended, interrupted, resumed.
+- **Scheduled task runs** — when a cron job fired and what it produced.
+- **Errors** — runtime errors, failed tool calls, provider failures.
+
+### Filtering
+
+Filter the activity feed by:
+
+- **Date range** — today, last 7 days, last 30 days, custom.
+- **Type** — tool calls, file changes, approvals, errors, scheduled runs.
+- **Conversation** — show only activity from a specific conversation.
+- **Specialist** — show only activity from a specific specialist.
+
+### Export
+
+Export the activity log as:
+
+- **JSON** — for programmatic analysis.
+- **CSV** — for spreadsheet analysis.
+- **Markdown** — for human-readable reports.
+
+The export includes all filtered entries with timestamps, types, and details.
+
+### Use cases
+
+- **Audit trail:** Review what the agent did during a work session, especially before a deployment.
+- **Cost tracking:** See how many tool calls and model requests were made.
+- **Debugging:** Find the exact step where a workflow went wrong.
+- **Compliance:** Export the log for security reviews.
+
+---
+
+## Deliverables
+
+The Deliverables page lists every file the agent has created or modified. It shows:
+
+- **File path** — where the file is on disk.
+- **Type** — code, document, spreadsheet, deck, image, PDF, etc.
+- **Created by** — which specialist created it.
+- **Conversation** — link to the conversation where it was created.
+- **Timestamp** — when it was created or last modified.
+- **Size** — file size.
+- **Preview** — click to open in the preview panel.
+
+### Filtering
+
+Filter deliverables by:
+
+- **Type** — show only code files, only documents, only images, etc.
+- **Date** — files created today, this week, this month.
+- **Specialist** — files created by a specific specialist.
+- **Conversation** — files from a specific conversation.
+
+### Actions
+
+- **Open** — open the file in the preview panel.
+- **Reveal in folder** — open the file's location in your OS file manager.
+- **Delete** — remove the file (with confirmation).
+- **Export list** — export the deliverables list as CSV or Markdown.
+
+### Use cases
+
+- **Find what the agent made:** Instead of hunting through your project folder, see every file the agent created in one list.
+- **Review before sharing:** Check all deliverables from a work session before sending them to a client.
+- **Clean up:** Delete files you don't need without leaving the app.

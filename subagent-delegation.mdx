@@ -1,0 +1,130 @@
+---
+title: "Subagent delegation"
+description: "- Subagents run with the same terminal backend as the parent. If the parent uses Docker, subagents run in the same Docke"
+---
+
+# Subagent delegation
+
+Headmaster can spawn isolated subagents to work on tasks in parallel. Each subagent gets its own conversation, terminal session, and toolset. Only the final summary is returned — intermediate tool results never pollute your main conversation.
+
+---
+
+## Under the hood
+
+When you give the agent a complex task, it can break it into subtasks and delegate each one to a subagent:
+
+1. The main agent (orchestrator) reads your request.
+2. It breaks the task into independent subtasks.
+3. For each subtask, it spawns a subagent with a specific goal, context, and toolset.
+4. Each subagent works in isolation — its own conversation, terminal, and tools.
+5. When a subagent finishes, its final summary is returned to the orchestrator.
+6. The orchestrator synthesizes all subagent results into a final answer for you.
+
+The subagents run in the background. You and the orchestrator keep working while they run. When each subagent finishes, its result re-enters the orchestrator's conversation as a new message.
+
+---
+
+## When to use delegation
+
+The agent decides when to delegate based on the task. You can also explicitly request it:
+
+```
+Research the top 3 competing products to ours. For each one, find their pricing, features, and recent reviews. Do all three in parallel.
+```
+
+The agent spawns 3 subagents — one per competitor — and each does its research independently. The orchestrator collects the 3 summaries and synthesizes a comparison.
+
+### Good delegation candidates
+
+- **Independent research tasks** — researching multiple topics in parallel.
+- **Parallel code reviews** — reviewing different parts of a codebase simultaneously.
+- **Batch document generation** — creating multiple documents at once.
+- **Multi-source data collection** — pulling data from multiple integrations at once.
+
+### Bad delegation candidates
+
+- **Sequential tasks** — each step depends on the previous one. Don't delegate; do it in one conversation.
+- **Simple tasks** — a single tool call. Delegation overhead is higher than just doing it.
+- **Tasks needing user interaction** — subagents can't ask you questions. They work autonomously and report back.
+
+---
+
+## Subagent capabilities
+
+Each subagent:
+
+- Gets its own **conversation context** — it doesn't see your main conversation history.
+- Gets its own **terminal session** — separate working directory and state.
+- Gets a **specified toolset** — you can restrict what tools the subagent can use.
+- Inherits the **parent's model** (unless overridden).
+- **Cannot delegate further** — subagents are leaf workers. They can't spawn their own subagents (by default).
+- **Cannot ask the user questions** — they work autonomously and report back.
+- Returns only a **final summary** — intermediate tool results stay in the subagent's context.
+
+---
+
+## Orchestrator role
+
+When you enable orchestrator subagents, they can spawn their own workers:
+
+1. You give the orchestrator a task.
+2. The orchestrator breaks it into subtasks.
+3. The orchestrator delegates each subtask to a worker subagent.
+4. Workers do the work and report back.
+5. The orchestrator synthesizes and reports to you.
+
+This is a two-level hierarchy: you → orchestrator → workers. Deeper nesting can be enabled in advanced settings.
+
+---
+
+## Delegation in the Council
+
+The Council uses delegation internally — the Headmaster (orchestrator) delegates to specialists, who work in parallel and report back. See [The Council](the-council.md) for details.
+
+The difference: the Council is a structured multi-perspective deliberation where each specialist has a different role. Delegation is a general-purpose parallelization mechanism where each subagent does an independent piece of work.
+
+---
+
+## Monitoring subagents
+
+While subagents are running:
+
+- You see a **delegation indicator** in the chat showing how many subagents are active.
+- Click the indicator to see each subagent's status (running, completed, failed).
+- You can expand a completed subagent's card to see its final summary.
+- You can continue chatting with the orchestrator while subagents run.
+
+---
+
+## Delegation vs. multiple conversations
+
+| Feature | Delegation | Multiple conversations |
+|---|---|---|
+| Who decides | The agent breaks the task | You open separate chats |
+| Context sharing | Orchestrator sees summaries | No sharing — fully isolated |
+| Parallelism | Subagents run in background | You switch between chats manually |
+| Result synthesis | Orchestrator combines results | You read each chat and synthesize yourself |
+| Best for | Parallel subtasks of one task | Independent unrelated tasks |
+
+---
+
+## Configuration
+
+Configure delegation in **Settings → Headmaster's Library → Advanced → Delegation**:
+
+| Setting | Default | What it controls |
+|---|---|---|
+| Enable delegation | On | Whether the agent can spawn subagents |
+| Max concurrent subagents | 5 | How many subagents can run at once |
+| Max spawn depth | 1 | How many levels of nesting (1 = no nesting, 2 = orchestrator can spawn workers) |
+| Subagent model | Inherit | Which model subagents use (inherit from parent, or pin to a specific model) |
+| Subagent toolsets | Inherit | Which tools subagents can use (inherit from parent, or restrict) |
+
+---
+
+## Safety
+
+- Subagents run with the same terminal backend as the parent. If the parent uses Docker, subagents run in the same Docker container.
+- Subagents inherit the parent's mode (Work Along, Run It Yourself, etc.) but can't ask for approvals — they run autonomously.
+- All subagent actions are logged in the orchestrator's conversation transcript.
+- You can kill all running subagents with the stop button.

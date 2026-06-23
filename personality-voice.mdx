@@ -1,0 +1,137 @@
+---
+title: "Personality & voice definition"
+description: "These files are injected into the system prompt alongside the personality file and memory, giving the agent full context"
+---
+
+# Personality & voice definition
+
+Headmaster lets you define the agent's personality, tone, and voice through a personality file — a Markdown document that sits at the top of the system prompt and shapes every response.
+
+---
+
+## What it is
+
+The personality file (called `SOUL.md` in the runtime) is a Markdown document that defines:
+
+- **Basic identity** — who the agent is, what it does.
+- **How to talk** — tone, style, vocabulary, sentence structure.
+- **Rules** — what to never do, what to always do.
+- **Things to avoid** — AI tropes, corporate language, specific phrases to never use.
+- **The point** — the core philosophy of how the agent should behave.
+
+The personality file is injected as slot #1 in the system prompt — it's the first thing the agent sees, before memory, before skills, before your message. It shapes every response.
+
+---
+
+## Where it lives
+
+The personality file is stored in the runtime's data directory. You normally don't edit it directly — the specialist's rules and your profile settings shape the personality. But you can customize it:
+
+1. Open **Settings → My Headmaster → Profile → Personality**.
+2. Edit the personality Markdown.
+3. Save.
+
+The change applies to the next conversation. Existing conversations keep their original personality.
+
+---
+
+## What to put in it
+
+### Basic identity
+
+```markdown
+You're an AI agent. One user. Tools, cron, terminal. Not a chatbot. Not a character. Just a tool that talks like a real person.
+```
+
+### How to talk
+
+```markdown
+Write like you're talking to your user, not drafting a document. Short, loose, natural. Contractions always. Start sentences casually. No AI tropes.
+```
+
+### Rules
+
+```markdown
+Don't guess. If you don't know, say you don't know. Check memory first. Admit mistakes immediately. Think before you act.
+```
+
+### Things to never do
+
+```markdown
+No "I'd be happy to" — no "Let me walk you through" — no "Great question" — no "I understand your concern" — no "To clarify" — no "At the end of the day."
+```
+
+### The point
+
+```markdown
+You sound best when you're not thinking about how you sound. Stay in the lane, but drive yourself.
+```
+
+---
+
+## Personality vs. specialist rules
+
+| Layer | What it controls | Scope |
+|---|---|---|
+| **Personality file** | Global tone, style, identity | All conversations, all specialists |
+| **Specialist rules** | Role-specific behavior, domain context, workflows | One specialist |
+| **Memory** | Facts about you, your projects, your preferences | All conversations |
+| **Skills** | Procedural knowledge for specific tasks | Per-specialist, per-conversation |
+
+The personality file is the broadest layer — it applies to everything. Specialist rules narrow it for a specific role. Memory adds personal context. Skills add task-specific knowledge.
+
+---
+
+## Multiple personalities
+
+If you have multiple profiles (see [Profiles](profiles.md)), each profile can have its own personality file. This lets you have:
+
+- A **work profile** with a professional, concise personality.
+- A **personal profile** with a casual, friendly personality.
+- A **research profile** with an academic, thorough personality.
+
+Switch profiles to switch personalities.
+
+---
+
+## Context files
+
+In addition to the personality file, Headmaster supports project-level context files:
+
+### AGENTS.md
+
+If your project folder has an `AGENTS.md` file, the agent reads it at the start of every conversation. Use it for:
+
+- Project structure and conventions.
+- Build commands and test commands.
+- Things to avoid in this codebase.
+- Cross-references to other docs.
+
+```markdown
+# AGENTS.md — My Project
+
+## Build
+Run tests with `pytest -n 4`.
+Build with `bun run build`.
+
+## Conventions
+- Use tabs, not spaces.
+- 120-char line width.
+- Google-style docstrings.
+
+## Things to avoid
+- Don't modify the migrations folder — use Alembic.
+- Don't commit .env files.
+```
+
+### CLAUDE.md
+
+If your project folder has a `CLAUDE.md` file, the agent also reads it. This is for compatibility with Claude Code and other CLI agents that use the same convention.
+
+### Other context files
+
+The agent also recognizes:
+- `.cursorrules` — Cursor AI rules.
+- Any file specified in the runtime config under `context_files`.
+
+These files are injected into the system prompt alongside the personality file and memory, giving the agent full context about your project before it starts working.

@@ -1,0 +1,166 @@
+---
+title: "Image generation"
+description: "- [OpenRouter](https://openrouter.ai/) — [Models](https://openrouter.ai/models)
+- [Google AI Studio](https://aistudio.go"
+---
+
+# Image generation
+
+Headmaster can generate and edit images inside the chat. The agent writes a prompt, calls the image generation tool, and the result appears as an image in the chat and in the preview panel.
+
+---
+
+## Under the hood
+
+Headmaster supports image generation through multiple platforms using two API shapes, routing each provider to the correct adapter automatically.
+
+| Shape | Used by | Endpoint |
+|---|---|---|
+| **Chat completion (multimodal)** | Gemini, Gemini (Vertex AI), OpenRouter, AntigravityTools | OpenAI-compatible `/v1/chat/completions` returning image parts |
+| **Dedicated images API** | OpenAI, Stability AI, Alibaba DashScope, Together AI | `/v1/images/*` returning `b64_json` |
+
+---
+
+## Model allowlist
+
+Only models matching Headmaster's **allowlist** appear in the image model picker — this prevents selecting text-only models. The allowlist matches both platform/base URL and model name patterns: `image`, `dall-e`, `flux`, `stable`, `sd<n>`, `wanx`, `imagen`, `banana`, `imagine`, etc.
+
+If your platform has no allowlisted image model yet, Headmaster auto-injects a sensible default so the feature works out of the box.
+
+---
+
+## Enabling image generation
+
+1. Open **Settings → Headmaster's Library → Connections** and make sure you have a provider that supports image generation.
+2. Open **Settings → Headmaster's Library → Advanced → Tools**.
+3. Turn on **Image generation**.
+4. Pick an image model from the dropdown.
+
+---
+
+## Recommended path: Gemini (fastest, cheapest, easiest)
+
+### 1. Get a Gemini API key
+
+1. Visit [Google AI Studio](https://aistudio.google.com/).
+2. Sign in with your Google account.
+3. Create a new API key.
+
+### 2. Add Gemini to Headmaster
+
+1. **Settings → Connections → Add provider → Gemini**.
+2. Paste the API key, save.
+
+### 3. Enable the image tool
+
+1. **Settings → Advanced → Tools → Image generation**.
+2. Toggle on.
+3. Pick `gemini-2.5-flash-image-preview` from the dropdown (auto-injected if no other image model is configured).
+4. Save.
+
+---
+
+## OpenRouter setup
+
+1. Get a key at [openrouter.ai/keys](https://openrouter.ai/keys).
+2. **Settings → Connections → Add provider → OpenRouter** → paste key → save.
+3. **Settings → Advanced → Tools → Image generation** → pick any allowlisted OpenRouter model.
+4. Default fallback: `google/gemini-2.5-flash-image-preview` (free).
+
+Most non-Gemini OpenRouter image models are paid — check pricing before committing.
+
+---
+
+## Image-capable providers
+
+| Platform | API shape | Recognized model patterns | Default model | Notes |
+|---|---|---|---|---|
+| **Gemini** | Chat | `*-image-*`, `gemini-*image*` | `gemini-2.5-flash-image-preview` | Free tier available |
+| **Gemini (Vertex AI)** | Chat | same as Gemini | — | Enterprise variant |
+| **OpenRouter** | Chat | `image`, `dall-e`, `flux`, `stable`, etc. | `google/gemini-2.5-flash-image-preview` | 300+ models, mixed pricing |
+| **AntigravityTools** | Chat | image-capable models | `gemini-3-pro-image-1x1` | |
+| **OpenAI** | Images API | `gpt-image-*`, `dall-e-*` | — | Requires images-API access |
+| **Stability AI** | Images API | `stable-*`, `sd<n>`, `ultra`, `core` | — | Requires Stability key |
+| **Alibaba DashScope** | Images API | `wanx-*`, `image-*` | — | Requires DashScope key |
+| **Together AI** | Images API | `flux-*` | — | Requires Together key |
+
+Setup for all: add the platform under **Settings → Connections**, then pick the allowlisted model in **Settings → Advanced → Tools → Image generation**.
+
+---
+
+## Generating an image
+
+In chat:
+
+```
+Generate an image: a minimalist logo for a coffee brand called "Dawn". Warm earth tones, geometric, flat design.
+```
+
+The agent writes the prompt, calls the image generation tool, and the image appears in the chat. The image is saved to your project folder.
+
+---
+
+## Image editing
+
+The agent can also edit an existing image:
+
+```
+Edit the image at /images/logo.png: change the background color to dark navy and add a subtle gradient.
+```
+
+The agent reads the image, applies the edit, and shows the result. The original image is preserved; the edited version is saved as a new file.
+
+---
+
+## Verifying the setup
+
+1. Open a conversation with any tool-capable model.
+2. Ask **"what tools do you have?"** — `image-generation` should appear in the tool list.
+3. Test with a prompt:
+
+```
+Generate a 1024×1024 blue neon cyberpunk city nightscape
+```
+
+If the tool doesn't appear: ensure image generation is toggled on, a model is selected and saved, and you start a fresh conversation after saving.
+
+---
+
+## Tips for better images
+
+- **Be specific** — describe the style, color palette, composition, and mood.
+- **Reference art movements** — "Bauhaus," "Art Deco," "minimalist," "brutalist."
+- **Specify the format** — "landscape 16:9," "square," "portrait."
+- **Iterate** — if the first result isn't right, ask for adjustments ("make it warmer, add more contrast, simplify the background").
+
+---
+
+## FAQ
+
+**Best free model?**
+`gemini-2.5-flash-image-preview` — fast, free with a Gemini API key, decent quality.
+
+**Model doesn't show in picker?**
+The model name doesn't match the allowlist pattern (`image`, `flux`, `dall-e`, `stable`, `sd<n>`, `wanx`) or the platform/base URL isn't recognized. Rename the model entry to include a recognized keyword, or use a supported platform.
+
+**Tool list missing `image-generation`?**
+Ensure: (1) image generation is toggled on in Settings, (2) a model is selected and saved, (3) start a fresh conversation after saving.
+
+**API key invalid?**
+Check the key was copied without whitespace, the platform account is active, and billing/quota is set up where required.
+
+**Generation failed mid-request?**
+Usually a network timeout, expired token, or quota exhaustion — check the platform dashboard.
+
+**Switching models?**
+Settings → Advanced → Tools → Image generation → Model dropdown lists all allowlisted models from configured platforms.
+
+---
+
+## Reference links
+
+- [OpenRouter](https://openrouter.ai/) — [Models](https://openrouter.ai/models)
+- [Google AI Studio](https://aistudio.google.com/)
+- [Stability AI](https://platform.stability.ai/)
+- [Alibaba DashScope](https://dashscope.console.aliyun.com/)
+- [Together AI](https://www.together.ai/)

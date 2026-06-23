@@ -1,0 +1,103 @@
+---
+title: "Appearance & themes"
+description: "Useful when you're on a small screen or want to see more of the conversation without scrolling."
+---
+
+# Appearance & themes
+
+**Path:** My Headmaster → Look
+
+The Look tab controls the visual appearance of Headmaster. Theme, font size, accent color, and custom CSS.
+
+---
+
+## Themes
+
+Headmaster ships with several built-in themes:
+
+| Theme | Description |
+|---|---|
+| **Light** | Clean white background, dark text. For daytime use. |
+| **Dark** | Dark background, light text. For nighttime and low-light use. |
+| **Follow System** | Automatically switches between Light and Dark based on your OS setting. |
+| **High Contrast** | Maximum contrast for accessibility. Black and white. |
+
+Pick a theme from the dropdown. The change applies instantly — no restart needed.
+
+### Custom CSS themes
+
+For advanced users, Headmaster supports custom CSS themes:
+
+1. Open **Settings → My Headmaster → Look → Custom theme**.
+2. Click **Create custom theme**.
+3. Write CSS that overrides Headmaster's design tokens.
+4. Save and apply.
+
+The CSS editor has a live preview — you see the changes as you type. The custom theme is stored as a `.css` file in your data directory.
+
+### Design tokens
+
+Headmaster's UI is built on CSS custom properties (design tokens). You can override any of them in a custom theme:
+
+```css
+:root {
+  --bg: #1a1a1a;
+  --text: #f0f0f0;
+  --border: #333;
+  --border-strong: #444;
+  --bg-elevated: #222;
+  --text-muted: #888;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+}
+```
+
+### Importing and sharing themes
+
+Custom themes can be exported as `.css` files and shared. To import a theme:
+
+1. Open **Settings → My Headmaster → Look → Custom theme**.
+2. Click **Import**.
+3. Select a `.css` file.
+4. The theme appears in the theme list.
+
+---
+
+## Font size
+
+Adjust the font size with:
+
+- The **font size slider** in Settings → Look.
+- Keyboard shortcuts: `Cmd/Ctrl + =` to increase, `Cmd/Ctrl + -` to decrease, `Cmd/Ctrl + 0` to reset.
+
+The font size applies to the chat, sidebar, and settings — everywhere in the app. The file preview panel and code editor have their own independent font size controls.
+
+---
+
+## Accent color
+
+The accent color is used for buttons, links, active states, and the primary action color. Pick from the preset colors or enter a custom hex value.
+
+The accent color applies instantly. It does not affect the theme — you can have a dark theme with any accent color.
+
+---
+
+## Language
+
+Headmaster's interface language. Currently supports:
+
+- **English** (default)
+- **Arabic** (reserved for a future release)
+
+The language dropdown in Settings → Look controls the UI language. This does not affect what language the agent responds in — the agent responds in whatever language you write to it in.
+
+---
+
+## Density
+
+Control how compact the UI is:
+
+- **Comfortable** (default) — standard spacing, easy to read.
+- **Compact** — tighter spacing, more content visible at once.
+
+Useful when you're on a small screen or want to see more of the conversation without scrolling.

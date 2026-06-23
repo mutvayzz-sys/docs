@@ -1,0 +1,90 @@
+---
+title: "Approvals & human-in-the-loop"
+description: "---"
+---
+
+# Approvals & human-in-the-loop
+
+Headmaster keeps you in control. The agent asks for your approval before doing things that affect your files, your system, or external services.
+
+### What triggers an approval
+
+In Work Along mode, the agent asks before:
+
+- **Running a tool** — web search, code execution, file read/write, MCP call, image generation.
+- **Accessing a file outside the project folder.**
+- **Making a network request** — external API call, HTTP request, webhook.
+- **Executing code** — running a script, shell command, or code block.
+
+In Run It Yourself mode, the agent runs tools without per-action approval but still asks before **destructive actions**:
+
+- Deleting a file.
+- Overwriting an existing file.
+- Sending an email or message.
+- Pushing to a remote (git push).
+- Running a command with sudo / admin privileges.
+
+In Hands-Off and Autopilot, no approval prompts. All actions are logged.
+
+### The approval prompt
+
+When the agent wants to do something that needs approval, you see a card in the chat:
+
+```
+The agent wants to run: web_search
+Query: "latest Python release notes"
+
+[Approve]  [Deny]  [Approve always for this conversation]
+```
+
+Click **Approve** to let it run. Click **Deny** to stop it. Click **Approve always** to let the agent run this tool type without asking again for the rest of this conversation.
+
+### Clarification requests
+
+Sometimes the agent needs more information before it can proceed. Instead of guessing, it asks you a question:
+
+```
+The agent needs clarification:
+"You mentioned 'the config file' — do you mean config.yaml or config.json?"
+
+[config.yaml]  [config.json]  [Type your answer]
+```
+
+Click one of the suggested options, or type your own answer. The agent incorporates your response and continues.
+
+### Permission requests
+
+When the agent needs elevated permissions (e.g., sudo access to install a package), it sends a permission request:
+
+```
+The agent needs sudo access to run: apt install postgresql-client
+
+[Grant sudo for this command]  [Deny]
+```
+
+The request shows the exact command. You can grant sudo for this specific command only (not blanket sudo access).
+
+### Secret requests
+
+When the agent needs a secret (an API key, a password, a token) that it doesn't have stored, it asks:
+
+```
+The agent needs your Stripe API key to list recent charges.
+
+[Enter key...]  [Skip]
+```
+
+The key you enter is stored in the Connections area (encrypted at rest) and is available to the agent in future conversations. You can revoke it any time.
+
+### Audit trail
+
+Every approval, denial, clarification, and permission grant is logged in the conversation transcript. The transcript shows:
+
+- What the agent requested.
+- What you approved or denied.
+- The timestamp.
+- The parameters of the action.
+
+This audit trail is stored in the session file and can be exported for compliance reviews.
+
+---

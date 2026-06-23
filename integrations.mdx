@@ -1,0 +1,42 @@
+---
+title: "Integrations"
+description: "---"
+---
+
+# Integrations
+
+**Path:** Headmaster's Library → Integrations (PIN-protected)
+
+Integrations are external services the agent can reach during a conversation. Unlike MCP servers (which are tool-level connections), integrations are service-level connections — the agent uses them to read or write data from a specific service.
+
+Examples: a file storage bucket (S3, Google Drive), a calendar (Google Calendar, Outlook), an issue tracker (Jira, Linear), a database (Postgres, BigQuery).
+
+### Adding an integration
+
+1. Click **Add integration**.
+2. Pick the type (Storage, Calendar, Issue Tracker, Database, Custom).
+3. Fill in the credentials (API key, OAuth token, connection string — depends on the type).
+4. Test the connection.
+5. Save.
+
+The integration becomes available to the agent immediately. It appears in the integrations list with a status indicator (Connected / Error).
+
+### Removing an integration
+
+Click **Remove** on an integration card. The agent loses access to that service in its next turn. Existing conversation transcripts that referenced the integration are not edited.
+
+### Credentials
+
+Credentials are stored locally, encrypted at rest. They are not synced to the cloud. If you move to a new machine, you have to add the integrations again.
+
+### When something goes wrong
+
+If the agent reports it can't reach an integration, open the integration's card. The card shows:
+
+- The last error from the service.
+- A **Test connection** button.
+- The timestamp of the last successful connection.
+
+The most common cause is an expired or rotated credential. Update the credential and test again.
+
+---

@@ -1,0 +1,125 @@
+---
+title: "FAQ"
+description: "---"
+---
+
+# FAQ
+
+### General
+
+**What is Headmaster?**
+A desktop application where AI specialists handle real work on your machine. The agent engine is part of the app itself — no terminal tools needed, no complicated configuration. Drop in an API key and you're running.
+
+**Is Headmaster free?**
+Yes. Open source under Apache 2.0.
+
+**What platforms does Headmaster support?**
+macOS, Windows, and Linux.
+
+**Do I need to install anything else?**
+No. The agent engine is built into the app. If you want to use external CLI agents (Claude Code, Codex, etc.), you install those separately — Headmaster auto-detects them.
+
+**How is Headmaster different from a chatbot?**
+A chatbot talks. Headmaster acts. The agent can read and write files, run code, browse the web, generate documents, and automate tasks — all on your machine, with your approval.
+
+### Models
+
+**Which models are supported?**
+Any provider on OpenRouter (300+ models), plus direct connections to Anthropic, OpenAI, Google, DeepSeek, Qwen, Kimi, Mistral, MiniMax, and any OpenAI-compatible local endpoint.
+
+**Can I use local models?**
+Yes. Any OpenAI-compatible local endpoint works (Ollama, LM Studio, vLLM, llama.cpp).
+
+**Can I use multiple providers?**
+Yes. Add as many as you want. Each provider's models appear in the model selector.
+
+**What is multi-key rotation?**
+Paste multiple API keys for a single provider. Headmaster rotates across them automatically, skipping keys that are rate-limited or invalid.
+
+**Can I switch models mid-conversation?**
+Yes. Click the model name at the top of the conversation and pick a new one. The switch applies to the next message.
+
+### Privacy
+
+**Where is my data stored?**
+On your machine. See [Where data lives](#where-data-lives) for the exact paths per platform.
+
+**Does Headmaster send my data to the cloud?**
+Only to the model providers you configure. When the agent talks to a provider, your message and conversation context are sent. No other data leaves your machine.
+
+**Does Headmaster have telemetry?**
+No. No usage analytics, no crash reports. The app only connects to your configured model providers and any MCP servers / integrations you add.
+
+**Can I use Headmaster offline?**
+Yes, with local models. File operations, code execution, and document generation all work offline. Provider-dependent features (web search, cloud models) won't work without internet.
+
+### Runtime
+
+**What is the runtime?**
+The background service that runs your agents. It's a local process Headmaster starts on first launch. It handles model calls, tool execution, and session persistence.
+
+**Can I run the runtime on a different machine?**
+Yes. Use **Settings → Headmaster's Library → Runtime → Connection mode → Remote**. Enter the host and port of the remote runtime.
+
+**Does restarting the runtime lose my data?**
+No. Sessions and memory are stored in the data folder, not in the runtime process. Restarting the runtime is safe.
+
+**Why does the runtime keep crashing?**
+Check the log file for the error before each crash. Most common: missing dependencies (Linux), corrupted config, or port conflicts. See [Troubleshooting](#troubleshooting).
+
+### Skills & The Agency
+
+**What is a skill?**
+A packaged ability an agent can use. Built-in skills cover core operations. You can install more from the Agency (community catalog) or write your own.
+
+**What is the Agency?**
+The open catalog of community-contributed skills. Browse it from the Skills tab. Install with one click.
+
+**Can I write my own skill?**
+Yes. Create a folder in `<data folder>/skills/`, write a `skill.md` file with instructions, add supporting files. Restart Headmaster and the skill appears under "My Skills."
+
+### Channels
+
+**Which messaging platforms are supported?**
+Telegram, WeChat Work, DingTalk, Lark, WeCom, iMessage, and WhatsApp Business.
+
+**Can I use Headmaster from my phone?**
+Yes. Connect a messaging channel (Telegram is the easiest) or use the WebUI (browser access) from your phone.
+
+**Do file attachments work over channels?**
+Yes, on platforms that support them (Telegram, WeChat Work, Lark). See the [channel-specific limitations table](#channel-specific-limitations).
+
+### The Council
+
+**What is the Council?**
+Multi-perspective deliberation mode. The orchestrator dispatches a task to multiple specialists, each works in parallel, and the orchestrator synthesizes a final answer.
+
+**When should I use the Council?**
+When a problem benefits from multiple perspectives — architecture decisions, trade-off analysis, creative work. Don't use it for simple questions.
+
+**Can I create custom teams?**
+Yes. Open Settings → My Headmaster → Teams and create a team with specific specialists.
+
+### The Schedule
+
+**What is The Schedule?**
+Headmaster's automated task system. Define recurring or one-time tasks, and the agent runs them on a schedule.
+
+**Can the agent work while I'm away?**
+Yes. Use Keep-awake to keep the runtime running when the desktop window is closed, and Autopilot mode to run without approvals. Results are delivered to your configured channel.
+
+**What is Catch up?**
+If you miss a scheduled trigger (machine was off), Catch up runs the missed trigger as soon as the runtime is back up.
+
+### Updates
+
+**How do I update Headmaster?**
+The app checks automatically. When an update is available, a banner appears. Click Download, then Restart to install. Your data is preserved.
+
+**Can I roll back to a previous version?**
+Yes. Download the previous version's installer and run it over the current install. Your data is preserved.
+
+**What's the difference between Stable and Prerelease?**
+Stable is the recommended channel. Prerelease gets newer features sooner but may have rough edges. Switch in Settings → About → Include prerelease updates.
+
+---

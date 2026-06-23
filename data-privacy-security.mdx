@@ -1,0 +1,82 @@
+---
+title: "Data, privacy & security"
+description: "---"
+---
+
+# Data, privacy & security
+
+Headmaster is designed to be local-first. Your data lives on your machine.
+
+### What's stored locally
+
+- **Conversation transcripts** — in `<data folder>/sessions/`.
+- **Agent memory** — in `<data folder>/memory/`.
+- **Runtime configuration** — in `<data folder>/config/config.yaml`.
+- **Provider API keys** — encrypted at rest in the Connections area.
+- **Installed skills** — in `<data folder>/skills/`.
+- **Installed extensions** — in `<data folder>/extensions/`.
+- **Log files** — in `<data folder>/logs/`.
+- **File previews cache** — in `<data folder>/cache/`.
+
+### What's sent to providers
+
+When the agent talks to a model provider (Anthropic, OpenAI, Google, etc.), the following is sent:
+
+- Your message text.
+- The conversation history (previous messages in the current session).
+- Any file contents the agent read into context.
+- The system prompt (specialist personality, memory facts, skill instructions).
+
+What is **not** sent:
+
+- Your API keys for other providers (each provider only gets its own key).
+- Your full file system (only files the agent read into context).
+- Your memory store (only facts the agent decided are relevant to the current turn).
+- Other conversation transcripts (only the current session's history).
+
+### What's sent to external services
+
+When the agent calls a tool (MCP server, integration, web search), the parameters of that call are sent to the service. The agent only calls tools you've approved (in Work Along mode) or that are on the allowed list (in Run It Yourself / Hands-Off mode).
+
+### Encryption
+
+- **API keys** — encrypted at rest with envelope encryption.
+- **Memory** — stored as plain JSON in the data folder. Not encrypted at rest (it needs to be readable by the runtime). If you need encryption at rest, use full-disk encryption (FileVault on macOS, BitLocker on Windows, LUKS on Linux).
+- **Transit** — all provider connections use TLS. MCP and integration connections use TLS where the service supports it.
+
+### Clean uninstall
+
+To completely remove Headmaster and all its data:
+
+1. Quit Headmaster.
+2. Delete the application (drag to Trash on macOS, uninstall from Settings on Windows, remove the package on Linux).
+3. Delete the data folder:
+   - **Windows:** `%APPDATA%\Headmaster`
+   - **macOS:** `~/Library/Application Support/Headmaster`
+   - **Linux:** `~/.config/Headmaster`
+4. On Windows, also delete the registry key: `HKEY_CURRENT_USER\Software\Headmaster`.
+
+This removes everything — conversations, memory, settings, logs, skills, extensions. It's permanent.
+
+### Data migration
+
+To move your Headmaster data to a new machine:
+
+1. Quit Headmaster on the old machine.
+2. Copy the entire data folder to the new machine.
+3. Install Headmaster on the new machine.
+4. Place the data folder in the correct location for the new OS.
+5. Launch Headmaster. All your conversations, memory, settings, skills, and extensions are preserved.
+
+### Remote mode privacy
+
+In remote mode, your data lives on the machine running the runtime. The desktop app on your laptop is a thin client — it renders the UI and forwards your input. The runtime machine sees:
+
+- Your messages.
+- The conversation history.
+- The agent's responses.
+- Your provider keys (stored on the runtime machine).
+
+Make sure the runtime machine is one you control. Don't connect to a runtime on a machine you don't trust.
+
+---

@@ -1,0 +1,73 @@
+---
+title: "Runtime settings"
+description: "---"
+---
+
+# Runtime settings
+
+**Path:** Headmaster's Library → Runtime (PIN-protected)
+
+This tab controls the local runtime — the background service that runs your agents.
+
+### Connection mode
+
+Two modes:
+
+- **Local** (default) — the runtime runs on the same machine as the desktop app. No network configuration needed.
+- **Remote** — the runtime runs on a different machine. Enter the host and port.
+
+### Local mode
+
+In local mode, the desktop app starts and manages the runtime. You see:
+
+- **Status** — Connected, Reconnecting, or Disconnected.
+- **Port** — the local port the runtime is listening on.
+- **PID** — the process ID of the runtime.
+- **Uptime** — how long the runtime has been running.
+- **Version** — the runtime version number.
+
+### Remote mode
+
+In remote mode, the desktop app connects to a runtime on another machine. You see:
+
+- **Host** — the hostname or IP of the remote machine.
+- **Port** — the port on the remote machine.
+- **Status** — Connected, Reconnecting, or Disconnected.
+- **Latency** — round-trip time to the remote runtime.
+- **Version** — the remote runtime version number.
+
+To switch from local to remote:
+
+1. Click **Connection mode → Remote**.
+2. Enter the host and port.
+3. Click **Test connection**.
+4. If the test passes, click **Save**.
+5. The desktop app disconnects from the local runtime and connects to the remote one.
+
+### Restart
+
+Click **Restart** to tear down the current runtime process and start a fresh one. This does not lose your data — sessions and memory live in the user data folder, not in the process. Use restart when:
+
+- The runtime is stuck or unresponsive.
+- You changed the config file manually and need to reload it.
+- After installing a new skill or integration that requires a runtime restart.
+
+### Sessions
+
+Click **Sessions** to see the list of active sessions on the runtime. Each session shows:
+
+- Session ID
+- Profile name
+- Model
+- Start time
+- Status (active, idle, stale)
+
+You can delete a stale session from this list. This clears the runtime's in-memory state for that session but does not delete the transcript file.
+
+### Schema-driven settings
+
+The runtime exposes a configuration schema at `/api/config/schema`. The Settings UI reads this schema and renders the appropriate controls — text fields, dropdowns, toggles, sliders — with descriptions, defaults, and validation.
+
+This means when the runtime adds a new configuration option, the Settings UI picks it up automatically. You don't need a desktop app update to see new runtime settings.
+
+---

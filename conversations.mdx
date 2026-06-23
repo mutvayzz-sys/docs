@@ -1,0 +1,218 @@
+---
+title: "Conversations"
+description: "- Edit the title.
+- Set a custom emoji icon.
+- Add tags for organization."
+---
+
+# Conversations
+
+A conversation is the basic unit of work in Headmaster. You type a message, the agent responds, and the exchange is saved as a session you can resume later.
+
+---
+
+## Creating a new conversation
+
+Click **New chat** in the sidebar. A fresh conversation starts with no context from previous chats. Pick a model from the selector at the bottom-left of the composer, type your message, and press Enter.
+
+### Picking an agent and model
+
+When you start a new conversation, you pick:
+
+1. **An agent** — the built-in engine (default), or any detected CLI agent (Claude Code, Codex, Gemini CLI, etc.). Each agent has its own model list.
+2. **A model** — from the agent's available models. Use the selector at the bottom-left of the composer.
+3. **A specialist** (optional) — a pre-configured persona with rules and skills. See [Specialists](specialists.md).
+
+The agent and model you pick are remembered for this conversation. New conversations start with your default agent and model.
+
+---
+
+## Streaming responses
+
+The agent's response streams into the chat window token by token. You see it being written in real time. While the agent is working, you can:
+
+- **Watch** the response as it streams.
+- **Scroll up** to review earlier parts of the conversation while it's still generating.
+- **Interrupt** by clicking the stop button next to the composer. The agent stops generating and the partial response is preserved.
+
+### What you see in a response
+
+A response can contain:
+
+- **Text** — the agent's written answer.
+- **Thinking** — the agent's reasoning process (shown in a collapsible block for models that support it).
+- **Tool calls** — web searches, file reads, code execution, MCP calls. Each shown as an expandable block with the tool name, parameters, and result.
+- **File changes** — files created or modified, shown as diff blocks.
+- **Images** — generated images appear inline.
+- **Plans** — if the agent creates a step-by-step plan, it's shown as a structured plan card.
+- **Skill suggestions** — the agent may suggest enabling a skill for this conversation.
+
+---
+
+## Follow-up messages
+
+After the agent responds, type a follow-up in the same composer and press Enter. The agent has the full conversation context — your original message, its response, your follow-up — and responds accordingly.
+
+### Selection reply
+
+Select text in the agent's response and a reply button appears. Click it to quote the selected text in your follow-up — useful for asking about a specific part of the response.
+
+---
+
+## Editing and undo
+
+- **Edit your last message** — click the edit button on your most recent message. The text goes back into the composer. Edit it, re-send, and the conversation continues from the edited point. The agent's previous response to the original message is preserved in history but the active thread follows the edit.
+- **Undo** — click the undo button to back up one turn. Your message and the agent's response are removed. You can undo multiple turns if needed.
+
+---
+
+## Interrupting
+
+If the agent is doing something you don't want (running the wrong tool, going in a bad direction), click the **stop** button. The agent stops what it's doing and the partial response stays in the chat. You can then send a corrective message ("actually, don't run that — just tell me the answer directly").
+
+### Mid-run steering
+
+You can redirect the agent mid-task without breaking context. While the agent is working (executing tools, reading files), type a new message and send it. The agent sees your message and adjusts its approach. This works in all modes — the agent pauses its current step, reads your new instruction, and incorporates it.
+
+---
+
+## Multiple conversations
+
+You can have many conversations open at once. Each has independent memory and context. Switch between them in the sidebar. Start a new one with **New chat**.
+
+Each conversation can use a different model, a different specialist, and a different project folder. They don't share state unless you explicitly share memory.
+
+### Multi-task processing
+
+Multiple parallel conversations with independent memory means no task confusion. You can:
+
+- Run a code review in one chat.
+- Generate a deck in another.
+- Research a topic in a third.
+
+All at the same time, all with their own context, all without the conversations bleeding into each other.
+
+---
+
+## Project (working folder)
+
+Open a folder as a project:
+
+1. Click the `+` button next to the composer.
+2. Select **Open folder**.
+3. Pick a folder from the file dialog.
+
+The folder tree appears in a side panel — the Workspace panel. The agent can read and write files inside the project folder without asking for approval each time. Files outside the project folder still require per-access approval.
+
+A folder is locked per conversation. To work in a different folder, start a new chat. This prevents the agent from confusing two projects' file trees.
+
+### Workspace panel
+
+The Workspace panel shows:
+
+- **File tree** — the folder hierarchy with expand/collapse.
+- **File tabs** — open files in tabs, switch between them.
+- **Context menu** — right-click a file for options (open, rename, delete, copy path).
+- **File change list** — when the agent modifies files, a list of changes appears at the top of the panel.
+- **Paste confirm** — when you paste files into the workspace, a confirmation dialog prevents accidental overwrites.
+
+---
+
+## File upload
+
+- **Drag and drop** files directly into the composer.
+- **Click the `+` button** and choose files from disk.
+- **Paste** files from your clipboard.
+- Supported file types: text files, images, code files, PDFs, Office documents (`.docx`, `.xlsx`, `.pptx`), archives (`.zip`, `.tar.gz`), and more.
+
+The agent reads the file content and incorporates it into its response. For images, the agent can see the image and describe it. For code, it reads the source. For PDFs, it extracts text. For Office documents, it reads the content.
+
+### File attach
+
+Use the `@file:` mention syntax to reference a file in your message:
+
+```
+Read @file:/path/to/config.yaml and tell me what's wrong with the database section.
+```
+
+The agent reads the file and incorporates its contents into context.
+
+---
+
+## Mention dropdown
+
+Type `@` in the composer to open the mention dropdown. It shows:
+
+- **Files** — files in your current project folder.
+- **Specialists** — available specialists to mention.
+- **Skills** — available skills to reference.
+
+Pick an entry to insert it as a mention in your message.
+
+---
+
+## Slash commands
+
+Type `/` in the composer to open the slash command menu. Available commands:
+
+| Command | What it does |
+|---|---|
+| `/council` | Start a Council session (routes to `/team/default`) |
+| `/specialist <name>` | Switch to a specific specialist |
+| `/mode <mode>` | Switch mode (work-along, run-it-yourself, hands-off, autopilot) |
+| `/schedule` | Create a scheduled task from natural language |
+| `/remember` | Save the current message as a memory fact |
+| `/clear` | Clear the current conversation (keeps the session, clears the display) |
+
+---
+
+## Session persistence
+
+Conversations are saved automatically. When you close Headmaster and reopen it, your conversation list is in the sidebar exactly as you left it. Click any conversation to resume it — the agent picks up with the full context of the previous exchange.
+
+Sessions are stored in `<data folder>/sessions/`. Each session is a JSON file with the full transcript, tool call records, and metadata.
+
+---
+
+## Session history
+
+The sidebar shows your conversation history, most recent first. Each entry shows:
+
+- The first message (as a title)
+- The date and time
+- The specialist used (if any)
+- An indicator if the session is currently active in another window
+- A cron badge if the session was triggered by a scheduled task
+
+You can:
+
+- **Search** conversations by typing in the search bar at the top of the sidebar.
+- **Pin** important conversations to keep them at the top.
+- **Delete** conversations you no longer need. This removes the session file — it's permanent.
+- **Rename** a conversation by clicking its title.
+- **Drag and drop** conversations to reorder them.
+- **Group** conversations by date (Today, Yesterday, This Week, Earlier).
+
+---
+
+## Stale session recovery
+
+If the runtime restarts while a conversation is mid-stream, the session becomes stale. Headmaster detects this and shows a **Recover** button. Click it to resume the session — the agent picks up where it left off, with the full transcript preserved.
+
+Empty or failed first queries stay out of the sidebar history while the open chat remains usable — this keeps your history clean without losing draft work.
+
+---
+
+## Conversation skills indicator
+
+At the top of the chat, a badge shows which skills are active in the current conversation — the "On the Team" indicator. Hover it to see the full list. Click it to manage skills for this conversation.
+
+---
+
+## Title editor
+
+Click the conversation title at the top of the chat to rename it. The editor also lets you:
+
+- Edit the title.
+- Set a custom emoji icon.
+- Add tags for organization.

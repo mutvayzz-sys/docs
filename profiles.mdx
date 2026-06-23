@@ -1,0 +1,153 @@
+---
+title: "Profiles"
+description: "Provider keys, MCP servers, and integrations are global because they're infrastructure — you don't want to re-enter your"
+---
+
+# Profiles
+
+Profiles let you run multiple independent agent configurations from one Headmaster installation. Each profile has its own personality, memory, skills, model defaults, and channel connections.
+
+---
+
+## What a profile is
+
+A profile is a complete agent configuration:
+
+- **Personality** — the agent's tone and identity.
+- **Memory** — facts the agent knows, separate from other profiles.
+- **Skills** — which skills are installed and enabled.
+- **Model defaults** — which model new chats start on.
+- **Specialists** — custom specialists created under this profile.
+- **Channel connections** — which messaging platforms this profile is connected to.
+- **Scheduled tasks** — cron jobs defined under this profile.
+- **Session history** — conversations, separate from other profiles.
+
+Profiles are isolated from each other. Switching profiles is like switching users — the agent's memory, personality, and skills all change.
+
+---
+
+## Default profile
+
+Every Headmaster installation starts with a `default` profile. This is the profile you use for your main work. You don't need to create additional profiles unless you want separation.
+
+---
+
+## Creating a profile
+
+1. Open **Settings → My Headmaster → Profile → Manage profiles**.
+2. Click **Create profile**.
+3. Enter a name (e.g., "work", "personal", "research").
+4. Choose whether to seed it with built-in skills (default: yes).
+5. Save.
+
+The new profile starts with:
+- A blank personality (copy from default or write your own).
+- Empty memory.
+- Built-in skills (if seeded).
+- No channel connections.
+- No scheduled tasks.
+
+Switch to the new profile from the profile selector in the sidebar or the specialist picker.
+
+---
+
+## Switching profiles
+
+Switch profiles from:
+
+- **The sidebar** — click the profile name at the top of the sidebar, pick a different one.
+- **The specialist picker** — the profile selector is next to the specialist dropdown.
+- **Slash command** — `/profile <name>` in the composer.
+
+When you switch, the sidebar reloads with the new profile's conversation history, the model defaults change, and the personality updates.
+
+---
+
+## Use cases for multiple profiles
+
+### Work vs. personal
+
+- **Work profile:** Professional tone, connected to Slack and email, scheduled tasks for daily reports, memory focused on your work projects.
+- **Personal profile:** Casual tone, connected to Telegram and iMessage, memory focused on personal preferences, no scheduled tasks.
+
+### Multiple team members
+
+- Each family member or team member gets their own profile.
+- Each profile has its own Telegram bot (or shared bot with different trigger words).
+- Memory and personality are isolated — the agent treats each person differently.
+
+### Specialized agents
+
+- **Research profile:** Connected to academic databases, uses The Researcher specialist, deep memory of research topics.
+- **DevOps profile:** Connected to servers via SSH, uses The DevOps specialist, scheduled tasks for monitoring.
+- **Content profile:** Uses The Writer and The Wordsmith, connected to social media integrations.
+
+---
+
+## Profile model fallback
+
+Each profile can specify a primary model and a fallback model. If the primary is unavailable (provider outage, all keys rate-limited), the runtime falls back to the secondary automatically.
+
+```
+Profile: work
+Primary model: claude-sonnet-4
+Fallback model: gpt-4o
+```
+
+This ensures the agent keeps working even if one provider goes down.
+
+---
+
+## Profile-specific scheduled tasks
+
+Scheduled tasks belong to a profile. When you create a task, it runs under the current profile's configuration — that profile's specialist, model, memory, and channel connections.
+
+If you switch profiles, you see only that profile's scheduled tasks in the Schedule page.
+
+---
+
+## Profile-specific channel connections
+
+Channel connections are per-profile. If your work profile is connected to Slack and your personal profile is connected to Telegram, switching profiles changes which channel the agent listens on.
+
+This means you can have one Telegram bot for work and a different one for personal — each on its own profile.
+
+---
+
+## Deleting a profile
+
+1. Open **Settings → My Headmaster → Profile → Manage profiles**.
+2. Click the profile you want to delete.
+3. Click **Delete profile**.
+4. Confirm.
+
+Deleting a profile removes:
+- All conversations in that profile.
+- All memory for that profile.
+- All scheduled tasks for that profile.
+- All custom specialists created under that profile.
+- All channel connections for that profile.
+
+This is permanent. The default profile cannot be deleted.
+
+---
+
+## Profile isolation
+
+Profiles are fully isolated:
+
+| Resource | Shared across profiles? |
+|---|---|
+| Personality | No — each profile has its own |
+| Memory | No — each profile has its own |
+| Skills (installed) | No — each profile has its own |
+| Model providers (API keys) | Yes — configured globally in Connections |
+| MCP servers | Yes — configured globally in Connections |
+| Integrations | Yes — configured globally in Connections |
+| Specialists (built-in) | Yes — all profiles see the 20+ built-in specialists |
+| Custom specialists | No — each profile has its own |
+| Scheduled tasks | No — each profile has its own |
+| Channel connections | No — each profile has its own |
+| Session history | No — each profile has its own |
+
+Provider keys, MCP servers, and integrations are global because they're infrastructure — you don't want to re-enter your OpenAI key for every profile. Everything agent-facing (personality, memory, skills, tasks, channels) is per-profile.

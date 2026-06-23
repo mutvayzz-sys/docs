@@ -1,0 +1,216 @@
+---
+title: "Skills & The Agency"
+description: "- **One job per skill** — a skill should do one thing well, not five things poorly.
+- **Be explicit** — write instructio"
+---
+
+# Skills & The Agency
+
+A skill is a packaged ability an agent can use. Headmaster ships with a set of built-in skills; you can install more from the Agency — the open catalog the desktop fetches from the Headmaster Hub registry.
+
+---
+
+## Skill tiers
+
+- **Founding Skills** — the small set of skills every Headmaster agent comes with. Always available, can't be removed. These cover core operations: file read/write, web search, code execution, image generation.
+- **Your Skills** — skills you've added or authored. Listed under "My Skills." You can create custom skills by writing a skill definition file.
+- **Open Casting** — skills from the Agency catalog. Install with one click, remove any time. These are community-contributed and reviewed before publishing.
+
+---
+
+## The Agency
+
+The Agency is a curated catalog of community-contributed skills, fetched from the Hub registry. To open it:
+
+1. Click **Browse the Agency** in the Skills tab.
+2. The desktop fetches the catalog from the registry.
+3. Each skill card shows:
+   - The skill name
+   - What it does (a one-line summary written by the publisher)
+   - The publisher and version
+   - The skill category (Engineering, Research, Design, Operations)
+   - A **Hire** button
+
+The Agency is organized into departments — categories you can browse:
+
+| Department   | What's in it                                    |
+| ------------ | ------------------------------------------------ |
+| Engineering  | Code review, test generation, refactoring, migrations. |
+| Research     | Multilingual research, translation, literature review. |
+| Design       | UI/UX, diagrams, visual design, infographics.     |
+| Operations   | File management, deployment, monitoring, automation.|
+
+---
+
+## Installing a skill from the Agency
+
+1. Open the Agency modal.
+2. Browse or search for a skill.
+3. Click **Hire** on the skill card.
+4. The skill downloads and installs.
+5. It appears under "Open Casting" in the Skills tab.
+6. It's available to all specialists in their next conversation.
+
+### Agency refresh
+
+The Agency catalog is refreshed automatically when the Hub registry publishes a new version. You can also force a refresh:
+
+1. Open the Agency modal.
+2. Click **Refresh** in the top-right corner.
+3. The desktop re-fetches the catalog from the registry.
+
+---
+
+## Adding a skill manually
+
+If you authored a skill yourself:
+
+1. Write the skill definition file (`SKILL.md`) with the skill's instructions, triggers, and parameters.
+2. Package it as a `.zip` with the skill file and any supporting assets.
+3. Drop the package into your Headmaster skills folder (`<data folder>/skills/`).
+4. Restart Headmaster. The skill appears under "My Skills."
+
+### Quick scan
+
+Headmaster can auto-detect skills in common paths:
+
+1. Click **Add skills** in the Skills tab.
+2. Pick an auto-detected common path (e.g., `~/.claude/skills`, `~/skills`).
+3. Confirm. Headmaster scans for `SKILL.md` files.
+
+### Manual path
+
+1. Click **Add skills**.
+2. Paste absolute path(s), comma-separated: `/path/to/skills, /another/path`.
+3. Confirm — Headmaster scans for `SKILL.md` files.
+
+---
+
+## Skill structure
+
+A skill package contains:
+
+```
+my-skill/
+├── SKILL.md          # The skill definition (YAML frontmatter + markdown body)
+├── references/       # Supporting docs the skill can read at runtime
+├── templates/        # File templates the skill uses
+├── scripts/          # Executable scripts the skill can run
+└── assets/           # Images, configs, other static assets
+```
+
+The `SKILL.md` file has YAML frontmatter:
+
+```yaml
+---
+name: my-skill
+version: 0.1.0
+description: "One-line description shown in the Agency."
+triggers:
+  - "when the user asks to..."
+  - "when the user wants to..."
+---
+```
+
+And a markdown body with the skill's instructions — what the agent should do when the skill is triggered, step by step.
+
+### SKILL.md example
+
+```markdown
+---
+name: pr-review
+version: 0.1.0
+description: "Reviews pull requests for common issues before merge."
+triggers:
+  - "when the user asks to review a PR"
+  - "when the user wants to check a pull request"
+---
+
+# PR Review Skill
+
+## Process
+1. Read the PR diff using the git MCP
+2. Check for:
+   - Debug prints (console.log, print, fmt.Println)
+   - Hardcoded secrets (API keys, passwords, tokens)
+   - Bare except/catch clauses
+   - Unresolved TODOs and FIXMEs
+   - Missing tests on new functions
+3. Categorize issues by severity: Critical, Warning, Info
+4. Post the review as a comment on the PR
+
+## Output format
+- Summary (1-2 sentences)
+- Issues list with file:line and severity
+- Suggested fixes for Critical issues
+```
+
+---
+
+## Enabling and disabling skills
+
+Skills are managed per-specialist:
+
+1. Open **Settings → Specialists** and pick a specialist.
+2. Go to the **Skills** section.
+3. Toggle skills on/off with checkboxes.
+4. Save.
+
+A skill toggled on for a specialist is available in all conversations with that specialist. A skill toggled off is not loaded, even if installed.
+
+Built-in skills can be disabled but not removed. Custom skills can be both disabled and removed.
+
+---
+
+## Removing a skill
+
+Click **Remove** on a skill card in the Skills tab. The skill is uninstalled and its data is removed. Sessions that used the skill keep their transcripts — the skill's effects are permanent, but the skill itself is no longer available for future conversations.
+
+To remove a custom skill imported from a path: hover the row, click the trash icon. The path is removed from the scan list, but the files on disk are not deleted.
+
+---
+
+## Skills in chat
+
+When a skill is active in a conversation:
+
+- You see it on the **On the Team indicator** at the top of the chat — a small badge showing which skills are loaded.
+- The agent announces when it's about to call a skill ("I'll use the pr-review skill to check this diff").
+- The skill's output appears in the chat as a tool call result block.
+- You can expand the block to see the full skill execution log.
+
+### Skill suggestions
+
+The agent may suggest enabling a skill mid-conversation:
+
+> "I notice you're asking me to review a PR. I have a `pr-review` skill that could do this more thoroughly. Want me to enable it?"
+
+Click **Enable** to add the skill to the conversation.
+
+---
+
+## Creating a custom skill
+
+To create a custom skill:
+
+1. Create a folder in `<data folder>/skills/` with your skill name.
+2. Write `SKILL.md` with the YAML frontmatter and markdown instructions.
+3. Add any supporting files (references, templates, scripts).
+4. Restart Headmaster. The skill appears under "My Skills."
+
+Custom skills are local to your installation. To share them:
+
+1. Package the folder as a `.zip`.
+2. Submit it to the Hub registry via a pull request to the [Headmaster Hub repo](https://github.com/mutvayzz-sys/gcaplabs-headmasterhub).
+3. The skill is reviewed and, if accepted, published to the Agency catalog.
+
+---
+
+## Skill best practices
+
+- **One job per skill** — a skill should do one thing well, not five things poorly.
+- **Be explicit** — write instructions as step-by-step imperative sentences.
+- **Use triggers** — define clear trigger conditions so the agent knows when to use the skill.
+- **Test before sharing** — run the skill end-to-end on the latest Headmaster build before submitting to the Agency.
+- **No vendor lookalikes** — use your own branding and personality.
+- **Version your skills** — bump the version in the frontmatter when you change the skill's behavior.

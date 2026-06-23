@@ -1,0 +1,126 @@
+---
+title: "Use cases & user stories"
+description: "---"
+---
+
+# Use cases & user stories
+
+Real-world examples of what people do with Headmaster. Organized by category.
+
+### Dev workflow
+
+**Multi-agent build loop:** The Headmaster (orchestrator) breaks a plan into phases, The Builder implements each phase, and a QA specialist tests. Plan → implement → test → fail → repair → ship. The whole loop runs in Run It Yourself mode with the Council for architecture decisions.
+
+**Code review before commit:** A specialist reviews git diffs before committing. It flags debug prints, hardcoded secrets, bare except clauses, and unresolved TODOs. Run it as a pre-commit hook or from the chat before pushing.
+
+**Live runtime monitor:** A specialist watches your agent-to-agent workflows, catches where they break, and fixes them live until they work reliably. Run it in a side conversation while the main workflow runs in another.
+
+**Parallel build instances:** Run multiple Headmaster instances in parallel — each in its own project folder, each with a different model, each working on a different part of the codebase. The sessions don't interfere with each other.
+
+**Session audit:** Run a script against your full local session history to audit compliance with your approval gate policy. Find sessions where the agent skipped an approval or executed without authorization.
+
+**Compile skills into code:** When a workflow is stable, compile the skill instructions into a Python script. Only involve the LLM at the necessary steps. This improves reliability and consistency for production workflows.
+
+### Personal assistant
+
+**Natural-language scheduling:** "Every weekday at 9am, summarize my inbox and post the summary to Telegram." The agent writes the schedule, registers it in The Schedule, and runs it in Autopilot mode. You wake up to a Telegram message with your inbox summary.
+
+**Research and ship:** "Google me and ship a landing page." The agent runs the searches, finds the relevant info, creates the page, SSH's into your VPS, uploads the page, and texts you when it's done.
+
+**Multi-app task management:** "I want you to use Obsidian to manage my tasks and cross-check with my Apple Calendar." The agent reads and writes to Obsidian vaults and queries Apple Calendar for conflicts.
+
+**Chat on one platform, act on another:** Use Claude for day-to-day chats (via OpenRouter) and Headmaster for the real-world stuff — email, web browsing, form filling, calendar updates, cron jobs. Headmaster runs 24/7 on a mini PC and handles the action side.
+
+**Family-shared agent:** Set up Headmaster for your family on WhatsApp. Three members share the same agent. It has proactive behaviors — reminds people of birthdays, tracks shared shopping lists, and answers questions.
+
+**Two-tier email pipeline:** Tier 1 is a pure Python script — no LLM. It detects new email and manages state. Tier 2 is the LLM session — only invoked when new email is detected. Zero LLM calls when the inbox is idle. Runs on The Schedule.
+
+**Health tracking:** The agent writes Python scripts to pull data from Apple Health, generates weekly summary reports, and posts them to a Notion page. Runs every Monday in Autopilot mode.
+
+### Integrations
+
+**Database query agent:** Connect Headmaster to your Postgres database via an MCP server. Ask questions in plain English ("what's our top-selling product last month?") and the agent writes and runs the SQL, then formats the result as a table.
+
+**GitHub workflow automation:** Connect to GitHub via MCP. The agent reads issues, creates branches, writes code, opens PRs, and responds to review comments — all from the chat.
+
+**Calendar management:** Connect to Google Calendar. The agent reads your schedule, finds free slots, and creates events. "Schedule a 30-minute meeting with John next Tuesday afternoon" — it handles the whole flow.
+
+**File storage integration:** Connect to an S3 bucket. The agent uploads generated documents, downloads files for analysis, and manages folder structure.
+
+**Slack integration:** Connect to Slack via MCP. The agent reads channel messages, responds to mentions, and posts summaries. Run it in Autopilot to get daily channel digests.
+
+### Creative
+
+**Decks from a brief:** Give The Writer a one-paragraph brief and get a 10-slide deck. Iterate on the design with The Storyteller for motion and visual narrative.
+
+**Fiction writing:** The Wordsmith writes serial fiction. Give it a premise and a character bible. It writes chapters, maintains continuity across sessions via memory, and tracks plot threads.
+
+**Logo and brand design:** The Designer generates logo concepts. Iterate on style, color, and composition. Export as SVG for production.
+
+**3D data visualization:** The Visualizer turns datasets into 3D infographics and interactive visualizations.
+
+### Business ops
+
+**Weekly report automation:** Every Friday at 5pm, the agent pulls data from your database, generates a report in Word, and emails it to the team. Runs in Autopilot.
+
+**Invoice processing:** The agent reads invoice PDFs from a folder, extracts the relevant data, and writes it to a spreadsheet. Batch-processes 50 invoices in one run.
+
+**Customer support triage:** The agent reads incoming support emails, classifies them by urgency and topic, drafts responses, and posts them to a Slack channel for approval.
+
+**Meeting notes:** The agent attends a meeting (via a transcript file), writes structured notes, creates action items, and posts them to your project management tool.
+
+### Research
+
+**Literature review:** The Researcher reads 20 papers on a topic, synthesizes the key findings, identifies gaps, and writes a structured literature review with citations.
+
+**Competitive analysis:** The agent researches 10 competitors, compares their features and pricing, and generates a comparison spreadsheet and a summary report.
+
+**Market research:** The agent browses industry reports, summarizes key statistics, and creates a market size presentation.
+
+### Content creation
+
+**Blog posts from research:** Give the agent a topic and a set of sources. It reads the sources, writes a blog post, and generates a cover image.
+
+**Social media scheduling:** The agent writes a week of social media posts, schedules them across platforms, and tracks engagement.
+
+**Newsletter generation:** Every Monday, the agent reads your team's activity from the past week and writes a newsletter. Posts it to your email list via the email integration.
+
+### Enterprise
+
+**Approval-gated deployment:** The agent writes code, runs tests, and prepares a deployment. Every step requires human approval. The full audit trail is stored in the session transcript.
+
+**Team-shared workspace:** Multiple users connect to the same remote runtime. They share the same memory, skills, and integrations. Each user has their own conversation history.
+
+**Compliance logging:** Every agent action — file access, tool call, approval, denial — is logged with a timestamp. Export the logs for compliance reviews.
+
+**Cost tracking:** The agent logs token usage per conversation and per task. View cost breakdowns in the runtime dashboard. Set cost limits per task to prevent runaway spending.
+
+### Messaging
+
+**Telegram as primary interface:** Connect Telegram and use it as your main way to talk to the agent. Send messages from your phone, get responses, approve actions — all from Telegram.
+
+**Channel-based notifications:** The agent sends you a Telegram message when a background task finishes, when a scheduled task fires, or when an approval is needed.
+
+**Multi-channel routing:** Connect Telegram for personal use, Slack for work, and WeChat for family. The agent routes responses to the right channel based on the conversation context.
+
+### Cost optimization
+
+**Model routing:** Use cheap models (Claude Haiku, GPT-4o-mini) for simple tasks and expensive models (Claude Sonnet, GPT-4o) for complex ones. Set model defaults per specialist — The Builder uses Sonnet for code, The Writer uses Haiku for drafts.
+
+**Local models for routine work:** Run a local model (Ollama with Qwen 2.5) for routine tasks. Zero API cost. Switch to cloud models only when you need frontier reasoning.
+
+**Multi-key rotation:** Spread load across multiple API keys to avoid rate limits and distribute cost across accounts.
+
+**Token budgeting:** Set a per-conversation token limit. The agent stops and asks before exceeding the budget.
+
+### Privacy & self-hosted
+
+**Air-gapped operation:** Run Headmaster on a machine with no internet. Use local models only. No data leaves the machine. File operations, code execution, and document generation all work offline.
+
+**Self-hosted runtime:** Run the runtime on your own server. Connect to it from the desktop app on your laptop. Your data never touches a machine you don't control.
+
+**Encrypted data folder:** Use full-disk encryption (FileVault, BitLocker, LUKS) to encrypt the Headmaster data folder at rest. The agent works normally; the OS handles the encryption transparently.
+
+**No telemetry:** Headmaster does not phone home. No usage analytics, no crash reports (unless you explicitly send a bug report). The app doesn't make outbound connections except to your configured model providers.
+
+---

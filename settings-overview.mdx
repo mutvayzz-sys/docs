@@ -1,0 +1,54 @@
+---
+title: "Settings overview"
+description: "---"
+---
+
+# Settings overview
+
+Headmaster Settings is split into two areas, each with a clear purpose:
+
+- **My Headmaster** — the user-facing settings. No PIN required.
+- **Headmaster's Library** — the advanced settings. PIN-protected, named after the wizard's own study. Holds the things a regular user shouldn't have to touch.
+
+### The PIN gate
+
+The Library is protected by a PIN. The default PIN is set on first run — choose a 4-6 digit PIN. The PIN is:
+
+- **Bcrypt-hashed locally.** Not stored in plaintext.
+- **Not recoverable.** If you forget the PIN, the only reset path is reinstalling Headmaster. Your data (conversations, memory, files) survives a reinstall, but you'll need to reconfigure the Library settings.
+- **Rate-limited.** Three wrong attempts trigger a 60-second lockout. Five wrong attempts trigger a 5-minute lockout.
+
+Change the PIN in **Headmaster's Library → Advanced → Change PIN**.
+
+### My Headmaster
+
+| Tab                  | What it does                                                              |
+| -------------------- | ------------------------------------------------------------------------- |
+| Profile              | Your display name, default profile, default model.                        |
+| Model defaults       | Which model new chats start on.                                           |
+| Look                 | Theme, font size, language, accent color.                                 |
+| Memory               | Your agent's memory — what it knows, what to forget, retention policy.    |
+| Channels (preview)   | Quick-connect Headmaster to messaging platforms.                          |
+
+### Headmaster's Library
+
+| Tab                  | What it does                                                              |
+| -------------------- | ------------------------------------------------------------------------- |
+| Connections          | Model providers, API keys, multi-key rotation, MCP connections.           |
+| Skills               | Install, remove, and configure agent skills. Browse the Agency.           |
+| Integrations         | External services the agent can reach (file storage, calendars, etc.).   |
+| Channels             | Detailed configuration for messaging platforms.                          |
+| Runtime              | Local or remote runtime, connection mode, restart controls, version.     |
+| Advanced             | Diagnostics, log level, environment overrides, PIN management.            |
+| Installation         | Portable vs installer, data folder location, clean uninstall, migration.  |
+
+### Settings modal vs. settings page
+
+Settings can be opened two ways:
+
+- **Settings modal** — click the gear icon in the sidebar. A modal opens with tabs for each settings area. Good for quick changes.
+- **Settings page** — click **Open as page** in the modal header. Settings open as a full-page view. Good for long configuration sessions.
+
+Both surfaces show the same options. The tabs in the modal match the full-page routes — any change in one is reflected in the other.
+
+---

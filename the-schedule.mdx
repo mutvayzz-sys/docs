@@ -1,0 +1,186 @@
+---
+title: "The Schedule"
+description: "- **Headmaster must be running** for tasks to fire. Keep-awake helps but isn't a service replacement — the runtime needs"
+---
+
+# The Schedule
+
+The Schedule is Headmaster's automated task system. You define recurring or one-time tasks, and the agent runs them on a cron schedule — daily check-ins, weekly reports, periodic data pulls, recurring reminders. A scheduled task fires a predefined prompt against a chosen agent and specialist on a schedule.
+
+---
+
+## Two execution modes
+
+| Mode | What happens |
+|---|---|
+| **New conversation** | Each run opens a fresh conversation with the result. Clean context every time. |
+| **Existing conversation** | The result is appended into an existing conversation. Context keeps building across runs. |
+
+Managed from the **Schedule** page in the left sidebar — no chat command needed.
+
+---
+
+## Creating a scheduled task
+
+1. Click **The Schedule** in the left sidebar.
+2. Click **Create task**.
+3. Fill in the form and click **Save**.
+
+### Task form fields
+
+| Field | Description |
+|---|---|
+| **Task name** | Display name shown in the list |
+| **Agent + model** | Backend agent and model (built-in, Claude Code, Codex, etc.) |
+| **Specialist** | Specialist persona to use |
+| **Workspace folder** | Optional working directory |
+| **Frequency** | Manual / Hourly / Daily / Weekdays / Weekly / Custom (cron) |
+| **Time** | When to run (for daily/weekly/weekdays) |
+| **Weekday** | For weekly tasks |
+| **Cron expression** | Direct cron when frequency = Custom |
+| **Execution mode** | `new_conversation` or `existing` |
+| **Mode** | Autopilot (no approvals) or Run It Yourself (approvals — but you won't be there) |
+| **Delivery channel** | Where to send the result (desktop, Telegram, email, webhook) |
+| **Prompt** | Message sent to the specialist when triggered |
+
+You can edit any task later by clicking it to open the detail page.
+
+---
+
+## Schedule types
+
+| Type | How to define | Example |
+|---|---|---|
+| Recurring schedule | Cron expression | `0 9 * * *` — every weekday at 9am |
+| Fixed interval | Every N minutes or hours | Every 30 minutes |
+| One-time trigger | Run once at a specific time | 2026-07-01 at 14:00 |
+
+For most schedules you don't need to write cron — pick a frequency preset and Headmaster generates the expression for you.
+
+---
+
+## Cron expression reference
+
+Headmaster uses standard 5-field cron (no seconds field):
+
+```
+┌───────── minute (0–59)
+│ ┌─────── hour (0–23)
+│ │ ┌───── day of month (1–31)
+│ │ │ ┌─── month (1–12)
+│ │ │ │ ┌─ day of week (0–6 or SUN–SAT)
+│ │ │ │ │
+* * * * *
+```
+
+### Common examples
+
+| Expression | Meaning |
+|---|---|
+| `0 9 * * *` | Every day at 09:00 |
+| `0 9 * * MON` | Every Monday at 09:00 |
+| `0 9 * * MON-FRI` | Weekdays at 09:00 |
+| `0 * * * *` | Every hour on the hour |
+| `*/30 * * * *` | Every 30 minutes |
+| `0 */2 * * *` | Every 2 hours |
+| `0 0 1 * *` | 1st of every month at midnight |
+| `0 18 * * FRI` | Every Friday at 18:00 |
+
+### Special characters
+
+- `*` — any value
+- `,` — list (e.g., `1,3,5`)
+- `-` — range (e.g., `MON-FRI`)
+- `/` — step (e.g., `*/15`)
+
+> The cron expression field is in **Headmaster's Library** (PIN-gated). In **My Headmaster**, schedules are shown as plain language ("Every weekday at 9am") — you never have to read or write cron unless you want to.
+
+---
+
+## Keep-awake
+
+By default, the agent stops running when you close the app. With **Keep-awake** enabled on a scheduled task, the runtime keeps running in the background even if the desktop window is closed. The task fires on schedule and delivers the result to your configured channel.
+
+The Schedule list page also has a global **Keep-awake** toggle that prevents your system from sleeping while Headmaster is open — useful for overnight runs.
+
+This is what enables true 24/7 automation — your agent works while you sleep, while you're in a meeting, or while your laptop is closed (as long as the machine is on and Headmaster's runtime is running).
+
+---
+
+## Catch up
+
+If you miss a scheduled trigger (your machine was off, or the runtime was down), **Catch up** tells the agent to run the missed trigger as soon as the runtime is back up.
+
+Example: if a task was scheduled for Monday at 9am and the machine was off until Tuesday at 10am, the agent runs the Monday task on Tuesday at 10am, then resumes the normal schedule.
+
+---
+
+## The Schedule UI
+
+The Schedule page shows:
+
+- **Active tasks** — tasks that are scheduled and will fire.
+- **Paused tasks** — tasks you've paused. They won't fire until you resume them.
+- **History** — the last 50 runs, with timestamps, status (success, error, partial), and a link to the conversation transcript.
+- **Next run** — when each active task will next fire.
+
+---
+
+## Managing tasks
+
+- **Enable / Disable** — toggle the switch on the task card.
+- **Edit** — click the task to open detail and change schedule, prompt, or model.
+- **Delete** — from the detail page (past runs are kept in history).
+- **Run now** — manually trigger from the detail page. Useful for testing a prompt before relying on the schedule.
+- **Pause** — temporarily stop a task without deleting it.
+- **Resume** — restart a paused task.
+
+---
+
+## Delivery channels
+
+When a scheduled task finishes, the result is delivered to the channel you configured:
+
+| Channel | How |
+|---|---|
+| Desktop notification | System notification on your screen |
+| Telegram | Message to your Telegram chat |
+| Email | Email to the configured address |
+| Webhook | POST to a URL |
+| Desktop chat | New message in your active conversation |
+
+You can configure multiple delivery channels for a single task.
+
+---
+
+## Natural language scheduling
+
+You can also create a scheduled task by telling the agent in chat:
+
+```
+Every weekday at 9am, summarize my inbox and post the summary to Telegram.
+```
+
+The agent parses the natural language schedule, creates the task in the Schedule, and confirms the details with you before saving.
+
+---
+
+## Use cases
+
+| Use case | Frequency | Mode | Prompt |
+|---|---|---|---|
+| **Daily summary** | Daily 18:00 | new conversation | "Summarize today's commits across the repos in my workspace and post the highlights as a brief." |
+| **Weekly report** | Weekly, Mon 08:00 | existing | "Draft this week's progress report following last week's structure, and flag anything blocked." |
+| **Periodic reminder** | Weekdays 09:00 | new conversation | "Remind me of the top 3 things on my plate today and ask one question that helps me prioritize." |
+| **Recurring data pull** | Hourly | existing | "Fetch the latest metrics from the dashboard MCP and append the deltas to this conversation." |
+| **Inbox triage** | Every 4 hours | new conversation | "Check my inbox via the email integration. Flag anything urgent. Draft replies for the rest." |
+| **Nightly backup** | Daily 02:00 | new conversation | "Back up the project folder to the S3 integration. Verify the upload succeeded." |
+
+---
+
+## Important notes
+
+- **Headmaster must be running** for tasks to fire. Keep-awake helps but isn't a service replacement — the runtime needs to be alive.
+- **Multiple tasks per conversation** are allowed, but reusing one conversation for many tasks makes context noisy. Prefer separate conversations per recurring job.
+- **Prompts have full specialist + tools access** — destructive prompts will run unsupervised in Autopilot. Test once in a manual conversation before scheduling.
+- **Catch up** only applies to recurring schedules, not one-time triggers. A missed one-time trigger is gone.

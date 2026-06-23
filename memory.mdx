@@ -1,0 +1,64 @@
+---
+title: "Memory"
+description: "---"
+---
+
+# Memory
+
+Memory is what your agent knows about you, your work, and your preferences across conversations. It is stored locally on your machine. Memory is separate from session history — sessions are the full transcripts; memory is the distilled facts the agent carries forward.
+
+### What goes in memory
+
+- **Decisions you confirm** during a chat — "always use double quotes for strings."
+- **Project context** you share — "we're using Postgres 16 on AWS RDS, the ORM is Prisma."
+- **Recurring corrections** — "don't summarize, give me the raw data."
+- **Personal preferences** — "I prefer concise responses, no preamble."
+- **Anything you explicitly add** via the **Remember this** button in chat.
+
+### What does not go in memory
+
+- **The full text of every conversation.** Sessions are stored separately in session history. Memory is for distilled facts, not transcripts.
+- **Provider keys, secrets, or credentials.** Those live in the Connections area, encrypted.
+- **Files you attach.** Files are stored in your workspace folder. Memory references them ("the user's repo is at /home/me/project") but doesn't copy their contents.
+
+### Inspecting memory
+
+Open **Settings → My Headmaster → Memory**. The page lists everything currently retained, grouped by topic:
+
+- **Profile** — facts about you (name, role, communication style).
+- **Projects** — facts about your codebases, tools, and workflows.
+- **Preferences** — your stated preferences for response style, code style, etc.
+- **Environment** — facts about your machine, OS, and setup.
+- **Decisions** — one-off decisions the agent should remember.
+
+Click any item to see the source conversation and when it was saved. Click **Forget** to remove it.
+
+### Adding to memory
+
+Two approaches:
+
+1. **In chat:** Click **Remember this** on any assistant message. The agent proposes a single durable fact. You can edit the fact before it's saved. Click **Save** to commit it to memory.
+2. **Manual:** Open **Settings → My Headmaster → Memory → Add fact**. Type a fact and save it. It's immediately available to the agent in all conversations.
+
+### Forgetting
+
+- **Forget** — removes a single fact. The agent no longer uses it.
+- **Forget all** — wipes the entire memory store (sessions, learned facts, and project context). This does not touch your conversation transcripts, files, or provider keys. Use this when you want a clean start without losing your chat history.
+
+### Retention policy
+
+By default, memory facts are retained indefinitely. You can set a retention policy:
+
+1. Open **Settings → My Headmaster → Memory → Retention**.
+2. Set a retention period (e.g., 90 days). Facts older than the retention period are automatically archived.
+3. Archived facts are not used by the agent but are kept in the data folder. You can restore them if needed.
+
+### Memory and the Council
+
+When the Council is active, all specialists share the same memory store. A fact saved by one specialist is visible to all others. This is intentional — the Council is supposed to be a team that knows what the team knows.
+
+### Where memory lives
+
+Memory is stored locally — see [Where data lives](#where-data-lives) for the data folder location. In a remote setup, memory lives on the machine running the runtime.
+
+---

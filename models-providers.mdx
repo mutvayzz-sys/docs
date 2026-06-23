@@ -1,0 +1,254 @@
+---
+title: "Models & providers"
+description: "**Models not visible in conversation?**
+Ensure the provider is enabled in Connections, the key is valid, and the model i"
+---
+
+# Models & providers
+
+Headmaster connects to model providers you already have API keys for. It does not host models itself. You add a provider, paste a key, and Headmaster can use any model that provider offers.
+
+Headmaster supports 28+ LLM platforms — official, cloud, Chinese, international, and custom. All configured from **Settings → Headmaster's Library → Connections → Add provider**.
+
+---
+
+## Provider catalog
+
+| Category | Platform | Auth method | Multi-key | Notes |
+|----------|----------|-------------|-----------|-------|
+| **Official** | Gemini | API key | Yes | Image gen, tool calling |
+| | Gemini (Vertex AI) | API key + Project ID | Yes | Enterprise Google Cloud |
+| | OpenAI | API key | Yes | Function calling, image gen |
+| | Anthropic | API key | Yes | Claude series |
+| **Cloud** | AWS Bedrock | Access key / Profile | No | AWS enterprise AI |
+| | New API | API key | Yes | Unified multi-model gateway |
+| **Chinese** | Dashscope (Qwen) | API key | Yes | Qwen series |
+| | Dashscope Coding Plan | API key | Yes | Coding plan tier |
+| | Zhipu | API key | Yes | Zhipu AI |
+| | Moonshot (China/Global) | API key | Yes | Two variants |
+| | Qianfan | API key | Yes | Baidu |
+| | Hunyuan | API key | Yes | Tencent |
+| | Lingyi | API key | Yes | Lingyi Wanwu |
+| | ModelScope | API key | Yes | Community platform |
+| | InfiniAI | API key | Yes | |
+| | Ctyun | API key | Yes | China Telecom Cloud |
+| | StepFun | API key | Yes | |
+| **International** | DeepSeek | API key | Yes | |
+| | MiniMax | API key | Yes | |
+| | Novita | API key | Yes | AI gateway |
+| | OpenRouter | API key | Yes | Multi-model aggregation (300+ models) |
+| | PPIO | API key | Yes | Inference gateway |
+| | SiliconFlow (CN/Global) | API key | Yes | Two variants |
+| | xAI | API key | Yes | Grok models |
+| | Ark | API key | Yes | Volcengine |
+| | Poe | API key | Yes | Poe platform |
+| **Custom** | Custom | API key | Yes | OpenAI-compatible (Ollama, LM Studio, vLLM, llama.cpp) |
+
+---
+
+## Adding a provider
+
+1. Open **Settings → Headmaster's Library → Connections → Add provider**.
+2. Pick the provider type from the dropdown.
+3. Enter your API key. You can paste multiple keys (comma-separated or one per line) — Headmaster rotates across them automatically.
+4. If the provider has a custom base URL (for OpenAI-compatible endpoints or self-hosted models), enter it.
+5. Click **Test connection** to verify. If it passes, click **Save**.
+
+The provider appears in the Connections list and its models become available in the model selector.
+
+---
+
+## Platform-specific setup
+
+### Gemini
+
+1. Get a key at [Google AI Studio](https://aistudio.google.com/) — sign in, create a new API key.
+2. **Settings → Connections → Add provider → Gemini** → paste key → save.
+3. Model list is auto-fetched. You'll see Gemini Pro, Ultra, Flash, and image-capable variants.
+
+### Gemini (Vertex AI)
+
+1. Create a project at [Google Cloud Console](https://console.cloud.google.com/), enable the Vertex AI API.
+2. Note the **Project ID** (format: `my-project-123456`).
+3. **Settings → Connections → Add provider → Gemini (Vertex AI)** → enter Project ID + API key → save.
+
+### OpenAI
+
+1. Get a key at [platform.openai.com](https://platform.openai.com/api-keys).
+2. **Settings → Connections → Add provider → OpenAI** → paste key → save.
+3. Models auto-fetched: GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo, o-series, DALL-E (for image gen).
+
+### Anthropic
+
+1. Get a key at [console.anthropic.com](https://console.anthropic.com/).
+2. **Settings → Connections → Add provider → Anthropic** → paste key → save.
+3. Models auto-fetched: Claude Sonnet, Opus, Haiku.
+
+### AWS Bedrock
+
+Two auth methods:
+
+- **Access key:** Enter AWS Region, Access Key ID, Secret Access Key.
+- **Profile:** Enter AWS Region + locally configured AWS CLI Profile name.
+
+Supported regions: `us-east-1`, `us-west-2`, `eu-west-1`, `eu-central-1`, `ap-southeast-1`, `ap-northeast-1`, `ap-southeast-2`, `ca-central-1`.
+
+Multi-key rotation is **not** supported for AWS Bedrock (it uses AWS credential auth, not API keys).
+
+### New API (unified gateway)
+
+Select **New API**, enter Base URL + API key. Supports multiple protocols: OpenAI, Gemini, Anthropic. Optional `modelProtocols` override per model (e.g., Gemini models use `gemini` protocol, Claude uses `anthropic`).
+
+### OpenRouter
+
+1. Sign in at [openrouter.ai](https://openrouter.ai/), create a key at [openrouter.ai/keys](https://openrouter.ai/keys) — copy it immediately (shown only once).
+2. **Settings → Connections → Add provider → OpenRouter** → paste key → save.
+3. 300+ models from many providers appear in the selector under a single key.
+
+OpenRouter is the easiest way to get started if you want access to many models without managing multiple provider accounts.
+
+### DeepSeek
+
+1. Get a key at [platform.deepseek.com](https://platform.deepseek.com/).
+2. **Settings → Connections → Add provider → DeepSeek** → paste key → save.
+
+### Dashscope (Qwen)
+
+1. Get a key at [dashscope.console.aliyun.com](https://dashscope.console.aliyun.com/).
+2. **Settings → Connections → Add provider → Dashscope** → paste key → save.
+
+### Custom (OpenAI-compatible)
+
+For local models or any OpenAI-compatible endpoint:
+
+- Enter Base URL + API key + model names.
+- Use any non-empty placeholder for local models without auth.
+
+Local model examples:
+
+```
+Ollama:     http://localhost:11434/v1
+LM Studio:  http://localhost:1234/v1
+vLLM:       http://localhost:8000/v1
+llama.cpp:  http://localhost:8080/v1
+```
+
+### Preset platforms (quick config)
+
+For preset platforms, the Base URL is auto-filled — just paste your API key. Console links for getting keys:
+
+| Platform | Console URL |
+|---|---|
+| Dashscope | [dashscope.console.aliyun.com](https://dashscope.console.aliyun.com/) |
+| Zhipu | [open.bigmodel.cn](https://open.bigmodel.cn/) |
+| Moonshot | [platform.moonshot.cn](https://platform.moonshot.cn/) |
+| ModelScope | [modelscope.cn/my/myaccesstoken](https://modelscope.cn/my/myaccesstoken) |
+| OpenRouter | [openrouter.ai/keys](https://openrouter.ai/keys) |
+| DeepSeek | [platform.deepseek.com](https://platform.deepseek.com/) |
+| SiliconFlow | [siliconflow.cn](https://siliconflow.cn/) / [siliconflow.com](https://siliconflow.com/) |
+| xAI | [console.x.ai](https://console.x.ai/) |
+| MiniMax | [platform.minimaxi.com](https://platform.minimaxi.com/) |
+
+---
+
+## Multi-key rotation
+
+Headmaster supports multi-key rotation for each provider. Paste multiple API keys (comma-separated or one per line) in the provider configuration.
+
+### Under the hood
+
+- **Automatic rotation** on errors (401, 429, 503) — the failed key is skipped and the next one is tried.
+- **Smart blacklist:** Failed keys are blocked for 90 seconds, then auto-recover.
+- **Load balancing:** Random starting key selection spreads load evenly.
+- **Per-key logging:** Key rotation events are logged so you can see which key was used for which request.
+
+### Format
+
+Comma-separated:
+```
+sk-xxx1,sk-xxx2,sk-xxx3
+```
+
+Or line breaks:
+```
+sk-xxx1
+sk-xxx2
+sk-xxx3
+```
+
+### Platform support
+
+- **Supported:** Gemini, Vertex AI, OpenAI, Anthropic, Custom, New API, and all OpenAI-compatible platforms (ModelScope, OpenRouter, Dashscope, DeepSeek, MiniMax, SiliconFlow, Zhipu, Moonshot, xAI, Ark, Qianfan, Hunyuan, Lingyi, Poe, InfiniAI, Ctyun, StepFun, etc.)
+- **Not supported:** AWS Bedrock (uses AWS credential auth).
+
+---
+
+## Model defaults
+
+Open **Settings → My Headmaster → Model defaults** to set which model new chats start on. This does not change the model in existing conversations.
+
+Pick a model based on the kind of work:
+
+- **Fast and cheap** — for short questions, edits, and casual conversation. Examples: Claude Haiku, GPT-4o-mini, Gemini Flash.
+- **Large context** — for long documents, code review across a whole repo, or research with many sources. Examples: Claude Sonnet, GPT-4o, Gemini Pro.
+- **Tool-heavy** — for workflows that call external services a lot. Look for models with strong function-calling support.
+- **Reasoning** — for complex multi-step problems. Examples: o1, o3, DeepSeek R1.
+
+---
+
+## Per-conversation model override
+
+You can pick a different model for a single chat by clicking the model name at the top of the conversation view. A dropdown shows every model from every connected provider. The choice sticks for that conversation only — new chats still use your default.
+
+Each agent (built-in, Claude Code, Codex, etc.) exposes its own model list. Switching the agent also switches the model list.
+
+---
+
+## Profile model fallback
+
+Each profile can specify a fallback model. If the primary model is unavailable (provider outage, rate limit across all keys), the runtime falls back to the secondary model automatically. Configure this in **Settings → My Headmaster → Profile → Model fallback**.
+
+---
+
+## Local models
+
+To use a local model (Ollama, LM Studio, vLLM, llama.cpp):
+
+1. Start your local model server. Make sure it's listening on a known port.
+2. In Headmaster: **Settings → Connections → Add provider → Custom OpenAI-compatible**.
+3. Set the base URL to your local server's address (e.g., `http://localhost:11434/v1` for Ollama).
+4. Leave the API key blank (or use a dummy key if the field is required).
+5. Save. The local models appear in the selector.
+
+Local models are free and private — no data leaves your machine. They're slower and less capable than frontier cloud models, but good for offline work, privacy-sensitive data, or cost savings on routine tasks.
+
+---
+
+## Model discovery
+
+When you add a provider, Headmaster fetches the provider's model list automatically. The model selector shows:
+
+- Model name
+- Context window size (if known)
+- Whether the model supports tool use
+- Whether the model supports image input
+
+You can search models by typing a few letters in the selector. The list filters as you type.
+
+If the model list is empty or fails to load: invalid/expired key, wrong Base URL, network issues, or the platform is temporarily unavailable. Check the key, test the connection, and try again.
+
+---
+
+## FAQ
+
+**How to verify config success?**
+Models appear in the list, are selectable in conversation, and you receive normal replies.
+
+**Multi-key not working?**
+Check the format (comma or line break), verify the platform supports multi-key (AWS Bedrock doesn't), check console logs for rotation errors.
+
+**How to switch models?**
+Use the model selector at the bottom-left of the input box. Each agent exposes its own model list. Selection is remembered per conversation.
+
+**Models not visible in conversation?**
+Ensure the provider is enabled in Connections, the key is valid, and the model is not filtered out by the specialist's allowed list.

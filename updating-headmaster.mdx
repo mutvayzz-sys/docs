@@ -1,0 +1,76 @@
+---
+title: "Updating Headmaster"
+description: "---"
+---
+
+# Updating Headmaster
+
+Headmaster ships updates regularly. There are two update channels:
+
+- **Stable** — recommended. Released after the prerelease channel has been running clean for at least a week.
+- **Prerelease** — opt-in. Newer features, smaller audience, occasional rough edges.
+
+The default is Stable. Switch to Prerelease from **Settings → About → Include prerelease updates**.
+
+### How updates work
+
+The desktop checks the Headmaster release endpoint on launch and every few hours after that. When a new version is found, the app shows a banner with a **Download** button.
+
+Download runs in the background. When the download is finished, the app prompts you to **Restart to update**. Restarting:
+
+1. Quits the desktop app.
+2. Swaps the binaries in place.
+3. Relaunches with the new version.
+
+Your data — sessions, memory, settings, files — is preserved across an update. There is no migration step.
+
+### When the runtime also changes
+
+Some updates ship with a runtime change. In that case, **Restart** also:
+
+1. Tears down the old runtime.
+2. Starts a fresh runtime with the new version.
+3. Reconnects the desktop app to the new runtime.
+
+This takes a few seconds. The status indicator in the sidebar footer shows the runtime coming back up. Your sessions and memory are preserved.
+
+### Release notes
+
+After updating, the **Update Log** link in **Settings → About** opens the release notes on the Headmaster site. The release notes cover what changed in the desktop app and (when relevant) the runtime.
+
+See the [Headmaster changelog](https://gcaplabs.com/changelog) for all releases.
+
+### Offline updates
+
+If your machine is air-gapped:
+
+1. Download the installer manually from the Headmaster site on a connected machine.
+2. Transfer it to the air-gapped machine (USB, network share, etc.).
+3. Run the installer. It detects the existing install and upgrades in place.
+4. Your data is preserved.
+
+### Rollback
+
+If an update causes problems:
+
+1. Download the previous version's installer from the Headmaster site.
+2. Run it over the current install.
+3. Your data is preserved — the installer does not downgrade data formats, only binaries.
+
+Rollback is a manual process — there's no automatic "revert to previous version" button.
+
+### Portable vs installer updates
+
+- **Installer:** updates are automatic. The app checks, downloads, and installs with your approval.
+- **Portable:** updates are manual. The app checks and notifies you, but you download and extract the new version yourself. Your data folder is separate from the executable, so you don't lose data when you swap the portable archive.
+
+### Update check fails
+
+If the update check fails (no network, proxy blocks the endpoint):
+
+1. The app shows "Update check failed" in the About panel.
+2. Chat still works — only the update check is affected.
+3. Check your network and proxy settings.
+4. You can always update manually by downloading the installer.
+
+---

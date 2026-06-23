@@ -1,0 +1,126 @@
+---
+title: "The local runtime"
+description: "---"
+---
+
+# The local runtime
+
+Headmaster Desktop runs two things side by side: the app you see, and a **local runtime** — a small background service that does the actual work of talking to model providers, running tools, and persisting sessions.
+
+The runtime runs on your machine. It is not a cloud service. Your conversations, your files, and your provider credentials all stay local.
+
+### Why the runtime exists
+
+Splitting the agent into a background service lets the desktop app stay responsive: long-running tool calls, file operations, and provider requests happen in the service, not in the chat window. If you close the chat window, the runtime keeps going. If you restart the app, the runtime comes back up automatically.
+
+The runtime also means the agent can work while you're not looking. Scheduled tasks, background downloads, and long-running tool calls continue even if the desktop window is minimized or closed. As long as Headmaster is running, the runtime is working.
+
+### Where the runtime runs
+
+The runtime is a small process Headmaster starts for you on first launch. It listens on a local port — a number reserved for Headmaster. The desktop app finds it automatically; you don't have to configure the port.
+
+It does not accept connections from outside your machine in its default configuration. Remote access is an opt-in feature you configure explicitly.
+
+### Runtime status indicator
+
+You can see the runtime's state at any time from the **status indicator in the sidebar footer**. The indicator shows one of:
+
+- **Connected** — both the REST API and the live event stream (WebSocket) are responding. Chat works normally.
+- **Reconnecting** — the runtime is restarting, usually after an update or a crash. Chat is paused for a few seconds while it comes back.
+- **Disconnected** — the runtime is not responding. Open **Settings → Headmaster's Library → Runtime** to see why and restart.
+
+Hover the indicator for a tooltip with the current port number and the last error (if any).
+
+### Local vs remote
+
+By default the desktop talks to a runtime on the same machine. If you run a runtime on a different machine — a more powerful desktop, a home server, or a Mac you use from a Windows laptop — you can point the app at it.
+
+1. Open **Settings → Headmaster's Library → Runtime**.
+2. Switch **Connection mode** from **Local** to **Remote**.
+3. Enter the host and port of the other machine's runtime.
+4. Click **Test connection**. If it passes, click **Save**.
+
+Remote mode is useful when you want to keep the chat UI on a laptop and the actual work on a stationary box. The remote machine runs the runtime; the laptop runs the desktop app and connects to it over the network.
+
+In remote mode:
+- Conversations, memory, and files live on the machine running the runtime.
+- The desktop app on the laptop is a thin client — it renders the UI and forwards your input.
+- Provider credentials are stored on the runtime machine, not the laptop.
+
+### Restarting the runtime
+
+The runtime is started and managed by the desktop app. You don't usually need to restart it. If it gets stuck:
+
+1. Open **Settings → Headmaster's Library → Runtime → Restart**.
+2. The runtime process is torn down and a fresh one starts.
+3. The status indicator should flip back to **Connected** within a few seconds.
+
+Restarting does not lose your data. Sessions and memory live in the user data folder, not in the runtime process.
+
+### Where data lives
+
+The runtime stores its data in a folder owned by your user account:
+
+- **Windows:** `%APPDATA%\Headmaster`
+- **macOS:** `~/Library/Application Support/Headmaster`
+- **Linux:** `~/.config/Headmaster`
+
+Inside that folder:
+
+| Subfolder       | What's in it                                  |
+| --------------- | --------------------------------------------- |
+| `logs/`         | Daily log files: `YYYY-MM-DD.log`             |
+| `sessions/`     | Conversation transcripts and session metadata |
+| `memory/`       | Agent memory store                            |
+| `config/`       | Runtime configuration (`config.yaml`)         |
+| `skills/`       | Installed skill packages                      |
+| `extensions/`   | Installed specialist extensions               |
+| `cache/`        | Temporary caches (previews, downloads)       |
+
+### Log files
+
+Logs are at `<data folder>/logs/YYYY-MM-DD.log`. Each line has a timestamp, a log level (`INFO`, `WARN`, `ERROR`), and a message. If you're reporting a bug, attach the most recent log file.
+
+To change the log level:
+
+1. Open **Settings → Headmaster's Library → Advanced → Log level**.
+2. Pick `DEBUG` for more detail, `INFO` for normal use, `WARN` for warnings only, `ERROR` for errors only.
+3. Restart the runtime for the change to take effect.
+
+### Runtime configuration
+
+The runtime reads its configuration from `config.yaml` in the data folder. You normally don't edit this file — the Settings UI writes it for you. But if you need to make a change the UI doesn't cover, you can edit it directly and restart the runtime.
+
+Common fields:
+
+```yaml
+# Model defaults
+model:
+  default: "claude-sonnet-4"
+  fallback: "gpt-4o"
+
+# Provider keys (also settable via the UI)
+providers:
+  anthropic:
+    api_keys:
+      - "sk-ant-..."
+  openai:
+    api_keys:
+      - "sk-..."
+
+# Memory
+memory:
+  retention_days: 90
+  max_context_tokens: 50000
+
+# Logging
+log_level: "INFO"
+```
+
+Do not edit the config file while the runtime is running — it may overwrite your changes on exit. Quit Headmaster first, edit, then relaunch.
+
+### When something goes wrong
+
+See [Troubleshooting](#troubleshooting) for fixes to the most common runtime issues — disconnected state, 401s on local endpoints, a runtime that won't start, and crash-restart loops.
+
+---

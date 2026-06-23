@@ -1,0 +1,216 @@
+---
+title: "Channels"
+description: "This is what makes Headmaster feel like a 24/7 assistant — it reaches out to you on the platform you're already on, inst"
+---
+
+# Channels
+
+Channels are the messaging platforms the agent can be reached on. With a channel connected, you can send Headmaster a message from your phone, and the agent's reply lands in the same conversation history.
+
+---
+
+## Platforms you can connect
+
+| Channel          | Type                  | Setup difficulty |
+| ---------------- | --------------------- | ---------------- |
+| Telegram         | Bot API               | Easy             |
+| WeChat Work      | Enterprise API        | Intermediate     |
+| DingTalk         | Bot Webhook           | Intermediate     |
+| Lark             | Bot API               | Intermediate     |
+| WeCom            | Enterprise API        | Intermediate     |
+| iMessage         | Apple Messages bridge | Advanced         |
+| WhatsApp Business| Cloud API            | Intermediate     |
+
+---
+
+## Connecting a channel
+
+1. Open **Settings → Headmaster's Library → Channels**.
+2. Pick the channel and click **Connect**.
+3. Follow the platform-specific flow (details for each platform below).
+4. Test the connection by sending a message from your phone to the channel.
+
+The detailed configuration form for each channel lives in the same area. Each form walks you through the steps for that specific platform.
+
+---
+
+## Telegram setup
+
+1. Create a bot: message [@BotFather](https://t.me/BotFather) on Telegram.
+2. Send `/newbot`, follow the prompts to name it.
+3. Copy the bot token BotFather gives you.
+4. In Headmaster: **Channels → Telegram → Connect**.
+5. Paste the bot token.
+6. Save. Send a message to your bot on Telegram to test.
+
+**What works:**
+- Text messages (send and receive).
+- File attachments (send and receive).
+- Inline buttons for approvals and clarifications.
+- Proactive notifications from scheduled tasks.
+- Group chats (the bot responds to mentions).
+
+---
+
+## DingTalk setup
+
+1. Log in to the [DingTalk developer console](https://open-dev.dingtalk.com/).
+2. Create a custom robot:
+   - Go to your group → Group Settings → Group Assistant → Add Robot → Custom.
+   - Or create an enterprise application in the developer console.
+3. Configure the robot:
+   - Set the security settings (custom keyword, IP whitelist, or sign).
+   - Note the **Webhook URL** and **Secret** (if using sign mode).
+4. In Headmaster: **Channels → DingTalk → Connect**.
+5. Enter the Webhook URL and Secret.
+6. Save. Send a message from DingTalk to test.
+
+**What works:**
+- Text messages (send and receive).
+- File attachments (limited — depends on DingTalk's API).
+- Text-based approvals (DingTalk doesn't support inline buttons).
+- Proactive notifications from scheduled tasks.
+
+---
+
+## WeChat Work setup
+
+1. Log in to the [WeChat Work admin console](https://work.weixin.qq.com/).
+2. Create a custom application:
+   - Go to Application Management → Self-built → Create.
+3. Note the **Corp ID**, **Agent ID**, and **Secret**.
+4. Configure the receive message URL:
+   - Set the callback URL to Headmaster's webhook endpoint.
+   - Set the callback token and encoding key.
+5. In Headmaster: **Channels → WeChat Work → Connect**.
+6. Enter the Corp ID, Agent ID, and Secret.
+7. Save. Send a message from WeChat Work to test.
+
+**What works:**
+- Text messages (send and receive).
+- File attachments (send and receive).
+- Text-based approvals (no inline buttons).
+- Proactive notifications from scheduled tasks.
+
+---
+
+## Lark setup
+
+1. Log in to the [Lark developer console](https://open.feishu.cn/app).
+2. Create a custom bot application:
+   - Create a new app.
+   - Enable the Bot capability.
+   - Set permissions (send messages, receive messages, upload files).
+3. Note the **App ID** and **App Secret**.
+4. Configure the event subscription:
+   - Set the request URL to Headmaster's webhook endpoint.
+   - Subscribe to the `im.message.receive_v1` event.
+5. In Headmaster: **Channels → Lark → Connect**.
+6. Enter the App ID and App Secret.
+7. Save. Send a message from Lark to test.
+
+**What works:**
+- Text messages (send and receive).
+- File attachments (send and receive).
+- Inline buttons for approvals and clarifications (Lark supports interactive cards).
+- Proactive notifications from scheduled tasks.
+
+---
+
+## WeCom setup
+
+1. Log in to the [WeCom admin console](https://work.weixin.qq.com/).
+2. Create a custom application:
+   - Go to Application Management → Self-built → Create.
+3. Note the **Corp ID**, **Agent ID**, and **Secret**.
+4. In Headmaster: **Channels → WeCom → Connect**.
+5. Enter the Corp ID, Agent ID, and Secret.
+6. Save. Send a message from WeCom to test.
+
+**What works:**
+- Text messages (send and receive).
+- File attachments (limited).
+- Text-based approvals (no inline buttons).
+- Proactive notifications from scheduled tasks.
+
+---
+
+## iMessage setup
+
+iMessage requires a Mac running as a bridge (Apple Messages doesn't have a public API).
+
+1. On your Mac, install the bridge software (follow the platform-specific guide for the latest compatible bridge).
+2. Configure the bridge to forward messages to Headmaster's webhook endpoint.
+3. In Headmaster: **Channels → iMessage → Connect**.
+4. Enter the bridge endpoint URL and authentication token.
+5. Save. Send an iMessage to the bridge's phone number to test.
+
+**What works:**
+- Text messages only (send and receive).
+- No file transfer via iMessage.
+- Text-based approvals.
+- Proactive notifications.
+
+> iMessage is an advanced setup. The bridge runs on your Mac and must stay online for the channel to work.
+
+---
+
+## WhatsApp Business setup
+
+1. Sign up for the WhatsApp Business Cloud API at [Meta for Developers](https://developers.facebook.com/apps/).
+2. Create a business account:
+   - Add the WhatsApp product to your Meta app.
+   - Get the **Phone Number ID** and **Access Token**.
+   - Configure the webhook: set the callback URL to Headmaster's webhook endpoint, and subscribe to message events.
+3. In Headmaster: **Channels → WhatsApp Business → Connect**.
+4. Enter the Phone Number ID and Access Token.
+5. Save. Send a WhatsApp message to the business number to test.
+
+**What works:**
+- Text messages (send and receive).
+- Media messages (images, documents — limited by WhatsApp's API).
+- Inline buttons for approvals (WhatsApp supports interactive message buttons).
+- Proactive notifications from scheduled tasks.
+
+---
+
+## Disconnecting
+
+Click **Disconnect** on a channel card. The agent stops reading from and replying to that platform immediately. Past conversation transcripts are kept.
+
+---
+
+## What flows over channels
+
+- **Inbound** — messages from the platform become new turns in your active conversation. The agent reads them and responds.
+- **Outbound** — the agent's responses are sent back to the platform as messages.
+- **File attachments** — supported on channels that allow them. The agent can send and receive files.
+- **Approvals and clarifications** — work the same as in the desktop chat window. The agent sends an approval request as a message with buttons (on platforms that support them) or as a text prompt.
+- **Notifications** — the agent can proactively send you a message on a channel when a background task finishes or a scheduled task triggers.
+
+---
+
+## Channel-specific limitations
+
+| Channel          | File send | File receive | Inline buttons | Notes                              |
+| ---------------- | --------- | ------------ | -------------- | ---------------------------------- |
+| Telegram         | Yes       | Yes          | Yes            | Full support.                      |
+| WeChat Work      | Yes       | Yes          | No             | Text-based approvals only.         |
+| DingTalk         | Yes       | Limited      | No             | Text-based approvals only.         |
+| Lark             | Yes       | Yes          | Yes            | Full support. Interactive cards.   |
+| WeCom            | Yes       | Limited      | No             | Text-based approvals only.         |
+| iMessage         | No        | No            | No             | Text only. No file transfer.       |
+| WhatsApp Business| Yes       | Limited      | Yes            | Media messages supported.         |
+
+---
+
+## Proactive behaviors
+
+The agent can proactively send messages on channels:
+
+- **Scheduled task results** — when a cron job fires, the result is delivered to the channel you configured.
+- **Background task completion** — when a long-running task finishes, the agent notifies you on your preferred channel.
+- **Approval requests** — if the agent needs approval and you're not at the desktop, it sends the request to your channel.
+- **Reminders** — the agent can send scheduled reminders ("your meeting starts in 10 minutes").
+
+This is what makes Headmaster feel like a 24/7 assistant — it reaches out to you on the platform you're already on, instead of waiting for you to check the desktop app.

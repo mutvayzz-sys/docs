@@ -1,0 +1,98 @@
+---
+title: "Modes"
+description: "---"
+---
+
+# Modes
+
+Headmaster has four interaction modes that control how much autonomy the agent has and how often it asks for your approval.
+
+### Work Along
+
+**The default mode.** The agent works alongside you, asking for approval before running tools, writing files, or making external calls. You see every action before it happens and can approve or deny each one.
+
+Use Work Along when:
+- You're exploring a new codebase and want to see what the agent does.
+- You're working on something sensitive (production config, customer data).
+- You want to learn from the agent's approach.
+
+In Work Along:
+- The agent proposes an action.
+- You see the action, its parameters, and what it will do.
+- You click **Approve** to let it run, or **Deny** to stop.
+- You can approve all future calls of the same type with **Approve always** for this conversation.
+
+### Run It Yourself
+
+The agent handles the task end-to-end without asking for approval on each step. It still asks before doing anything irreversible (deleting a file, sending an email, pushing to a remote).
+
+Use Run It Yourself when:
+- You've given a clear task and trust the agent to execute.
+- The task has many steps and approving each one would be tedious.
+- You're running a well-understood workflow.
+
+In Run It Yourself:
+- The agent runs tools and writes files without per-action approval.
+- It still asks before destructive actions (delete, overwrite, send, push).
+- You can interrupt at any time with the stop button.
+- All actions are logged in the conversation transcript for audit.
+
+### Hands-Off
+
+Same as Run It Yourself, but the agent does not ask before destructive actions either. It just does them and reports what it did.
+
+Use Hands-Off when:
+- You're running a well-tested automated workflow.
+- You're away from the keyboard and want the agent to complete a task.
+- You've set up guardrails (project folder scoping, allowed tools list) and trust the setup.
+
+In Hands-Off:
+- No approval prompts at all. The agent runs to completion.
+- Every action is still logged in the transcript.
+- You can review the full log after the fact.
+- If the agent encounters an error it can't resolve, it stops and reports rather than guessing.
+
+### Autopilot
+
+The agent runs on a schedule, 24/7. It picks up tasks from the Schedule, executes them in Hands-Off mode, and delivers results to your Channels (messaging platforms, email, or the desktop chat).
+
+Use Autopilot when:
+- You have recurring tasks (daily summaries, weekly reports, monitoring).
+- You want the agent to work while you sleep.
+- You've validated the workflow in Hands-Off first.
+
+In Autopilot:
+- The agent wakes on a schedule trigger.
+- It runs the task in Hands-Off mode (no approvals).
+- Results are delivered to the channel you configured (Telegram, email, desktop notification).
+- The agent goes back to sleep until the next trigger.
+
+### Switching modes
+
+Switch modes from the mode selector in the composer area:
+
+| Mode          | Approvals         | Destructive actions | Scheduled |
+| ------------- | ----------------- | ------------------- | --------- |
+| Work Along    | Every action      | Ask                 | No        |
+| Run It Yourself | No per-action  | Ask                 | No        |
+| Hands-Off    | None              | No ask              | No        |
+| Autopilot     | None              | No ask              | Yes       |
+
+You can also switch modes mid-conversation. The change applies to the next action, not retroactively.
+
+### Approval gates
+
+In Work Along and Run It Yourself, the agent asks for approval before:
+
+- **Running a tool** — web search, code execution, file read/write, MCP call.
+- **Accessing a file outside the project folder.**
+- **Making a network request** (external API call, HTTP request).
+- **Destructive actions** (delete, overwrite, send, push) — asked in all modes except Hands-Off.
+
+The approval prompt shows:
+- What the agent wants to do.
+- The tool name and parameters.
+- The expected outcome.
+- **Approve** / **Deny** / **Approve always** (for this conversation) buttons.
+
+---

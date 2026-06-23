@@ -1,0 +1,103 @@
+---
+title: "Session search"
+description: "Both work together. Memory gives the agent quick context in every conversation. Session search lets the agent dig into t"
+---
+
+# Session search
+
+Session search lets you search past conversations — across all profiles, all time. It's a full-text search engine over every conversation you've ever had with the agent.
+
+---
+
+## What it is
+
+Every conversation is stored as a JSON file in your data directory. Session search builds a full-text index (FTS5 — the same engine SQLite uses) over all those files. When you search, it queries the index and returns matching excerpts ranked by relevance.
+
+This is different from memory:
+
+- **Memory** is curated facts the agent decided to remember — distilled, compact, limited.
+- **Session search** is the raw transcript of every conversation — full text, searchable, unfiltered.
+
+---
+
+## When to use it
+
+- "What did we discuss about the database migration three weeks ago?"
+- "Find the conversation where we debugged the WebSocket reconnect issue."
+- "Show me every time I mentioned the staging server."
+- "What was the solution to the white screen bug?"
+
+Memory might have a fact like "Migrated DB from MySQL to PostgreSQL on 2026-01-15." Session search finds the full 40-message conversation where you discussed the migration, planned the approach, hit errors, and fixed them.
+
+---
+
+## How to search
+
+### From the sidebar
+
+Type in the **search bar** at the top of the sidebar. The search:
+
+1. First matches conversation titles — if any title contains your query, it shows at the top.
+2. Then searches conversation contents — full-text search across all messages in all sessions.
+3. Results are ranked by relevance.
+
+Click any result to open that conversation. The matching text is highlighted.
+
+### From chat
+
+You can ask the agent to search past sessions:
+
+```
+What did we discuss about the database migration?
+```
+
+The agent uses the `session_search` tool to find matching conversations and incorporates the findings into its response.
+
+### Advanced search
+
+Session search supports FTS5 query syntax:
+
+- `AND` is the default — multi-word queries require all terms.
+- `OR` — broader recall (`alpha OR beta OR gamma`).
+- `"exact phrase"` — exact match.
+- `NOT` — exclude terms (`python NOT java`).
+- Prefix wildcards — `deploy*` matches "deploy", "deployment", "deploying".
+
+---
+
+## What session search returns
+
+Each search result shows:
+
+- **Session title** — the conversation title.
+- **Date** — when the conversation happened.
+- **Snippet** — the matching text, highlighted.
+- **Profile** — which profile the conversation belongs to.
+- **Match position** — where in the conversation the match appears.
+
+Click a result to open the full conversation. The matching text is scrolled into view and highlighted.
+
+---
+
+## Browsing sessions
+
+If you don't search, you can browse:
+
+- **Recent sessions** — the sidebar shows recent conversations chronologically.
+- **By profile** — switch profiles to see that profile's conversations.
+- **By date** — conversations are grouped by Today, Yesterday, This Week, Earlier.
+
+---
+
+## Session search vs. memory
+
+| Feature | Session search | Memory |
+|---|---|---|
+| What it stores | Full conversation transcripts | Distilled facts |
+| How it's created | Automatically — every conversation is indexed | Agent-curated — the agent decides what to remember |
+| How to search | FTS5 full-text query | Browse the memory page or ask the agent |
+| Size | Grows with every conversation | Bounded (~2,200 chars for agent notes, ~1,375 for user profile) |
+| In system prompt | No — searched on demand | Yes — injected into every turn |
+| Best for | "What did we say about X?" | "What do you know about me?" |
+
+Both work together. Memory gives the agent quick context in every conversation. Session search lets the agent dig into the full history when memory isn't enough.

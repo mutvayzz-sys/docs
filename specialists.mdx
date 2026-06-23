@@ -1,0 +1,250 @@
+---
+title: "Specialists"
+description: "## Output
+- Executive summary (3 sentences)
+- Key findings (bullet list with source links)
+- Gaps and contradictions
+- R"
+---
+
+# Specialists
+
+A specialist is a focused AI persona built on top of an agent backend. It bundles:
+
+- **Backend agent** — runs the work (built-in engine, Claude Code, Codex, Gemini CLI, etc.)
+- **Rules** — a Markdown system prompt defining behavior
+- **Skills** — extra capabilities (decks, spreadsheets, reports, MCP tools, etc.)
+- **Display metadata** — name, avatar (emoji or built-in icon), description
+
+Headmaster ships with 20+ built-in specialists. You can also hire custom specialists from scratch.
+
+---
+
+## The 20+ built-in Specialists
+
+| Specialist       | Role                          | What they do                                             |
+| ---------------- | ----------------------------- | ------------------------------------------------------- |
+| The Writer       | Slide creator                 | Decks, presentations, slide narratives.                 |
+| The Storyteller  | Visual narrative specialist    | Motion slides, visual storytelling, morph decks.        |
+| The Visualizer   | 3D and infographic specialist  | 3D visuals, infographics, spatial diagrams.             |
+| The Closer       | Pitch deck creator            | Pitch decks, fundraising materials, investor-ready docs. |
+| The Analyst      | Spreadsheet creator           | Spreadsheets, financial models, data analysis.           |
+| The Dash         | Dashboard creator             | Dashboards, charts, data visualizations.                |
+| The Modeler      | Financial modeler             | DCF, 3-statement models, forecasts, valuation.          |
+| The Reporter     | Document creator              | Reports, briefs, memos, Word documents.                 |
+| The Researcher   | Academic paper writer         | Academic papers, deep research, citations.               |
+| The Architect    | Diagram expert                | Flowcharts, ER diagrams, system design, architecture.   |
+| The Designer     | UI/UX designer                | UI/UX, prototypes, design systems, 57+ styles.          |
+| The Builder      | Code and game developer       | Code, games, complex logic, full-stack work.             |
+| The Wordsmith    | Creative writer              | Fiction, narrative, creative writing, storytelling.    |
+| The Coach        | Life and productivity coach   | Personal productivity, life coaching, goal setting.    |
+| The Operator     | Autonomous general worker     | General autonomous tasks, workflow execution.           |
+| The Planner      | Project planner              | Project breakdown, task tracking, roadmaps.             |
+| The Recruiter    | HR and hiring specialist      | Job descriptions, candidate screening, hiring workflows.|
+| The Setup Crew   | Integration and setup helper  | Setup, configuration, integrations, plumbing.          |
+| The DevOps       | Infrastructure specialist     | Deployment, CI/CD, infrastructure, DevOps.              |
+| The Connector    | Network and outreach          | Networking, social media, outreach, communication.      |
+
+---
+
+## What makes a specialist
+
+- **Local-first** — runs on your machine. Rules are stored as Markdown files under the data directory.
+- **Pluggable backend** — every specialist can pick its own agent (built-in, Claude Code, Codex, etc.).
+- **Customizable** — built-in specialists allow tweaking backend, rules, skills, and description. Custom specialists are built from scratch.
+- **Stackable skills** — multiple skills can be enabled at once. Skills can be built-in, user-imported, or extension-contributed.
+
+---
+
+## Picking a specialist
+
+Click the specialist picker (next to the model selector at the bottom of the composer). A dropdown shows all 20+ specialists with their roles. Pick one and start typing. The specialist's personality, system prompt, and default skills apply to the conversation.
+
+You can also pick a specialist by name: type `/specialist <name>` in the composer (e.g., `/specialist The Builder`).
+
+---
+
+## Hiring a custom specialist
+
+Want a specialist that isn't in the built-in set? Create one:
+
+1. Open **Settings → My Headmaster → Your Hires**.
+2. Click **Hire a Specialist**.
+3. Fill in:
+
+### Basic info fields
+
+| Field | Required | Notes |
+|---|---|---|
+| **Name** | Yes | Display name in the specialist list |
+| **Avatar** | No | Emoji (default: robot emoji) |
+| **Description** | No | One-liner describing purpose |
+| **Backend agent** | Yes | Auto-detected agents — built-in, Claude Code, Codex, Gemini, Qwen, Cursor, etc. |
+
+> Available backends match what's detected on your machine. The built-in engine is always available with no install required.
+
+4. Click **Save**. The specialist appears in the picker and is available immediately.
+
+---
+
+## Configuring rules
+
+Rules are the specialist's **system prompt** — Markdown stored as `.md` files in the data directory. Fed to the backend agent as system instruction at runtime.
+
+### Good for
+
+- **Workflows** — "When the user asks for X, do A, then B, then C"
+- **Constraints** — "Never modify files outside the project root"
+- **Domain context** — "This codebase uses Bun + Vite; tests are Vitest"
+- **Output style** — "Always answer in Markdown with a TL;DR at the top"
+
+### Editing flow
+
+1. Open the specialist → **Rules** section.
+2. Use the **Edit** tab to write Markdown.
+3. Use the **Preview** tab to see the rendered output.
+4. Save — applies on the next conversation.
+
+### Example: File management specialist
+
+```markdown
+# File Management Specialist
+
+## Path conventions
+- All files mentioned by the user live under the current project directory unless explicitly stated
+- Use Glob to locate files when only the name is given — never ask "where is the file?"
+- Avoid creating new files when an existing one can be edited
+
+## Execution principles
+- Break complex tasks into steps and report progress
+- Confirm destructive operations (delete, overwrite) before executing
+- Keep solutions minimal and focused
+```
+
+### Best practices
+
+- Be explicit — short imperative sentences work best.
+- Use headings and bullet lists; agents pay attention to structure.
+- Provide concrete examples for cases you care about.
+- Don't dump large reference docs — use Skills for that.
+
+---
+
+## Configuring skills
+
+Skills extend specialists with packaged capabilities — file format processors, document generators, MCP tool bundles, domain-specific reference packs. Stored as `SKILL.md` documents loaded on demand.
+
+### Where skills come from
+
+1. **Built-in** — bundled with Headmaster (decks, spreadsheets, reports, Mermaid charts, etc.). Toggle on/off.
+2. **Custom** — your own skills, imported from a folder path.
+3. **Extension** — contributed by external agent extensions from the Agency.
+
+### Adding custom skills
+
+**Option A — Quick scan:**
+1. Click **Add skills**.
+2. Pick an auto-detected common path (e.g., `~/.claude/skills`, `~/skills`).
+3. Confirm.
+
+**Option B — Manual path:**
+1. Click **Add skills**.
+2. Paste absolute path(s), comma-separated: `/path/to/skills, /another/path`.
+3. Confirm — Headmaster scans for `SKILL.md` files.
+
+### Management
+
+- **Toggle** — check/uncheck to enable/disable a skill for this specialist.
+- **Remove custom skill** — hover the row, click the trash icon.
+- **Built-in skills** — can be disabled but not removed.
+
+See [Skills & The Agency](skills-the-agency.md) for the full skills documentation.
+
+---
+
+## Editing and deleting
+
+### Built-in specialists
+
+- **Editable:** Backend agent, rules, skills, description.
+- **Locked:** Name and avatar (kept recognizable).
+- **Cannot be deleted** — only disabled.
+
+### Custom specialists
+
+- **Fully editable** — including name and avatar.
+- **Delete** button at the bottom of the editor (cannot be undone).
+
+---
+
+## Specialist vs. model
+
+A specialist is a role with a personality and skill set. A model is the underlying LLM. You can use any specialist with any model — The Builder with Claude, The Builder with GPT-4o, The Builder with a local Qwen model. The specialist defines how the agent approaches the task; the model defines how smart the reasoning is.
+
+---
+
+## Extension specialists
+
+Specialists from the Hub registry appear alongside the built-in ones in the picker. Install them from the Agency (see [Skills & The Agency](skills-the-agency.md)). Extension specialists have the same capabilities as built-in ones — the only difference is they come from the community catalog.
+
+---
+
+## Use cases
+
+### File management specialist
+
+**Backend:** Built-in agent
+
+```markdown
+# File Management Specialist
+
+## Core duties
+- Batch rename, smart classify, and organize files in the project directory
+- Never delete without explicit confirmation
+- Report a summary of every operation after completion
+
+## Naming conventions
+- Use snake_case for all new files
+- Prefix temp files with `tmp_` and clean them up at the end of each session
+```
+
+### Code review specialist
+
+**Backend:** Claude Code or built-in agent
+
+```markdown
+# Code Review Specialist
+
+## Review checklist
+- Flag debug prints (console.log, print, fmt.Println)
+- Flag hardcoded secrets (API keys, passwords, tokens)
+- Flag bare except/catch clauses
+- Flag unresolved TODOs and FIXMEs
+- Check for missing tests on new functions
+
+## Output format
+- List issues by severity: Critical, Warning, Info
+- Include file path and line number for each issue
+- Suggest a fix for each Critical issue
+```
+
+### Research specialist
+
+**Backend:** Built-in agent with web search enabled
+
+```markdown
+# Research Specialist
+
+## Process
+1. Break the research question into sub-questions
+2. Search for each sub-question independently
+3. Cross-reference findings across sources
+4. Flag contradictions and gaps
+5. Write a structured summary with citations
+
+## Output
+- Executive summary (3 sentences)
+- Key findings (bullet list with source links)
+- Gaps and contradictions
+- Recommended next steps
+```
