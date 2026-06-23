@@ -1,28 +1,32 @@
 ---
 title: "File management"
-description: "---"
+description: "Browse, organize, preview, and batch-rename files in your project folder — and let the agent auto-classify them by type and content."
 ---
 
 # File management
 
 Headmaster's agent has full file system access within your project folder. The file management features help you organize, preview, and manage the files the agent creates.
 
-### File Manager
+---
 
-The File Manager is a panel that shows the files in your current project folder. Open it from the sidebar or with a keyboard shortcut.
+## File Manager
 
-Features:
+The File Manager is a panel that shows the files in your current project folder. Open it from the sidebar or with `Cmd/Ctrl + I`.
 
-- **Tree view** — navigate the folder hierarchy.
-- **Search** — filter files by name.
-- **Sort** — by name, date, size, or type.
-- **Batch rename** — select multiple files and rename them with a pattern.
-- **Auto-organize** — the agent can sort files into subfolders based on type, date, or content.
-- **Smart classification** — the agent tags files based on their content.
+| Feature | What it does |
+|---|---|
+| **Tree view** | Navigate the folder hierarchy |
+| **Search** | Filter files by name |
+| **Sort** | By name, date, size, or type |
+| **Batch rename** | Select multiple files and rename with a pattern |
+| **Auto-organize** | Sort files into subfolders by type, date, or content |
+| **Smart classification** | Agent tags files based on their content |
 
-### Auto-organize
+---
 
-Click **Sort my files** in the File Manager. The agent reads the files in the folder, classifies them by type and content, and moves them into subfolders:
+## Auto-organize
+
+Click **Sort my files** in the File Manager. The agent reads the folder, classifies files by type and content, and moves them into subfolders:
 
 ```
 /my-project
@@ -35,43 +39,60 @@ Click **Sort my files** in the File Manager. The agent reads the files in the fo
 
 You can customize the classification rules or undo the sort if you don't like the result.
 
-### Batch rename
+---
 
-Select multiple files, click **Rename a batch**, and enter a pattern. Patterns support:
+## Batch rename
 
-- `{n}` — sequential number (1, 2, 3...)
-- `{date}` — current date
-- `{type}` — file type
-- `{name}` — original name
+Select multiple files, click **Rename a batch**, and enter a pattern.
 
-Example: `report_{n}_{date}` produces `report_1_2026-06-23.txt`, `report_2_2026-06-23.txt`, etc.
+| Token | Replaced with |
+|---|---|
+| `{n}` | Sequential number (1, 2, 3…) |
+| `{date}` | Current date |
+| `{type}` | File type |
+| `{name}` | Original file name |
 
-### Preview panel
+**Example:** `report_{n}_{date}` → `report_1_2026-06-23.txt`, `report_2_2026-06-23.txt`, etc.
+
+---
+
+## Preview panel
 
 When the agent writes a file or you click a file in the File Manager, the preview panel opens:
 
-| Format     | Preview                                                   |
-| ---------- | --------------------------------------------------------- |
-| Markdown   | Rendered markdown with live editing.                      |
-| Code       | Syntax-highlighted source with line numbers. Editable.   |
-| HTML       | Rendered web page. Editable.                              |
-| PDF        | Page-by-page rendered PDF. Read-only.                     |
-| Office     | Document preview (decks, spreadsheets, reports). Read-only.|
-| Image      | The image with metadata (dimensions, file size, format). |
-| Diff       | Side-by-side or inline diff view.                         |
+| Format | Preview |
+|---|---|
+| Markdown | Rendered markdown with live editing |
+| Code | Syntax-highlighted source with line numbers. Editable. |
+| HTML | Rendered web page. Editable. |
+| PDF | Page-by-page rendered PDF. Read-only. |
+| Office | Document preview (decks, spreadsheets, reports). Read-only. |
+| Image | The image with metadata (dimensions, file size, format). |
+| Diff | Side-by-side or inline diff view. |
 
-The preview panel is a tabbed interface — you can open multiple files at once and switch between them. Previews are automatically opened when the agent writes a new file or creates a new Office document.
+The preview panel is a tabbed interface — open multiple files at once and switch between them. Previews open automatically when the agent writes a new file or creates a new Office document.
 
-### File operations the agent can do
+---
 
-- **Read** — the agent reads file contents into its context.
-- **Write** — the agent creates or overwrites files.
-- **Edit** — the agent makes targeted edits to specific lines or sections.
-- **Delete** — the agent deletes files (with approval in Work Along mode).
-- **Move** — the agent moves or renames files.
-- **Search** — the agent searches file contents with regex or plain text.
-- **Merge** — the agent merges multiple files into one.
+## File operations the agent can perform
+
+- **Read** — reads file contents into its context.
+- **Write** — creates or overwrites files.
+- **Edit** — makes targeted edits to specific lines or sections.
+- **Delete** — deletes files (with approval in Work Along mode).
+- **Move** — moves or renames files.
+- **Search** — searches file contents with regex or plain text.
+- **Merge** — merges multiple files into one.
 
 All file operations are logged in the conversation transcript for audit.
 
 ---
+
+<CardGroup cols={2}>
+  <Card title="Preview panel" icon="eye" href="/preview-panel">
+    Full details on the multi-format file viewer.
+  </Card>
+  <Card title="Documents" icon="file" href="/documents">
+    Generate Office documents — decks, spreadsheets, reports, and PDFs.
+  </Card>
+</CardGroup>

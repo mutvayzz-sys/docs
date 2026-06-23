@@ -1,6 +1,6 @@
 ---
 title: "Activity & Deliverables"
-description: "- **Find what the agent made:** Instead of hunting through your project folder, see every file the agent created in one "
+description: "A timeline of everything the agent has done and a list of every file it has created — with filtering, export, and one-click preview."
 ---
 
 # Activity & Deliverables
@@ -11,73 +11,91 @@ The Activity page and Deliverables page track what the agent has done and what i
 
 ## Activity
 
-The Activity page is a timeline of everything the agent has done across all conversations. It shows:
+The Activity page is a timeline of everything the agent has done across all conversations.
 
-- **Tool calls** — web searches, file reads/writes, code execution, MCP calls, image generation.
-- **Approvals** — what was approved and denied, by whom, when.
-- **File changes** — files created, edited, or deleted.
-- **Session events** — conversations started, ended, interrupted, resumed.
-- **Scheduled task runs** — when a cron job fired and what it produced.
-- **Errors** — runtime errors, failed tool calls, provider failures.
+### What it shows
+
+| Entry type | What it includes |
+|---|---|
+| **Tool calls** | Web searches, file reads/writes, code execution, MCP calls, image generation |
+| **Approvals** | What was approved and denied, by whom, when |
+| **File changes** | Files created, edited, or deleted |
+| **Session events** | Conversations started, ended, interrupted, resumed |
+| **Scheduled task runs** | When a cron job fired and what it produced |
+| **Errors** | Runtime errors, failed tool calls, provider failures |
 
 ### Filtering
 
 Filter the activity feed by:
 
-- **Date range** — today, last 7 days, last 30 days, custom.
-- **Type** — tool calls, file changes, approvals, errors, scheduled runs.
-- **Conversation** — show only activity from a specific conversation.
-- **Specialist** — show only activity from a specific specialist.
+- **Date range** — today, last 7 days, last 30 days, custom
+- **Type** — tool calls, file changes, approvals, errors, scheduled runs
+- **Conversation** — show only activity from a specific conversation
+- **Specialist** — show only activity from a specific specialist
 
 ### Export
 
 Export the activity log as:
 
-- **JSON** — for programmatic analysis.
-- **CSV** — for spreadsheet analysis.
-- **Markdown** — for human-readable reports.
-
-The export includes all filtered entries with timestamps, types, and details.
+- **JSON** — for programmatic analysis
+- **CSV** — for spreadsheet analysis
+- **Markdown** — for human-readable reports
 
 ### Use cases
 
-- **Audit trail:** Review what the agent did during a work session, especially before a deployment.
-- **Cost tracking:** See how many tool calls and model requests were made.
-- **Debugging:** Find the exact step where a workflow went wrong.
-- **Compliance:** Export the log for security reviews.
+<CardGroup cols={2}>
+  <Card title="Audit trail" icon="shield">
+    Review what the agent did during a work session before a deployment.
+  </Card>
+  <Card title="Cost tracking" icon="chart-bar">
+    See how many tool calls and model requests were made.
+  </Card>
+  <Card title="Debugging" icon="bug">
+    Find the exact step where a workflow went wrong.
+  </Card>
+  <Card title="Compliance" icon="file-check">
+    Export the log for security and compliance reviews.
+  </Card>
+</CardGroup>
 
 ---
 
 ## Deliverables
 
-The Deliverables page lists every file the agent has created or modified. It shows:
+The Deliverables page lists every file the agent has created or modified.
 
-- **File path** — where the file is on disk.
-- **Type** — code, document, spreadsheet, deck, image, PDF, etc.
-- **Created by** — which specialist created it.
-- **Conversation** — link to the conversation where it was created.
-- **Timestamp** — when it was created or last modified.
-- **Size** — file size.
-- **Preview** — click to open in the preview panel.
+### What it shows
+
+| Field | What it is |
+|---|---|
+| **File path** | Where the file is on disk |
+| **Type** | Code, document, spreadsheet, deck, image, PDF, etc. |
+| **Created by** | Which specialist created it |
+| **Conversation** | Link to the conversation where it was created |
+| **Timestamp** | When it was created or last modified |
+| **Size** | File size |
+| **Preview** | Click to open in the preview panel |
 
 ### Filtering
 
-Filter deliverables by:
-
-- **Type** — show only code files, only documents, only images, etc.
-- **Date** — files created today, this week, this month.
-- **Specialist** — files created by a specific specialist.
-- **Conversation** — files from a specific conversation.
+Filter by type, date, specialist, or conversation to narrow down to what you need.
 
 ### Actions
 
-- **Open** — open the file in the preview panel.
-- **Reveal in folder** — open the file's location in your OS file manager.
-- **Delete** — remove the file (with confirmation).
-- **Export list** — export the deliverables list as CSV or Markdown.
+| Action | How |
+|---|---|
+| **Open** | Open the file in the preview panel |
+| **Reveal in folder** | Open the file's location in your OS file manager |
+| **Delete** | Remove the file (with confirmation) |
+| **Export list** | Export the deliverables list as CSV or Markdown |
 
-### Use cases
+---
 
-- **Find what the agent made:** Instead of hunting through your project folder, see every file the agent created in one list.
-- **Review before sharing:** Check all deliverables from a work session before sending them to a client.
-- **Clean up:** Delete files you don't need without leaving the app.
+<CardGroup cols={2}>
+  <Card title="Preview panel" icon="eye" href="/preview-panel">
+    Open any deliverable in the multi-format preview panel.
+  </Card>
+  <Card title="Security" icon="shield" href="/security">
+    Activity logs are part of the security audit trail.
+  </Card>
+</CardGroup>

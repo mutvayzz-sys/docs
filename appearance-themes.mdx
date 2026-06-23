@@ -1,19 +1,17 @@
 ---
-title: "Appearance & themes"
-description: "Useful when you're on a small screen or want to see more of the conversation without scrolling."
+title: "Appearance & Themes"
+description: "Control how Headmaster looks — theme, font size, accent color, density, and custom CSS."
 ---
 
-# Appearance & themes
+# Appearance & Themes
 
 **Path:** My Headmaster → Look
 
-The Look tab controls the visual appearance of Headmaster. Theme, font size, accent color, and custom CSS.
+The Look tab controls the visual appearance of Headmaster: theme, font size, accent color, density, and custom CSS.
 
 ---
 
 ## Themes
-
-Headmaster ships with several built-in themes:
 
 | Theme | Description |
 |---|---|
@@ -24,43 +22,6 @@ Headmaster ships with several built-in themes:
 
 Pick a theme from the dropdown. The change applies instantly — no restart needed.
 
-### Custom CSS themes
-
-For advanced users, Headmaster supports custom CSS themes:
-
-1. Open **Settings → My Headmaster → Look → Custom theme**.
-2. Click **Create custom theme**.
-3. Write CSS that overrides Headmaster's design tokens.
-4. Save and apply.
-
-The CSS editor has a live preview — you see the changes as you type. The custom theme is stored as a `.css` file in your data directory.
-
-### Design tokens
-
-Headmaster's UI is built on CSS custom properties (design tokens). You can override any of them in a custom theme:
-
-```css
-:root {
-  --bg: #1a1a1a;
-  --text: #f0f0f0;
-  --border: #333;
-  --border-strong: #444;
-  --bg-elevated: #222;
-  --text-muted: #888;
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-}
-```
-
-### Importing and sharing themes
-
-Custom themes can be exported as `.css` files and shared. To import a theme:
-
-1. Open **Settings → My Headmaster → Look → Custom theme**.
-2. Click **Import**.
-3. Select a `.css` file.
-4. The theme appears in the theme list.
-
 ---
 
 ## Font size
@@ -70,7 +31,7 @@ Adjust the font size with:
 - The **font size slider** in Settings → Look.
 - Keyboard shortcuts: `Cmd/Ctrl + =` to increase, `Cmd/Ctrl + -` to decrease, `Cmd/Ctrl + 0` to reset.
 
-The font size applies to the chat, sidebar, and settings — everywhere in the app. The file preview panel and code editor have their own independent font size controls.
+The font size applies everywhere in the app — chat, sidebar, and settings. The file preview panel and code editor have their own independent font size controls.
 
 ---
 
@@ -78,7 +39,16 @@ The font size applies to the chat, sidebar, and settings — everywhere in the a
 
 The accent color is used for buttons, links, active states, and the primary action color. Pick from the preset colors or enter a custom hex value.
 
-The accent color applies instantly. It does not affect the theme — you can have a dark theme with any accent color.
+The accent color applies instantly and does not affect the theme — you can have a dark theme with any accent color.
+
+---
+
+## Density
+
+| Setting | Description |
+|---|---|
+| **Comfortable** (default) | Standard spacing, easy to read. |
+| **Compact** | Tighter spacing, more content visible at once. Useful on small screens. |
 
 ---
 
@@ -89,15 +59,52 @@ Headmaster's interface language. Currently supports:
 - **English** (default)
 - **Arabic** (reserved for a future release)
 
-The language dropdown in Settings → Look controls the UI language. This does not affect what language the agent responds in — the agent responds in whatever language you write to it in.
+<Note>
+  The language setting only affects the UI language — not what language the agent responds in. The agent responds in whatever language you write to it in.
+</Note>
 
 ---
 
-## Density
+## Custom CSS themes
 
-Control how compact the UI is:
+For advanced users, Headmaster supports custom CSS themes:
 
-- **Comfortable** (default) — standard spacing, easy to read.
-- **Compact** — tighter spacing, more content visible at once.
+<Steps>
+  <Step title="Open Custom theme">
+    Go to **Settings → My Headmaster → Look → Custom theme** and click **Create custom theme**.
+  </Step>
+  <Step title="Write your CSS">
+    Override Headmaster's design tokens. The editor has a live preview — you see changes as you type.
 
-Useful when you're on a small screen or want to see more of the conversation without scrolling.
+    ```css
+    :root {
+      --bg: #1a1a1a;
+      --text: #f0f0f0;
+      --border: #333;
+      --border-strong: #444;
+      --bg-elevated: #222;
+      --text-muted: #888;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+    }
+    ```
+  </Step>
+  <Step title="Save and apply">
+    The custom theme is stored as a `.css` file in your data directory.
+  </Step>
+</Steps>
+
+### Sharing themes
+
+Custom themes can be exported as `.css` files and shared. To import a theme: **Settings → My Headmaster → Look → Custom theme → Import** → select a `.css` file. The theme appears in the theme list.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Keyboard Shortcuts" icon="keyboard" href="/keyboard-shortcuts">
+    Shortcuts for theme, font size, and all other actions.
+  </Card>
+  <Card title="Settings Overview" icon="gear" href="/settings-overview">
+    Full map of all settings areas.
+  </Card>
+</CardGroup>

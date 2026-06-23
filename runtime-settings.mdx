@@ -1,77 +1,97 @@
 ---
 title: "Runtime Settings"
-description: "Engine configuration — MCP, tools, terminal, schedule, and agent behavior"
+description: "Configure the Headmaster runtime engine — connection mode, local vs. remote, session management, and schema-driven settings."
 ---
 
 # Runtime Settings
 
-These settings configure the Hermes runtime engine — the background service that runs your agents. You access them through **Headmaster's Library → Runtime** (PIN-protected).
-
-The runtime is the actual brain: it handles model inference, tool execution, memory storage, scheduled tasks, and MCP server connections. The Headmaster desktop app is just the interface — these settings control what happens under the hood.
-
 **Path:** Headmaster's Library → Runtime (PIN-protected)
 
-This tab controls the local runtime — the background service that runs your agents.
+These settings configure the Hermes runtime engine — the background service that runs your agents. The runtime handles model inference, tool execution, memory storage, scheduled tasks, and MCP server connections.
 
-### Connection mode
+---
 
-Two modes:
+## Connection mode
 
-- **Local** (default) — the runtime runs on the same machine as the desktop app. No network configuration needed.
-- **Remote** — the runtime runs on a different machine. Enter the host and port.
+<Tabs>
+  <Tab title="Local (default)">
+    The runtime runs on the same machine as the desktop app. No network configuration needed.
 
-### Local mode
+    What you see:
+    - **Status** — Connected, Reconnecting, or Disconnected.
+    - **Port** — the local port the runtime is listening on.
+    - **PID** — the process ID of the runtime.
+    - **Uptime** — how long the runtime has been running.
+    - **Version** — the runtime version number.
+  </Tab>
+  <Tab title="Remote">
+    The runtime runs on a different machine. The desktop app is a thin client — it renders the UI and forwards input.
 
-In local mode, the desktop app starts and manages the runtime. You see:
+    <Steps>
+      <Step title="Switch to Remote">
+        Click **Connection mode → Remote**.
+      </Step>
+      <Step title="Enter host and port">
+        Enter the hostname or IP and port of the remote machine's runtime.
+      </Step>
+      <Step title="Test and save">
+        Click **Test connection**. If the test passes, click **Save**. The desktop disconnects from the local runtime and connects to the remote one.
+      </Step>
+    </Steps>
 
-- **Status** — Connected, Reconnecting, or Disconnected.
-- **Port** — the local port the runtime is listening on.
-- **PID** — the process ID of the runtime.
-- **Uptime** — how long the runtime has been running.
-- **Version** — the runtime version number.
+    What you see:
+    - **Host** — the hostname or IP of the remote machine.
+    - **Port** — the port on the remote machine.
+    - **Status** — Connected, Reconnecting, or Disconnected.
+    - **Latency** — round-trip time to the remote runtime.
+    - **Version** — the remote runtime version number.
+  </Tab>
+</Tabs>
 
-### Remote mode
+---
 
-In remote mode, the desktop app connects to a runtime on another machine. You see:
+## Restart
 
-- **Host** — the hostname or IP of the remote machine.
-- **Port** — the port on the remote machine.
-- **Status** — Connected, Reconnecting, or Disconnected.
-- **Latency** — round-trip time to the remote runtime.
-- **Version** — the remote runtime version number.
+Click **Restart** to tear down the current runtime process and start a fresh one.
 
-To switch from local to remote:
+<Note>
+  Restarting does not lose your data — sessions and memory live in the user data folder, not in the process. Use restart when:
+  - The runtime is stuck or unresponsive.
+  - You changed the config file manually and need to reload it.
+  - After installing a new skill or integration that requires a runtime restart.
+</Note>
 
-1. Click **Connection mode → Remote**.
-2. Enter the host and port.
-3. Click **Test connection**.
-4. If the test passes, click **Save**.
-5. The desktop app disconnects from the local runtime and connects to the remote one.
+---
 
-### Restart
-
-Click **Restart** to tear down the current runtime process and start a fresh one. This does not lose your data — sessions and memory live in the user data folder, not in the process. Use restart when:
-
-- The runtime is stuck or unresponsive.
-- You changed the config file manually and need to reload it.
-- After installing a new skill or integration that requires a runtime restart.
-
-### Sessions
+## Sessions
 
 Click **Sessions** to see the list of active sessions on the runtime. Each session shows:
 
-- Session ID
-- Profile name
-- Model
-- Start time
-- Status (active, idle, stale)
+| Field | Description |
+|---|---|
+| Session ID | Unique identifier |
+| Profile name | Which profile this session belongs to |
+| Model | The model in use |
+| Start time | When the session started |
+| Status | Active, idle, or stale |
 
 You can delete a stale session from this list. This clears the runtime's in-memory state for that session but does not delete the transcript file.
 
-### Schema-driven settings
+---
+
+## Schema-driven settings
 
 The runtime exposes a configuration schema at `/api/config/schema`. The Settings UI reads this schema and renders the appropriate controls — text fields, dropdowns, toggles, sliders — with descriptions, defaults, and validation.
 
 This means when the runtime adds a new configuration option, the Settings UI picks it up automatically. You don't need a desktop app update to see new runtime settings.
 
 ---
+
+<CardGroup cols={2}>
+  <Card title="The Local Runtime" icon="server" href="/the-local-runtime">
+    How the runtime works, where data lives, and log files.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/troubleshooting">
+    Fixes for runtime not connecting, crash loops, and 401 errors.
+  </Card>
+</CardGroup>

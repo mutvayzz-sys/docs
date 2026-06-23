@@ -1,6 +1,6 @@
 ---
 title: "Your Crew"
-description: "When you enable an MCP server in Headmaster, it's synced to all detected CLI agents. If you have Claude Code and Codex b"
+description: "Connect external CLI agents — Claude Code, Codex, Gemini CLI, and 15+ others — and drive them all from one Headmaster window."
 ---
 
 # Your Crew
@@ -9,17 +9,19 @@ Headmaster's built-in agent engine works out of the box — zero setup. But if y
 
 ---
 
-## Multi-Agent Mode vs. Built-in Agent Mode
+## Built-in agent vs. multi-agent mode
 
 | Aspect | Built-in Agent Mode | Multi-Agent Mode (Your Crew) |
-| --- | --- | --- |
+|---|---|---|
 | **Install requirements** | None — bundled with Headmaster | You install the external CLI yourself; Headmaster auto-detects it |
 | **Architecture** | Headmaster's built-in engine + ACP | External CLI processes spoken to over ACP |
 | **Feature integration** | Full: image generation, MCP, multi-key rotation, scheduled tasks, file management | Agent's native features only — Headmaster provides the chat and file UI |
 | **Configuration** | One Headmaster config covers everything | Each external CLI handles its own auth and config |
 | **Best for** | Daily use, full Headmaster feature surface | Power users who already live in a specific CLI |
 
-Multi-Agent Mode is **optional**. You can use Headmaster without installing anything else. Your Crew is for users who already have a CLI agent they love and want to use it from the Headmaster GUI instead of a terminal.
+<Note>
+  Multi-Agent Mode is **optional**. You can use Headmaster without installing anything else. Your Crew is for users who already have a CLI agent they love and want to use it from the Headmaster GUI instead of a terminal.
+</Note>
 
 ---
 
@@ -27,7 +29,7 @@ Multi-Agent Mode is **optional**. You can use Headmaster without installing anyt
 
 ACP is the standard that lets Headmaster talk to external CLI agents. Every supported CLI speaks ACP, which means:
 
-- **Single workspace** — a single Headmaster window replaces switching between multiple terminal sessions.
+- **Single workspace** — one Headmaster window replaces switching between multiple terminal sessions.
 - **Protocol standardization** — every external agent talks to Headmaster over the same protocol.
 - **Independent capabilities** — each external agent keeps its own model, auth, tools, and behaviors.
 - **Custom agents** — any protocol-compatible CLI can be added through Settings.
@@ -36,16 +38,19 @@ ACP is the standard that lets Headmaster talk to external CLI agents. Every supp
 
 ## Auto-detection
 
-Headmaster scans your `PATH` on startup and lights up agents already installed. You don't need to configure anything — if the CLI command is callable from a fresh terminal, Headmaster finds it.
+Headmaster scans your `PATH` on startup and lights up agents already installed. No configuration needed — if the CLI command is callable from a fresh terminal, Headmaster finds it.
 
-The detected agents appear on the welcome screen and in the specialist picker. You can pick one the same way you pick a built-in specialist.
+Detected agents appear on the welcome screen and in the specialist picker.
 
-### Verifying installation
+**Verifying installation:**
 
-Make sure the CLI command is callable from a fresh terminal:
+```bash
+# macOS / Linux
+which <command>
 
-- macOS/Linux: `which <command>`
-- Windows: `where <command>`
+# Windows
+where <command>
+```
 
 If the terminal can find it, Headmaster can too. Restart Headmaster after installing a new CLI to trigger a re-scan.
 
@@ -53,10 +58,8 @@ If the terminal can find it, Headmaster can too. Restart Headmaster after instal
 
 ## Detected CLI agents
 
-Headmaster auto-detects any of these if their CLI is on your `PATH`:
-
 | Agent | CLI command | Vendor |
-| --- | --- | --- |
+|---|---|---|
 | Claude Code | `claude` | Anthropic |
 | Codex | `codex` | OpenAI |
 | Qwen Code | `qwen` | Alibaba Qwen |
@@ -66,7 +69,7 @@ Headmaster auto-detects any of these if their CLI is on your `PATH`:
 | Kiro | `kiro` | Kiro |
 | Goose | `goose` | Block |
 | OpenCode | `opencode` | OpenCode |
-| OpenClaw | `openclaw` | OpenClaw (gateway mode) |
+| OpenClaw | `openclaw` | OpenClaw |
 | Augment Code | `auggie` | Augment |
 | CodeBuddy | `codebuddy` | Tencent |
 | Kimi CLI | `kimi` | Moonshot |
@@ -76,47 +79,43 @@ Headmaster auto-detects any of these if their CLI is on your `PATH`:
 | Mistral Vibe | `vibe-acp` | Mistral |
 | Nanobot | `nanobot` | Nanobot |
 
-> New ACP-compatible CLIs are added regularly. The exact set may grow with each Headmaster release — check the welcome screen for the up-to-date list, or define your own under **Settings → Agent Management → Custom Agents**.
+<Note>
+  New ACP-compatible CLIs are added regularly. Check the welcome screen for the up-to-date list, or add your own under **Settings → Agent Management → Custom Agents**.
+</Note>
 
 ---
 
 ## Installing a CLI agent
 
-Headmaster does not ship external CLIs. Install whichever ones you want, following the vendor's official documentation. The package names and install commands change frequently, so this guide points to upstream:
+Headmaster does not ship external CLIs. Install whichever ones you want following the vendor's official documentation:
 
 | Agent | Install URL |
-| --- | --- |
+|---|---|
 | Claude Code | https://docs.anthropic.com/claude/claude-code |
 | Codex | https://developers.openai.com/codex/cli/ |
 | Qwen Code | https://github.com/QwenLM/qwen-code |
 | Gemini CLI | https://github.com/google-gemini/gemini-cli |
 | Cursor Agent | https://docs.cursor.com/ |
-| Snow CLI | https://snowcli.dev/ |
-| Kiro | https://kiro.dev/ |
 | Goose | https://github.com/block/goose |
 | OpenCode | https://github.com/opencode-ai/opencode |
-| OpenClaw | https://github.com/openclaw/openclaw |
 | Augment Code | https://www.augmentcode.com/ |
-| CodeBuddy | https://github.com/Tencent/CodeBuddy |
-| Kimi CLI | https://platform.moonshot.cn/ |
-| Factory Droid | https://www.factory.ai/ |
 | GitHub Copilot CLI | https://docs.github.com/en/copilot/github-copilot-in-the-cli |
-| Qoder CLI | https://qoder.com/ |
-| Mistral Vibe | https://github.com/mistralai/vibe-acp |
-| Nanobot | https://github.com/nanobot-ai/nanobot |
-
-After installing, verify the CLI is callable from a fresh terminal. If the terminal can find it, Headmaster can too. Restart Headmaster after installing a new CLI to trigger a re-scan.
 
 ---
 
 ## Using a CLI agent from Headmaster
 
-1. Install the CLI agent and verify it's on your `PATH`.
-2. Launch Headmaster.
-3. On the welcome screen, the detected CLI agents appear alongside the built-in agent.
-4. Pick one and start a conversation.
-
-The external agent keeps its own model, auth, tools, and behaviors. Headmaster provides the unified chat and file UI. When you switch agents (via the specialist picker), you switch the underlying CLI — each agent has its own model list, its own capabilities, and its own approach.
+<Steps>
+  <Step title="Install the CLI agent">
+    Install it and verify it's callable from a fresh terminal.
+  </Step>
+  <Step title="Launch Headmaster">
+    Restart Headmaster — it rescans `PATH` on launch.
+  </Step>
+  <Step title="Pick the agent">
+    The detected CLI agents appear on the welcome screen alongside the built-in agent. Pick one and start a conversation.
+  </Step>
+</Steps>
 
 ### What Headmaster provides for external agents
 
@@ -131,7 +130,7 @@ The external agent keeps its own model, auth, tools, and behaviors. Headmaster p
 - **Model** — the CLI's own model selection and auth.
 - **Tools** — the CLI's own tool set (may differ from Headmaster's built-in tools).
 - **Behavior** — the CLI's own reasoning, coding style, and approach.
-- **MCP** — the CLI's own MCP server config (which Headmaster can sync to — see [Connections](connections-mcp-servers.md)).
+- **MCP** — the CLI's own MCP server config.
 
 ---
 
@@ -139,10 +138,17 @@ The external agent keeps its own model, auth, tools, and behaviors. Headmaster p
 
 Any protocol-compatible CLI can be added, even if it's not on the auto-detect list:
 
-1. Open **Settings → Agent Management → Custom Agents**.
-2. Click **Add custom agent**.
-3. Enter the CLI command, a display name, and any required arguments.
-4. Save. The custom agent appears in the picker alongside the built-in and auto-detected ones.
+<Steps>
+  <Step title="Open Agent Management">
+    Go to **Settings → Agent Management → Custom Agents**.
+  </Step>
+  <Step title="Add a custom agent">
+    Click **Add custom agent**, enter the CLI command, a display name, and any required arguments.
+  </Step>
+  <Step title="Save">
+    The custom agent appears in the picker alongside the built-in and auto-detected ones.
+  </Step>
+</Steps>
 
 ---
 
@@ -151,41 +157,27 @@ Any protocol-compatible CLI can be added, even if it's not on the auto-detect li
 In **Settings → Agent Management**, you can:
 
 - **See all detected agents** — built-in and external, with their status (available, not found, error).
-- **Enable / disable** individual agents. Disabled agents don't appear in the picker.
+- **Enable / disable** individual agents.
 - **Configure** agent-specific settings (model defaults, allowed tools).
-- **Add custom agents** that aren't on the auto-detect list.
-- **Rescan** — forces Headmaster to re-scan your `PATH` for newly installed CLIs.
-
-### Local agents
-
-The Local Agents tab shows all agents detected on this machine. Each card shows:
-
-- Agent name and vendor.
-- CLI command.
-- Status (available, not found, error).
-- Detected model count.
-- Enable/disable toggle.
-
-### Remote agents
-
-The Remote Agents tab lets you connect to agents running on a remote machine. This is useful when you have a CLI agent installed on a server but want to drive it from your laptop's Headmaster UI.
+- **Rescan** — forces a re-scan of your `PATH` for newly installed CLIs.
 
 ### Preset management
 
-Presets are saved combinations of agent + model + specialist + settings. You can:
-
-- Create a preset for a common workflow ("Code Review" = Claude Code + Sonnet + The Architect).
-- Switch between presets from the specialist picker.
-- Share presets with your team (export as JSON).
+Presets are saved combinations of agent + model + specialist + settings. Create a preset for a common workflow (e.g., "Code Review" = Claude Code + Sonnet + The Architect), switch between them from the specialist picker, and export them as JSON to share with your team.
 
 ---
 
-## One window for everything
+## MCP sync
 
-The point of Your Crew is: a single Headmaster window replaces switching between multiple terminal sessions. You get the same chat UI, the same file manager, the same preview panel, the same approval gates, regardless of which CLI is doing the work behind the scenes.
+When you enable an MCP server in Headmaster, it's synced to all detected CLI agents. If you have Claude Code and Codex both installed, enabling a server in Headmaster makes it available to both. See [Connections (MCP)](/connections-mcp-servers) for details.
 
-Switching between agents is as easy as switching specialists — click the picker, choose a different agent, and the next message goes to the new one. Each agent's conversations are saved separately in the sidebar.
+---
 
-### MCP sync
-
-When you enable an MCP server in Headmaster, it's synced to all detected CLI agents. If you have Claude Code and Codex both installed, enabling a server in Headmaster makes it available to both. See [Connections (MCP)](connections-mcp-servers.md) for details.
+<CardGroup cols={2}>
+  <Card title="Connections (MCP)" icon="plug" href="/connections-mcp-servers">
+    Add MCP servers that sync to all your CLI agents.
+  </Card>
+  <Card title="Specialists" icon="users" href="/specialists">
+    Assign specific backend agents per specialist.
+  </Card>
+</CardGroup>

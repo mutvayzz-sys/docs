@@ -1,10 +1,9 @@
 ---
-title: "Tools & toolsets"
-description: "- [Terminal backends](terminal-backends.md) — local, Docker, SSH, Modal, Daytona
-- [Browser](browser.md) — web automatio"
+title: "Tools & Toolsets"
+description: "60+ built-in tools across 10+ categories — web search, terminal, browser, image generation, code execution, delegation, and more."
 ---
 
-# Tools & toolsets
+# Tools & Toolsets
 
 Tools are functions that extend the agent's capabilities, organized into logical toolsets that can be enabled or disabled per platform and per specialist. Headmaster ships with a broad built-in tool registry — over 60 tools across 10+ categories.
 
@@ -23,7 +22,6 @@ Tools are functions that extend the agent's capabilities, organized into logical
 | **Memory & recall** | `memory`, `session_search` | Persistent memory and cross-session search |
 | **Automation & delivery** | `cronjob`, `send_message` | Scheduled tasks and outbound messaging to channels |
 | **Integrations** | Home Assistant, MCP server tools, Spotify, Discord | Smart home, external tools, music, chat platforms |
-| **Code execution** | `execute_code` | Run Python scripts that call Headmaster tools programmatically |
 | **Delegation** | `delegate_task` | Spawn isolated subagents for parallel workstreams |
 | **Advanced reasoning** | `mixture_of_agents` | Route a hard problem through multiple LLMs collaboratively |
 
@@ -31,80 +29,69 @@ Tools are functions that extend the agent's capabilities, organized into logical
 
 ## Enabling and disabling tools
 
-### Per specialist
+<Tabs>
+  <Tab title="Per specialist">
+    <Steps>
+      <Step title="Open the specialist">
+        Go to **Settings → Specialists** and pick a specialist.
+      </Step>
+      <Step title="Toggle toolsets">
+        Go to the **Tools** section and check/uncheck toolsets.
+      </Step>
+      <Step title="Save">
+        A toolset toggled off is not loaded — the agent won't see or try to use those tools.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Per platform">
+    Tools can be configured per platform (desktop, Telegram, Discord, etc.). This lets you give the desktop agent full tool access while restricting the Telegram agent to safe tools only.
 
-1. Open **Settings → Specialists** and pick a specialist.
-2. Go to the **Tools** section.
-3. Toggle toolsets on or off with checkboxes.
-4. Save.
+    <Steps>
+      <Step title="Open Advanced Toolsets">
+        Go to **Settings → Headmaster's Library → Advanced → Toolsets**.
+      </Step>
+      <Step title="Pick a platform and toggle">
+        Pick a platform and toggle toolsets on or off for that platform.
+      </Step>
+    </Steps>
 
-A toolset toggled off is not loaded — the agent won't see those tools or try to use them.
+    ### Platform presets
 
-### Per platform
-
-Tools can be configured per platform (desktop, Telegram, Discord, etc.). This lets you give the desktop agent full tool access while restricting the Telegram agent to safe tools only.
-
-1. Open **Settings → Headmaster's Library → Advanced → Toolsets**.
-2. Pick a platform.
-3. Toggle toolsets on or off for that platform.
-4. Save.
-
-### Platform presets
-
-Headmaster has built-in platform presets that define sensible tool defaults:
-
-| Preset | Tools included |
-|---|---|
-| **Desktop** | All tools — full power |
-| **Telegram** | Web, terminal, file, memory, skills, cron, messaging (no destructive tools) |
-| **Discord** | Web, terminal, file, memory, skills, cron, messaging |
-| **CLI** | All tools — same as desktop |
-| **Safe** | Web, memory, skills, clarify, todo (no terminal, no file write, no code execution) |
-
----
-
-## Bundled tools
-
-Some tools — web search, image generation, text-to-speech, and browser automation — can be enabled with a single bundled configuration instead of separate API keys for each service. Check the Headmaster site for current availability.
-
-When the bundle is configured:
-
-- **Web search** works out of the box — no Firecrawl or SerpAPI key needed.
-- **Image generation** works — no separate FAL or OpenAI images key needed.
-- **Text-to-speech** works — no OpenAI TTS key needed.
-- **Browser automation** works — no separate browser service needed.
-
-Prefer your own keys? Each tool can also be configured individually with your own API credentials.
+    | Preset | Tools included |
+    |---|---|
+    | **Desktop** | All tools — full power |
+    | **Telegram** | Web, terminal, file, memory, skills, cron, messaging (no destructive tools) |
+    | **Discord** | Web, terminal, file, memory, skills, cron, messaging |
+    | **CLI** | All tools — same as desktop |
+    | **Safe** | Web, memory, skills, clarify, todo (no terminal, no file write, no code execution) |
+  </Tab>
+</Tabs>
 
 ---
 
 ## Using tools from chat
 
-You don't need to explicitly call tools — the agent picks the right tool based on your request. But you can guide it:
+You don't need to explicitly call tools — the agent picks the right tool based on your request:
 
 ```
 Search the web for the latest Python release notes and summarize the key changes.
 ```
-
-The agent uses `web_search` and `web_extract` automatically.
+→ Agent uses `web_search` and `web_extract`.
 
 ```
 Run `git status` in my project folder.
 ```
-
-The agent uses `terminal` to run the command.
+→ Agent uses `terminal`.
 
 ```
 Take a screenshot of https://example.com.
 ```
-
-The agent uses `browser_navigate` and `browser_vision`.
+→ Agent uses `browser_navigate` and `browser_vision`.
 
 ```
 Generate an image of a mountain landscape at sunset.
 ```
-
-The agent uses `image_generate`.
+→ Agent uses `image_generate`.
 
 ### Tool call display
 
@@ -117,7 +104,7 @@ Every tool call appears in the chat as an expandable block:
 → 3,200 characters extracted
 ```
 
-Click the block to expand it and see the full tool input and output. This is your audit trail — every tool call is logged.
+Click to expand and see the full tool input and output. This is your audit trail — every tool call is logged.
 
 ---
 
@@ -125,20 +112,15 @@ Click the block to expand it and see the full tool input and output. This is you
 
 The `execute_code` tool lets the agent run Python scripts that call other Headmaster tools programmatically. This collapses multi-step pipelines into a single inference call.
 
-Instead of the agent calling `web_search` 5 times in sequence, it can write a Python script that calls `web_search` 5 times in a loop, processes the results, and returns a single summary. This is faster, cheaper, and more reliable.
+Instead of the agent calling `web_search` 5 times in sequence, it can write a Python script that calls `web_search` 5 times in a loop, processes the results, and returns a single summary — faster, cheaper, and more reliable.
+
+**Example:**
 
 ```
 Search for the top 5 Python testing frameworks, extract their docs, and compare their features in a table.
 ```
 
-The agent writes a Python script that:
-1. Calls `web_search` for each framework.
-2. Calls `web_extract` on each result.
-3. Parses the content.
-4. Builds a comparison table.
-5. Returns the table.
-
-All in one tool call instead of 10+.
+The agent writes a Python script that calls `web_search` for each framework, `web_extract` on each result, parses the content, builds a comparison table — all in one tool call instead of 10+.
 
 ---
 
@@ -146,7 +128,7 @@ All in one tool call instead of 10+.
 
 The `mixture_of_agents` tool routes a hard problem through multiple frontier LLMs collaboratively. It makes 5 API calls (4 reference models + 1 aggregator) with maximum reasoning effort.
 
-Use it for:
+**Use it for:**
 - Complex math or algorithms.
 - Multi-step analytical reasoning.
 - Problems that benefit from diverse perspectives.
@@ -155,27 +137,45 @@ The agent decides when to use it — you don't need to explicitly request it. It
 
 ---
 
-## Tool configuration
+## Bundled tools
 
-Configure tools in **Settings → Headmaster's Library → Advanced → Tools**:
+Some tools — web search, image generation, text-to-speech, and browser automation — can be enabled with a single bundled configuration instead of separate API keys for each service.
 
-| Setting | What it controls |
-|---|---|
-| Web search | Enable/disable, choose backend (bundled or your own API key) |
-| Image generation | Enable/disable, choose model |
-| Text-to-speech | Enable/disable, choose voice and provider |
-| Browser automation | Enable/disable, choose backend |
-| Terminal | Enable/disable, choose backend (see [Terminal backends](terminal-backends.md)) |
-| X (Twitter) search | Enable/disable, requires xAI credentials |
-| Home Assistant | Enable/disable, requires HA URL and token |
-| Spotify | Enable/disable, requires Spotify credentials |
-| Discord | Enable/disable, requires bot token |
+When the bundle is configured:
+- **Web search** works out of the box — no Firecrawl or SerpAPI key needed.
+- **Image generation** works — no separate FAL or OpenAI images key needed.
+- **Text-to-speech** works — no OpenAI TTS key needed.
+- **Browser automation** works — no separate browser service needed.
 
 ---
 
-## Related
+## Tool configuration reference
 
-- [Terminal backends](terminal-backends.md) — local, Docker, SSH, Modal, Daytona
-- [Browser](browser.md) — web automation details
-- [Image generation](image-generation.md) — full image gen guide
-- [Connections (MCP)](connections-mcp-servers.md) — extending tools with MCP servers
+| Tool | Setting location | What it controls |
+|---|---|---|
+| Web search | Settings → Advanced → Tools | Enable/disable, choose backend |
+| Image generation | Settings → Advanced → Tools | Enable/disable, choose model |
+| Text-to-speech | Settings → Advanced → Tools | Enable/disable, choose voice and provider |
+| Browser automation | Settings → Advanced → Tools | Enable/disable, choose backend |
+| Terminal | Settings → Advanced → Tools | Enable/disable, choose backend |
+| X (Twitter) search | Settings → Advanced → Tools | Enable/disable (requires xAI credentials) |
+| Home Assistant | Settings → Advanced → Tools | Enable/disable (requires HA URL and token) |
+| Spotify | Settings → Advanced → Tools | Enable/disable (requires Spotify credentials) |
+| Discord | Settings → Advanced → Tools | Enable/disable (requires bot token) |
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Terminal Backends" icon="terminal" href="/terminal-backends">
+    Local, Docker, SSH, Singularity, Modal, and Daytona.
+  </Card>
+  <Card title="Browser" icon="browser" href="/browser">
+    Full browser automation details.
+  </Card>
+  <Card title="Image Generation" icon="image" href="/image-generation">
+    Full image generation setup guide.
+  </Card>
+  <Card title="Connections (MCP)" icon="plug" href="/connections-mcp-servers">
+    Extend tools with MCP servers.
+  </Card>
+</CardGroup>

@@ -1,13 +1,15 @@
 ---
 title: "Memory"
-description: "---"
+description: "How the agent remembers facts about you, your projects, and your preferences across conversations."
 ---
 
 # Memory
 
 Memory is what your agent knows about you, your work, and your preferences across conversations. It is stored locally on your machine. Memory is separate from session history — sessions are the full transcripts; memory is the distilled facts the agent carries forward.
 
-### What goes in memory
+---
+
+## What goes in memory
 
 - **Decisions you confirm** during a chat — "always use double quotes for strings."
 - **Project context** you share — "we're using Postgres 16 on AWS RDS, the ORM is Prisma."
@@ -15,50 +17,96 @@ Memory is what your agent knows about you, your work, and your preferences acros
 - **Personal preferences** — "I prefer concise responses, no preamble."
 - **Anything you explicitly add** via the **Remember this** button in chat.
 
-### What does not go in memory
+## What does not go in memory
 
 - **The full text of every conversation.** Sessions are stored separately in session history. Memory is for distilled facts, not transcripts.
 - **Provider keys, secrets, or credentials.** Those live in the Connections area, encrypted.
-- **Files you attach.** Files are stored in your workspace folder. Memory references them ("the user's repo is at /home/me/project") but doesn't copy their contents.
+- **Files you attach.** Files are stored in your workspace folder. Memory references them but doesn't copy their contents.
 
-### Inspecting memory
+---
+
+## Inspecting memory
 
 Open **Settings → My Headmaster → Memory**. The page lists everything currently retained, grouped by topic:
 
-- **Profile** — facts about you (name, role, communication style).
-- **Projects** — facts about your codebases, tools, and workflows.
-- **Preferences** — your stated preferences for response style, code style, etc.
-- **Environment** — facts about your machine, OS, and setup.
-- **Decisions** — one-off decisions the agent should remember.
+| Group | What it contains |
+|---|---|
+| **Profile** | Facts about you — name, role, communication style. |
+| **Projects** | Facts about your codebases, tools, and workflows. |
+| **Preferences** | Your stated preferences for response style, code style, etc. |
+| **Environment** | Facts about your machine, OS, and setup. |
+| **Decisions** | One-off decisions the agent should remember. |
 
 Click any item to see the source conversation and when it was saved. Click **Forget** to remove it.
 
-### Adding to memory
+---
 
-Two approaches:
+## Adding to memory
 
-1. **In chat:** Click **Remember this** on any assistant message. The agent proposes a single durable fact. You can edit the fact before it's saved. Click **Save** to commit it to memory.
-2. **Manual:** Open **Settings → My Headmaster → Memory → Add fact**. Type a fact and save it. It's immediately available to the agent in all conversations.
-
-### Forgetting
-
-- **Forget** — removes a single fact. The agent no longer uses it.
-- **Forget all** — wipes the entire memory store (sessions, learned facts, and project context). This does not touch your conversation transcripts, files, or provider keys. Use this when you want a clean start without losing your chat history.
-
-### Retention policy
-
-By default, memory facts are retained indefinitely. You can set a retention policy:
-
-1. Open **Settings → My Headmaster → Memory → Retention**.
-2. Set a retention period (e.g., 90 days). Facts older than the retention period are automatically archived.
-3. Archived facts are not used by the agent but are kept in the data folder. You can restore them if needed.
-
-### Memory and the Council
-
-When the Council is active, all specialists share the same memory store. A fact saved by one specialist is visible to all others. This is intentional — the Council is supposed to be a team that knows what the team knows.
-
-### Where memory lives
-
-Memory is stored locally — see [Where data lives](#where-data-lives) for the data folder location. In a remote setup, memory lives on the machine running the runtime.
+<Tabs>
+  <Tab title="From chat">
+    Click **Remember this** on any assistant message. The agent proposes a single durable fact. You can edit the fact before it's saved. Click **Save** to commit it to memory.
+  </Tab>
+  <Tab title="Manual entry">
+    <Steps>
+      <Step title="Open Memory settings">
+        Go to **Settings → My Headmaster → Memory → Add fact**.
+      </Step>
+      <Step title="Type a fact">
+        Write the fact in plain language — "My primary database is PostgreSQL 16 on AWS RDS."
+      </Step>
+      <Step title="Save">
+        Click **Save**. The fact is immediately available to the agent in all conversations.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 ---
+
+## Forgetting
+
+- **Forget** — removes a single fact. The agent no longer uses it.
+- **Forget all** — wipes the entire memory store (learned facts and project context). This does not touch your conversation transcripts, files, or provider keys. Use this when you want a clean start without losing your chat history.
+
+---
+
+## Retention policy
+
+By default, memory facts are retained indefinitely. To set a retention policy:
+
+<Steps>
+  <Step title="Open retention settings">
+    Go to **Settings → My Headmaster → Memory → Retention**.
+  </Step>
+  <Step title="Set a retention period">
+    Enter a number of days (e.g., 90). Facts older than the retention period are automatically archived.
+  </Step>
+</Steps>
+
+<Note>
+  Archived facts are not used by the agent but are kept in the data folder. You can restore them if needed.
+</Note>
+
+---
+
+## Memory and the Council
+
+When the Council is active, all specialists share the same memory store. A fact saved by one specialist is visible to all others — the Council is supposed to be a team that knows what the team knows.
+
+---
+
+## Where memory lives
+
+Memory is stored locally in `<data folder>/memory/`. In a remote setup, memory lives on the machine running the runtime. See [The Local Runtime](/the-local-runtime) for data folder locations by platform.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Session Search" icon="magnifying-glass" href="/session-search">
+    Full-text search across all past conversations — the complement to memory.
+  </Card>
+  <Card title="Profiles" icon="user" href="/profiles">
+    Each profile has its own isolated memory store.
+  </Card>
+</CardGroup>

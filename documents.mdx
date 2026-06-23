@@ -1,97 +1,129 @@
 ---
 title: "Documents"
-description: "---"
+description: "Generate native Office documents — decks, spreadsheets, reports, and PDFs — directly on your machine, no cloud conversion required."
 ---
 
 # Documents
 
 Headmaster can generate native Office documents — decks, spreadsheets, reports, and PDFs — directly on your machine. No cloud conversion, no external services. The files are real, editable, and ready to share.
 
-### Decks (PowerPoint)
+---
 
-The Writer and The Storyteller specialists create `.pptx` files with:
+## Document types
 
-- Editable slides (not screenshots — real PowerPoint shapes and text).
-- Smooth morph transitions between slides.
-- Speaker notes.
-- Themes and layouts.
+<Tabs>
+  <Tab title="Decks (PowerPoint)">
+    The Writer and The Storyteller specialists create `.pptx` files with:
 
-In chat:
+    - Editable slides (real PowerPoint shapes and text — not screenshots).
+    - Smooth morph transitions between slides.
+    - Speaker notes.
+    - Themes and layouts.
 
-```
-Create a 10-slide pitch deck for a SaaS startup called Acme. Series A, $5M raise. Include market size, traction, team, financials, and ask.
-```
+    **Example prompt:**
 
-The agent generates the `.pptx` file, the preview panel shows a slide-by-slide preview, and the file is saved to your project folder.
+    ```
+    Create a 10-slide pitch deck for a SaaS startup called Acme.
+    Series A, $5M raise. Include market size, traction, team,
+    financials, and ask.
+    ```
 
-### Spreadsheets (Excel)
+    The agent generates the `.pptx` file, the preview panel shows a slide-by-slide preview, and the file is saved to your project folder.
+  </Tab>
+  <Tab title="Spreadsheets (Excel)">
+    The Analyst specialist creates `.xlsx`, `.xlsm`, and `.csv` files with:
 
-The Analyst specialist creates `.xlsx`, `.xlsm`, and `.csv` files with:
+    - Formulas (real Excel formulas — not just values).
+    - Charts (bar, line, pie, scatter).
+    - Multiple sheets.
+    - Conditional formatting.
+    - Data validation.
 
-- Formulas (not just values — real Excel formulas).
-- Charts (bar, line, pie, scatter).
-- Multiple sheets.
-- Conditional formatting.
-- Data validation.
+    **Example prompt:**
 
-In chat:
+    ```
+    Create a financial model: 3-statement projection for a SaaS company.
+    5-year forecast. Include revenue, COGS, gross margin, OpEx, EBITDA.
+    Monthly granularity for year 1, quarterly for years 2-5.
+    ```
 
-```
-Create a financial model: 3-statement projection for a SaaS company. 5-year forecast. Include revenue, COGS, gross margin, OpEx, EBITDA. Monthly granularity for year 1, quarterly for years 2-5.
-```
+    The agent generates the `.xlsx` file with live formulas. Open it in Excel and the formulas recalculate when you change inputs.
+  </Tab>
+  <Tab title="Reports (Word)">
+    The Reporter specialist creates `.docx` files with:
 
-The agent generates the `.xlsx` file with live formulas. You can open it in Excel and the formulas recalculate when you change inputs.
+    - Headings, paragraphs, lists, tables.
+    - Images and charts embedded.
+    - Table of contents.
+    - Footnotes and citations.
+    - Styles and themes.
 
-### Reports (Word)
+    **Example prompt:**
 
-The Reporter specialist creates `.docx` files with:
+    ```
+    Write a 5-page technical report on our API migration from REST to GraphQL.
+    Include architecture decisions, migration strategy, timeline, and risks.
+    ```
 
-- Headings, paragraphs, lists, tables.
-- Images and charts embedded.
-- Table of contents.
-- Footnotes and citations.
-- Styles and themes.
+    The agent generates the `.docx` file and the preview panel shows the rendered document.
+  </Tab>
+  <Tab title="PDFs">
+    The agent can create PDF files from:
 
-In chat:
+    - Markdown (converted to a styled PDF).
+    - HTML (rendered to PDF).
+    - Office documents (exported to PDF).
 
-```
-Write a 5-page technical report on our API migration from REST to GraphQL. Include architecture decisions, migration strategy, timeline, and risks.
-```
+    **Example prompt:**
 
-The agent generates the `.docx` file and the preview panel shows the rendered document.
-
-### PDFs
-
-The agent can create PDF files from:
-
-- Markdown (converted to a styled PDF).
-- HTML (rendered to PDF).
-- Office documents (exported to PDF).
-
-In chat:
-
-```
-Generate a PDF report from the markdown file at /reports/summary.md. Use a clean professional style with a cover page.
-```
-
-### How document generation works
-
-Headmaster uses a local document engine (no cloud services) to generate Office files:
-
-1. The agent writes the document content in a structured format.
-2. The engine converts it to the native Office format (`.pptx`, `.xlsx`, `.docx`).
-3. The file is saved to your project folder.
-4. The preview panel opens automatically.
-
-The document engine runs locally. Your content never leaves your machine for the conversion step.
-
-### Editing generated documents
-
-You can edit generated documents in two ways:
-
-1. **In the preview panel** — for markdown, code, and HTML, you can edit directly in the preview and save changes.
-2. **In your native editor** — open the file in PowerPoint, Excel, Word, or your editor of choice. The file is a standard Office document; all native editing features work.
-
-After you make external edits, the agent can re-read the file and continue working with the updated content.
+    ```
+    Generate a PDF report from the markdown file at /reports/summary.md.
+    Use a clean professional style with a cover page.
+    ```
+  </Tab>
+</Tabs>
 
 ---
+
+## How document generation works
+
+<Steps>
+  <Step title="Agent writes content">
+    The agent writes the document content in a structured format.
+  </Step>
+  <Step title="Local engine converts">
+    Headmaster's local document engine converts it to the native Office format (`.pptx`, `.xlsx`, `.docx`). No cloud services — your content never leaves your machine for this step.
+  </Step>
+  <Step title="File saved">
+    The file is saved to your project folder.
+  </Step>
+  <Step title="Preview opens">
+    The preview panel opens automatically to show the result.
+  </Step>
+</Steps>
+
+---
+
+## Editing generated documents
+
+<CardGroup cols={2}>
+  <Card title="In the preview panel" icon="pen">
+    For Markdown, code, and HTML — edit directly in the preview and save changes with `Cmd/Ctrl + S`.
+  </Card>
+  <Card title="In your native app" icon="desktop">
+    Open the file in PowerPoint, Excel, or Word. It's a standard Office document — all native editing features work.
+  </Card>
+</CardGroup>
+
+After making external edits, the agent can re-read the file and continue working with the updated content.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="File management" icon="folder" href="/file-management">
+    Browse, organize, and manage files in your project folder.
+  </Card>
+  <Card title="Preview panel" icon="eye" href="/preview-panel">
+    Multi-format file viewer with editing for Markdown, code, and HTML.
+  </Card>
+</CardGroup>

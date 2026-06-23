@@ -1,57 +1,77 @@
 ---
 title: "Headmaster on the Go"
-description: "The initial password is shown once when you first enable WebUI. Copy it immediately. If you miss it, use `resetpass` to "
+description: "Browser-based access to Headmaster from any device — phone, tablet, or remote computer — without installing the desktop app."
 ---
 
 # Headmaster on the Go
 
-Headmaster on the Go is the browser-based interface for Headmaster. It lets you access your agents from a phone, tablet, or another computer's browser — without installing the desktop app on that device.
+Headmaster on the Go is the browser-based interface. It lets you access your agents from a phone, tablet, or another computer — without installing the desktop app on that device.
 
 ---
 
-## How browser access works
+## Two modes
 
 | Mode | Entry point | Data directory | When to use |
 |---|---|---|---|
-| **Desktop-bundled** | Toggle in Settings, or `Headmaster --webui` | Same as desktop (`%APPDATA%\Headmaster`) | Phone on the same network, second screen, testing. Shares all data with the desktop app. |
-| **Standalone** | `headmaster-web` CLI on a headless server | Separate data directory | Headless server, container, always-on deployment. No desktop install needed. |
+| **Desktop-bundled** | Toggle in Settings, or `Headmaster --webui` | Same as desktop | Phone on the same network, second screen, testing. Shares all data with the desktop app. |
+| **Standalone** | `headmaster-web` CLI on a headless server | Separate directory | Headless server, container, always-on deployment. No desktop install needed. |
 
-Both modes share the same UI. They intentionally do not share state by default — the standalone mode has its own data directory. To share data, point standalone at the desktop's directory with `--data-dir`.
+Both modes share the same UI. To share data between them, point standalone at the desktop's directory with `--data-dir`.
 
 ---
 
 ## Desktop-bundled WebUI
 
-This is the quickest way to get browser access. The WebUI runs alongside the desktop app and shares the same data — conversations, memory, skills, channels, sessions.
+<Steps>
+  <Step title="Open browser access settings">
+    Go to **Settings → Headmaster on the Go**.
+  </Step>
+  <Step title="Enable browser access">
+    Turn on **Enable browser access**. A URL appears (e.g., `http://localhost:25808`).
+  </Step>
+  <Step title="Copy the admin password">
+    The panel shows a random initial password — **copy it immediately**. The UI masks it after first display. If you miss it, use `resetpass` to generate a new one.
+  </Step>
+  <Step title="Open in browser">
+    Open that URL in a browser on the same machine.
+  </Step>
+</Steps>
 
-### Running it locally
+### LAN access (same Wi-Fi)
 
-1. Open Headmaster.
-2. Open **Settings → Headmaster on the Go**.
-3. Turn on **Enable browser access**.
-4. The panel shows a URL (e.g., `http://localhost:25808`).
-5. Open that URL in a browser on the same machine.
-6. **Copy the initial random admin password immediately** — the UI masks it after first display.
+<Steps>
+  <Step title="Enable LAN access">
+    In WebUI settings, turn on **Allow LAN access**. The panel shows two URLs: a local one and a network one (`http://192.168.x.x:25808`).
+  </Step>
+  <Step title="Open from another device">
+    Open the Network URL from your phone or another device on the same Wi-Fi.
+  </Step>
+</Steps>
 
-### LAN access
-
-1. In the WebUI settings, also turn on **Allow LAN access**.
-2. The panel shows two URLs:
-   - `Local: http://localhost:25808`
-   - `Network: http://192.168.x.x:25808`
-3. Open the Network URL from another device on the same Wi-Fi.
-
-> Only enable LAN access on networks you trust. The login screen is bcrypt-hashed and rate-limited, but any device on your LAN can reach it.
+<Warning>
+  Only enable LAN access on networks you trust. Any device on your LAN can reach the login screen.
+</Warning>
 
 ### QR code login
 
-When WebUI is enabled, the desktop app shows a QR code. Scan it with your phone's camera to open the WebUI URL and log in automatically. The QR code encodes the URL and a one-time login token.
+When WebUI is enabled, the desktop app shows a QR code. Scan it with your phone's camera to open the URL and log in automatically — it encodes the URL and a one-time login token.
 
 ---
 
-## Starting WebUI from the command line
+## Standalone CLI
 
-### Desktop-bundled
+```bash
+headmaster-web                      # default port
+headmaster-web --remote             # LAN-accessible
+headmaster-web --port 8080          # custom port
+headmaster-web --data-dir /path     # custom data directory
+
+headmaster-web resetpass            # reset admin password
+```
+
+---
+
+## Command-line flags
 
 | Platform | Local access | LAN access |
 |---|---|---|
@@ -61,190 +81,163 @@ When WebUI is enabled, the desktop app shows a QR code. Scan it with your phone'
 | **Linux (root)** | `sudo Headmaster --webui --no-sandbox` | `sudo Headmaster --webui --remote --no-sandbox` |
 | **Android (Termux)** | `Headmaster --no-sandbox --webui` | `Headmaster --no-sandbox --webui --remote` |
 
-> `--no-sandbox` is required when running as root or inside Proot/Termux. Desktop users should not add this flag.
-
-### Standalone
-
-```bash
-headmaster-web                      # default port
-headmaster-web --remote             # LAN-accessible
-headmaster-web --port 8080          # custom port
-headmaster-web --data-dir /path     # custom work directory
-
-headmaster-web resetpass            # reset admin password
-```
+<Note>
+  `--no-sandbox` is required when running as root or inside Proot/Termux. Desktop users should not add this flag.
+</Note>
 
 ---
 
-## Cross-network access (3 methods)
+## Cross-network access
 
-### Tailscale (recommended) (recommended — easiest)
+<AccordionGroup>
+  <Accordion title="Tailscale (recommended — easiest)">
+    No public IP needed. Works across any network.
 
-**Difficulty:** Very easy. No public IP needed.
+    <Steps>
+      <Step title="Install Tailscale on the Headmaster machine">
+        Log in to your Tailscale account.
+      </Step>
+      <Step title="Get the Tailscale IP">
+        Run `tailscale ip` — you'll get a `100.x.x.x` address.
+      </Step>
+      <Step title="Enable LAN access">
+        Turn on **Allow LAN access** in WebUI settings (or start with `--remote`).
+      </Step>
+      <Step title="Install Tailscale on your remote device">
+        Log in with the **same Tailscale account**.
+      </Step>
+      <Step title="Access">
+        Open `http://100.x.x.x:25808` in the remote device's browser.
+      </Step>
+    </Steps>
 
-1. Install [Tailscale](https://tailscale.com/) on the Headmaster computer. Log in.
-2. Get the Tailscale IP: `tailscale ip` (format `100.x.x.x`).
-3. Enable **Allow LAN access** in WebUI settings (or start with `--remote`).
-4. Install Tailscale on your remote device (phone, laptop). Log in with the **same account**.
-5. Open `http://100.x.x.x:25808` in the remote device's browser.
-6. Log in via QR code scan (recommended) or username (`admin`) + password.
+    **Troubleshooting:** Ensure both devices use the same Tailscale account, the client is running, and your firewall allows traffic. Check status with `tailscale status`.
+  </Accordion>
 
-**Troubleshooting:**
-- Can't connect? Ensure both devices use the same Tailscale account, client is running, firewall allows traffic. Restart: `sudo tailscale restart`.
-- Can't access Headmaster? Confirm `--remote` flag is used, check IP with `tailscale ip`, ensure port 25808 is free.
-- Check status: `tailscale status`.
+  <Accordion title="ZeroTier">
+    Same concept as Tailscale — install on both machines, join the same ZeroTier network, access via the ZeroTier IP.
+  </Accordion>
 
-### ZeroTier
+  <Accordion title="Server with public IP">
+    Requires a cloud server. Recommended for always-on deployments.
 
-Same concept as Tailscale — install on both machines, join the same network, access via the ZeroTier IP.
+    **Linux (systemd):**
 
-### Server with public IP (public IP)
+    ```bash
+    sudo nano /etc/systemd/system/headmaster-webui.service
+    ```
 
-**Difficulty:** Medium. Requires a cloud server with public IP (Linux Ubuntu recommended).
+    ```ini
+    [Unit]
+    Description=Headmaster WebUI Service
+    After=network.target
 
-**Linux server deployment:**
+    [Service]
+    Type=simple
+    User=YOUR_USERNAME
+    WorkingDirectory=/home/YOUR_USERNAME
+    ExecStart=/usr/bin/Headmaster --webui --remote
+    Restart=on-failure
+    RestartSec=10
 
-1. Create a systemd service:
+    [Install]
+    WantedBy=multi-user.target
+    ```
 
-```bash
-sudo nano /etc/systemd/system/headmaster-webui.service
-```
+    ```bash
+    sudo systemctl daemon-reload
+    sudo systemctl enable headmaster-webui.service
+    sudo systemctl start headmaster-webui.service
+    ```
 
-2. Add configuration:
+    Open the firewall:
 
-```ini
-[Unit]
-Description=Headmaster WebUI Service
-After=network.target
+    ```bash
+    # Ubuntu/Debian
+    sudo ufw allow 25808/tcp && sudo ufw reload
 
-[Service]
-Type=simple
-User=YOUR_USERNAME
-WorkingDirectory=/home/YOUR_USERNAME
-ExecStart=/usr/bin/Headmaster --webui --remote
-Restart=on-failure
-RestartSec=10
+    # CentOS/RHEL
+    sudo firewall-cmd --permanent --add-port=25808/tcp && sudo firewall-cmd --reload
+    ```
 
-[Install]
-WantedBy=multi-user.target
-```
+    Access at `http://Your-Server-IP:25808`.
 
-3. Enable and start:
+    **macOS (LaunchAgent):**
 
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable headmaster-webui.service
-sudo systemctl start headmaster-webui.service
-sudo systemctl status headmaster-webui.service
-```
+    Create `~/Library/LaunchAgents/com.headmaster.webui.plist`:
 
-4. Open the firewall:
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>com.headmaster.webui</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>/Applications/Headmaster.app/Contents/MacOS/Headmaster</string>
+        <string>--webui</string>
+        <string>--remote</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <true/>
+    </dict>
+    </plist>
+    ```
 
-```bash
-# Ubuntu/Debian (ufw)
-sudo ufw allow 25808/tcp
-sudo ufw reload
-
-# CentOS/RHEL (firewalld)
-sudo firewall-cmd --permanent --add-port=25808/tcp
-sudo firewall-cmd --reload
-```
-
-5. Access: `http://Your-Server-IP:25808`
-
-**macOS server deployment:**
-
-1. Create a LaunchAgent at `~/Library/LaunchAgents/com.headmaster.webui.plist`:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>com.headmaster.webui</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>/Applications/Headmaster.app/Contents/MacOS/Headmaster</string>
-    <string>--webui</string>
-    <string>--remote</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>KeepAlive</key>
-  <true/>
-</dict>
-</plist>
-```
-
-2. Start:
-
-```bash
-launchctl load ~/Library/LaunchAgents/com.headmaster.webui.plist
-launchctl start com.headmaster.webui
-```
-
-3. Open port 25808 in System Settings → Network → Firewall.
-
-**Troubleshooting:**
-- Service won't start? Check Headmaster path (`which Headmaster`), user permissions, logs (`sudo journalctl -u headmaster-webui.service -n 50`).
-- No internet access? Verify firewall and cloud security groups allow port 25808. Ensure `--remote` flag is used.
-- Check port: `telnet Your-Server-IP 25808` or `nc -zv Your-Server-IP 25808`.
-
----
-
-## Security recommendations
-
-1. **Strong passwords:** Use a complex admin password. The initial random password is strong — keep it or change it to something equally strong.
-2. **Firewall:** Only expose port 25808 to the networks that need it. Use Tailscale instead of opening the port to the whole internet.
-3. **HTTPS:** For production deployments, put a reverse proxy (nginx, Caddy) in front with TLS termination. Don't expose the raw port over the public internet without encryption.
-4. **Rate limiting:** The login screen is already rate-limited, but a reverse proxy can add additional protection.
-5. **Single user:** WebUI currently supports a single user (admin). Multiple people can access using the same admin account, but separate user accounts are not supported yet.
-
----
-
-## Mobile access
-
-The WebUI is mobile-responsive. On a phone browser:
-
-- The sidebar collapses into a hamburger menu.
-- The composer sticks to the bottom.
-- File previews open in a full-screen overlay.
-- Approvals and clarifications render as tappable cards.
-
-This is the v1 mobile experience. A native mobile app is planned for v2.
+    ```bash
+    launchctl load ~/Library/LaunchAgents/com.headmaster.webui.plist
+    ```
+  </Accordion>
+</AccordionGroup>
 
 ---
 
 ## Android via Termux
 
-Only WebUI mode works on Android (the desktop window needs an X server). Community-supported.
+Only WebUI mode works on Android (the desktop window requires an X server). Community-supported.
 
 **Requirements:** Android 7.0+, ~5 GB free storage, Termux from F-Droid (Play Store build is outdated).
 
 ```bash
-# 1. Install Proot Ubuntu
-pkg update -y
-pkg install proot
-pkg install git wget
+pkg update -y && pkg install proot git wget
 
-# 2. Install Headmaster in Proot environment
-# (follow the community guide for the latest install steps)
+# Install Proot Ubuntu, then Headmaster inside it
+# See the community guide for the latest steps
 
-# 3. Start WebUI
 Headmaster --no-sandbox --webui --remote
 ```
 
-Access from your phone's browser at `http://localhost:25808` or `http://<device-ip>:25808` from another device on the same network.
+Access from your phone's browser at `http://localhost:25808`.
 
 ---
 
-## Password management
+## Security recommendations
 
-| Mode | Command | Notes |
-|---|---|---|
-| Desktop-bundled | `Headmaster --resetpass` | Resets the admin password |
-| Standalone (tarball) | `headmaster-web resetpass` | Resets the admin password |
-| Standalone (in-repo dev) | `bun run resetpass` | Resets the admin password |
+- **Strong password** — the initial random password is strong; keep it or replace it with something equally long.
+- **Firewall** — expose port 25808 only to networks that need it. Tailscale is safer than opening the port to the public internet.
+- **HTTPS** — for production deployments, put nginx or Caddy in front with TLS. Don't expose the raw port over the internet without encryption.
+- **Single user** — WebUI supports one admin account. Multiple people can share it, but separate user accounts are not yet supported.
 
-The initial password is shown once when you first enable WebUI. Copy it immediately. If you miss it, use `resetpass` to generate a new one.
+---
+
+## Password reset
+
+| Mode | Command |
+|---|---|
+| Desktop-bundled | `Headmaster --resetpass` |
+| Standalone (tarball) | `headmaster-web resetpass` |
+| Standalone (in-repo dev) | `bun run resetpass` |
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Channels" icon="message" href="/channels">
+    Use Telegram or other messaging apps to reach Headmaster from your phone without a browser.
+  </Card>
+  <Card title="Runtime settings" icon="server" href="/runtime-settings">
+    Connect your desktop app to a remote runtime.
+  </Card>
+</CardGroup>

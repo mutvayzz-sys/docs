@@ -1,82 +1,134 @@
 ---
 title: "Data, privacy & security"
-description: "---"
+description: "Headmaster is local-first — your data lives on your machine, with full control over what gets sent to providers and how to migrate or remove it."
 ---
 
 # Data, privacy & security
 
 Headmaster is designed to be local-first. Your data lives on your machine.
 
-### What's stored locally
+---
 
-- **Conversation transcripts** — in `<data folder>/sessions/`.
-- **Agent memory** — in `<data folder>/memory/`.
-- **Runtime configuration** — in `<data folder>/config/config.yaml`.
-- **Provider API keys** — encrypted at rest in the Connections area.
-- **Installed skills** — in `<data folder>/skills/`.
-- **Installed extensions** — in `<data folder>/extensions/`.
-- **Log files** — in `<data folder>/logs/`.
-- **File previews cache** — in `<data folder>/cache/`.
+## What's stored locally
 
-### What's sent to providers
+| Data | Location |
+|---|---|
+| Conversation transcripts | `<data folder>/sessions/` |
+| Agent memory | `<data folder>/memory/` |
+| Runtime configuration | `<data folder>/config/config.yaml` |
+| Provider API keys (encrypted) | Connections area in the data folder |
+| Installed skills | `<data folder>/skills/` |
+| Installed extensions | `<data folder>/extensions/` |
+| Log files | `<data folder>/logs/` |
+| File preview cache | `<data folder>/cache/` |
 
-When the agent talks to a model provider (Anthropic, OpenAI, Google, etc.), the following is sent:
+---
 
-- Your message text.
-- The conversation history (previous messages in the current session).
-- Any file contents the agent read into context.
-- The system prompt (specialist personality, memory facts, skill instructions).
+## What's sent to providers
 
-What is **not** sent:
+When the agent calls a model provider (Anthropic, OpenAI, Google, etc.):
 
-- Your API keys for other providers (each provider only gets its own key).
-- Your full file system (only files the agent read into context).
-- Your memory store (only facts the agent decided are relevant to the current turn).
-- Other conversation transcripts (only the current session's history).
+**Sent:**
+- Your message text
+- The conversation history (current session only)
+- Any file contents the agent read into context
+- The system prompt (specialist personality, memory facts, skill instructions)
 
-### What's sent to external services
+**Not sent:**
+- Your API keys for other providers
+- Your full file system (only files explicitly read into context)
+- Other conversation transcripts
+- Memory facts not relevant to the current turn
 
-When the agent calls a tool (MCP server, integration, web search), the parameters of that call are sent to the service. The agent only calls tools you've approved (in Work Along mode) or that are on the allowed list (in Run It Yourself / Hands-Off mode).
+---
 
-### Encryption
+## What's sent to external services
 
-- **API keys** — encrypted at rest with envelope encryption.
-- **Memory** — stored as plain JSON in the data folder. Not encrypted at rest (it needs to be readable by the runtime). If you need encryption at rest, use full-disk encryption (FileVault on macOS, BitLocker on Windows, LUKS on Linux).
-- **Transit** — all provider connections use TLS. MCP and integration connections use TLS where the service supports it.
+When the agent calls a tool (MCP server, integration, web search), the parameters of that call are sent to the service. The agent only calls tools you've approved (in Work Along mode) or that are on the allowed list (in other modes).
 
-### Clean uninstall
+---
 
-To completely remove Headmaster and all its data:
+## Encryption
 
-1. Quit Headmaster.
-2. Delete the application (drag to Trash on macOS, uninstall from Settings on Windows, remove the package on Linux).
-3. Delete the data folder:
-   - **Windows:** `%APPDATA%\Headmaster`
-   - **macOS:** `~/Library/Application Support/Headmaster`
-   - **Linux:** `~/.config/Headmaster`
-4. On Windows, also delete the registry key: `HKEY_CURRENT_USER\Software\Headmaster`.
+| Data | Encryption |
+|---|---|
+| API keys | Encrypted at rest with envelope encryption |
+| Memory | Stored as plain JSON — not encrypted at rest |
+| Provider connections | TLS in transit |
+| MCP / integration connections | TLS where the service supports it |
 
-This removes everything — conversations, memory, settings, logs, skills, extensions. It's permanent.
+<Note>
+  Memory needs to be readable by the runtime, so it's not encrypted at rest. For full encryption, use FileVault (macOS), BitLocker (Windows), or LUKS (Linux) for full-disk encryption.
+</Note>
 
-### Data migration
+---
+
+## Remote mode privacy
+
+In remote mode, your data lives on the machine running the runtime. The desktop app is a thin client — it renders the UI and forwards your input. The runtime machine sees your messages, conversation history, agent responses, and your stored provider keys.
+
+<Warning>
+  Only connect to a runtime on a machine you control. Don't connect to a runtime on a machine you don't trust.
+</Warning>
+
+---
+
+## Data migration
 
 To move your Headmaster data to a new machine:
 
-1. Quit Headmaster on the old machine.
-2. Copy the entire data folder to the new machine.
-3. Install Headmaster on the new machine.
-4. Place the data folder in the correct location for the new OS.
-5. Launch Headmaster. All your conversations, memory, settings, skills, and extensions are preserved.
-
-### Remote mode privacy
-
-In remote mode, your data lives on the machine running the runtime. The desktop app on your laptop is a thin client — it renders the UI and forwards your input. The runtime machine sees:
-
-- Your messages.
-- The conversation history.
-- The agent's responses.
-- Your provider keys (stored on the runtime machine).
-
-Make sure the runtime machine is one you control. Don't connect to a runtime on a machine you don't trust.
+<Steps>
+  <Step title="Quit Headmaster on the old machine">
+    Make sure the app is fully closed before copying.
+  </Step>
+  <Step title="Copy the data folder">
+    Copy the entire data folder to the new machine.
+  </Step>
+  <Step title="Install Headmaster on the new machine">
+    Install the desktop app.
+  </Step>
+  <Step title="Place the data folder">
+    Put it in the correct location for the new OS (see paths below).
+  </Step>
+  <Step title="Launch Headmaster">
+    All your conversations, memory, settings, skills, and extensions are preserved.
+  </Step>
+</Steps>
 
 ---
+
+## Clean uninstall
+
+To completely remove Headmaster and all its data:
+
+<Steps>
+  <Step title="Quit Headmaster">
+    Close the app fully.
+  </Step>
+  <Step title="Delete the application">
+    Drag to Trash on macOS, uninstall from Settings on Windows, or remove the package on Linux.
+  </Step>
+  <Step title="Delete the data folder">
+    - **Windows:** `%APPDATA%\Headmaster`
+    - **macOS:** `~/Library/Application Support/Headmaster`
+    - **Linux:** `~/.config/Headmaster`
+  </Step>
+  <Step title="Windows only: remove the registry key">
+    Delete `HKEY_CURRENT_USER\Software\Headmaster`.
+  </Step>
+</Steps>
+
+<Warning>
+  This removes everything permanently — conversations, memory, settings, logs, skills, and extensions. It cannot be undone.
+</Warning>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Security & approvals" icon="shield" href="/security">
+    Approval gates, container isolation, and credential storage details.
+  </Card>
+  <Card title="Runtime settings" icon="server" href="/runtime-settings">
+    Configure local vs. remote runtime connections.
+  </Card>
+</CardGroup>

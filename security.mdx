@@ -1,7 +1,6 @@
 ---
 title: "Security & approvals"
-description: "- **Stop button** — interrupts the current action immediately.
-- **Kill all subagents** — the stop button also kills all"
+description: "Headmaster's layered security model — approval gates, container isolation, secret exfiltration blocking, file access controls, and a killswitch."
 ---
 
 # Security & approvals
@@ -12,26 +11,20 @@ Headmaster is designed to keep you in control of what the agent does. The securi
 
 ## Approval gates
 
-The core security mechanism. In Work Along mode, the agent asks for your approval before every action that affects your system:
+The core security mechanism. In **Work Along** mode, the agent asks for your approval before every action that affects your system:
 
-- Running a terminal command.
-- Reading or writing a file outside the project folder.
-- Making a network request (external API call, HTTP request).
-- Executing code.
-- Calling an MCP tool.
-- Sending a message on a channel.
+- Running a terminal command
+- Reading or writing a file outside the project folder
+- Making a network request (external API call, HTTP request)
+- Executing code
+- Calling an MCP tool
+- Sending a message on a channel
 
-In Run It Yourself mode, the agent runs without per-action approval but still asks before **destructive actions**:
+In **Run It Yourself** mode, the agent runs most things without asking, but still requires approval for destructive actions: deleting a file, overwriting a file, sending messages, force-pushing to git, or running sudo commands.
 
-- Deleting a file.
-- Overwriting an existing file.
-- Sending an email or message.
-- Pushing to a remote (git push).
-- Running a command with sudo / admin privileges.
+In **Hands-Off** and **Autopilot**, no approval prompts. All actions are logged.
 
-In Hands-Off and Autopilot, no approval prompts. All actions are logged.
-
-See [Approvals & human-in-the-loop](approvals-human-in-the-loop.md) for the full approval flow.
+See [Approvals & human-in-the-loop](/approvals-human-in-the-loop) for the full approval flow.
 
 ---
 
@@ -39,47 +32,45 @@ See [Approvals & human-in-the-loop](approvals-human-in-the-loop.md) for the full
 
 If you use a container terminal backend (Docker, Singularity, Modal, Daytona), the agent's terminal commands run inside an isolated container — not on your host machine.
 
-The container has:
+| Protection | How it works |
+|---|---|
+| **Read-only root filesystem** | The agent can't modify system files. |
+| **Capabilities dropped** | No root access, no kernel access. |
+| **No privilege escalation** | The agent can't escalate to root. |
+| **PID limits** | Max 256 processes — prevents fork bombs. |
+| **Namespace isolation** | Separate network, filesystem, and process namespace. |
+| **Workspace volume** | Agent writes to `/workspace`, not your host filesystem. |
 
-- **Read-only root filesystem** — the agent can't modify system files.
-- **All Linux capabilities dropped** — no root access, no kernel access.
-- **No privilege escalation** — the agent can't escalate to root.
-- **PID limits** — max 256 processes, preventing fork bombs.
-- **Full namespace isolation** — the container has its own network, filesystem, and process namespace.
-- **Persistent workspace via volumes** — the agent can write to `/workspace` but not to your host filesystem.
-
-See [Terminal backends](terminal-backends.md) for configuration.
+See [Terminal backends](/terminal-backends) for configuration.
 
 ---
 
 ## Secret exfiltration blocking
 
-Headmaster blocks the agent from exfiltrating secrets — your API keys, passwords, tokens, and other credentials:
+Headmaster blocks the agent from exfiltrating secrets — your API keys, passwords, and tokens:
 
-- **URL encoding:** The agent can't encode secrets in URL parameters to send them to an external service.
-- **Base64 encoding:** The agent can't base64-encode secrets to obfuscate them before sending.
-- **Prompt injection attacks:** The agent is trained to recognize and resist prompt injection — when a web page or file content tries to trick the agent into revealing secrets or running unauthorized commands.
-- **Environment variable access:** The agent can read env vars you've explicitly configured, but can't dump all environment variables to an external service.
+- **URL encoding** — can't encode secrets in URL parameters to send externally.
+- **Base64 encoding** — can't base64-encode secrets to obfuscate them before sending.
+- **Prompt injection** — the agent is trained to recognize and resist attempts by web pages or file content to reveal secrets or run unauthorized commands.
+- **Env var access** — the agent reads only explicitly configured env vars, not a full env dump.
 
-When the agent detects an attempted exfiltration, it:
-
-1. Refuses the action.
-2. Logs the attempt.
-3. Reports it to you in the chat.
+When the agent detects an attempted exfiltration, it refuses the action, logs the attempt, and reports it in the chat.
 
 ---
 
-## Command approval
+## High-risk command approval
 
-Even in Hands-Off mode, some commands are flagged as high-risk and require explicit approval:
+Even in Hands-Off mode, these commands are flagged and require explicit approval:
 
-- `rm -rf` — recursive force delete.
-- `sudo` — privilege escalation.
-- `chmod 777` — world-writable permissions.
-- `git push --force` — force push to a remote.
-- `curl | bash` — piping a remote script to bash.
-- `dd` — low-level disk operations.
-- `mkfs` — filesystem formatting.
+```
+rm -rf          recursive force delete
+sudo            privilege escalation
+chmod 777       world-writable permissions
+git push --force  force push to remote
+curl | bash     pipe a remote script to bash
+dd              low-level disk operations
+mkfs            filesystem formatting
+```
 
 The list is configurable in **Settings → Headmaster's Library → Advanced → Dangerous commands**.
 
@@ -87,77 +78,68 @@ The list is configurable in **Settings → Headmaster's Library → Advanced →
 
 ## File access control
 
-The agent's file access is scoped:
-
 | Mode | Project folder | Outside project folder |
 |---|---|---|
-| Work Along | Read/write (no approval needed) | Approval needed for every access |
-| Run It Yourself | Read/write (no approval needed) | Approval needed for write, read is allowed |
-| Hands-Off | Read/write (no approval needed) | Blocked — can't access files outside project |
+| **Work Along** | Read/write — no approval needed | Approval needed for every access |
+| **Run It Yourself** | Read/write — no approval needed | Approval needed for writes; reads are allowed |
+| **Hands-Off** | Read/write — no approval needed | Blocked — can't access files outside project |
 
-This prevents the agent from accidentally reading your SSH keys, browser cookies, or other sensitive files outside your project.
+This prevents the agent from accidentally reading your SSH keys, browser cookies, or other sensitive files.
 
 ---
 
-## Network restrictions
-
-The agent's network access:
+## Network access
 
 | Mode | External requests |
 |---|---|
-| Work Along | Approval needed for every external request |
-| Run It Yourself | Allowed (no approval) but logged |
-| Hands-Off | Allowed (no approval) but logged |
-| Autopilot | Allowed (no approval) but logged |
+| **Work Along** | Approval needed for every external request |
+| **Run It Yourself** | Allowed, no approval, but logged |
+| **Hands-Off** | Allowed, no approval, but logged |
+| **Autopilot** | Allowed, no approval, but logged |
 
-All network requests are logged with:
-
-- The URL.
-- The method (GET, POST, etc.).
-- The timestamp.
-- The response status code.
-
----
-
-## Audit trail
-
-Every action the agent takes is logged in the conversation transcript:
-
-- Tool calls (name, parameters, result).
-- File operations (path, operation, timestamp).
-- Terminal commands (command, output, exit code).
-- Network requests (URL, method, status).
-- Approvals and denials (what was requested, what you decided).
-- Scheduled task runs (task, time, result).
-
-The transcript is stored in the session file and can be exported for compliance reviews. See [Activity & Deliverables](activity-deliverables.md).
+All network requests are logged with URL, method, timestamp, and response status.
 
 ---
 
 ## Credential storage
 
-- **API keys** — encrypted at rest with envelope encryption. Never logged in plaintext. Never sent to external services (only to the provider they belong to).
-- **Channel tokens** (Telegram bot token, etc.) — encrypted at rest.
-- **Integration credentials** — encrypted at rest.
-- **MCP server env vars** — encrypted at rest.
+| Credential type | How it's stored |
+|---|---|
+| API keys | Encrypted at rest with envelope encryption |
+| Channel tokens | Encrypted at rest |
+| Integration credentials | Encrypted at rest |
+| MCP server env vars | Encrypted at rest |
 
-Credentials are stored in the data directory, which is owned by your user account. Use full-disk encryption (FileVault, BitLocker, LUKS) for encryption at rest.
+For encryption at rest of the full data folder, use FileVault (macOS), BitLocker (Windows), or LUKS (Linux).
 
 ---
 
 ## Rate limiting
 
-- The login screen for the WebUI is rate-limited: 3 wrong attempts = 60-second lockout, 5 wrong attempts = 5-minute lockout.
-- The PIN gate for Headmaster's Library uses the same rate limiting.
-- Provider API keys have multi-key rotation with 90-second blacklisting for failed keys.
+- **WebUI login** — 3 wrong attempts = 60-second lockout, 5 wrong attempts = 5-minute lockout.
+- **PIN gate** — same rate limiting for Headmaster's Library.
+- **Provider API keys** — multi-key rotation with 90-second blacklisting for failed keys.
 
 ---
 
 ## Killswitch
 
-If the agent is doing something you don't want:
+<CardGroup cols={2}>
+  <Card title="Stop button" icon="stop">
+    Interrupts the current action immediately. Also kills all running subagents.
+  </Card>
+  <Card title="Restart runtime" icon="refresh">
+    Tears down the entire runtime process and starts fresh. Kills all tasks, scheduled triggers, and subagents.
+  </Card>
+</CardGroup>
 
-- **Stop button** — interrupts the current action immediately.
-- **Kill all subagents** — the stop button also kills all running subagents.
-- **Restart runtime** — tears down the entire runtime process and starts fresh. Kills all running tasks, scheduled triggers, and subagents.
-- **Quit Headmaster** — closes the app entirely. The runtime stops. Scheduled tasks won't fire until you reopen.
+---
+
+<CardGroup cols={2}>
+  <Card title="Approvals" icon="check" href="/approvals-human-in-the-loop">
+    Full details on the approval flow — prompts, clarifications, permission requests.
+  </Card>
+  <Card title="Terminal backends" icon="terminal" href="/terminal-backends">
+    Configure container isolation for the agent's terminal.
+  </Card>
+</CardGroup>

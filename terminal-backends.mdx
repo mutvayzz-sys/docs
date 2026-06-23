@@ -1,9 +1,9 @@
 ---
-title: "Terminal backends"
-description: "- **Timeout:** Commands time out after the configured timeout (default 180 seconds). Long-running commands can use backg"
+title: "Terminal Backends"
+description: "Six terminal backends for the agent — local, Docker, SSH, Singularity, Modal, and Daytona — each for a different security and execution context."
 ---
 
-# Terminal backends
+# Terminal Backends
 
 The terminal tool lets the agent execute shell commands on your machine — or on a remote machine, or inside a container. Headmaster supports 6 terminal backends, each for a different use case.
 
@@ -15,158 +15,10 @@ The terminal tool lets the agent execute shell commands on your machine — or o
 |---|---|---|
 | **Local** (default) | Development, trusted tasks | Runs on your machine — full access |
 | **Docker** | Security, reproducibility | Isolated container — agent can't touch your host |
-| **SSH** | Sandboxing — keeps agent away from its own code | Remote machine — agent works on a server |
-| **Singularity** | HPC cluster computing, rootless | Apptainer/Singularity container — for HPC environments |
-| **Modal** | Serverless cloud execution, scale | Cloud sandbox — hibernates when idle, costs nearly nothing |
+| **SSH** | Remote sandboxing | Remote machine — agent works on a server |
+| **Singularity** | HPC cluster computing | Apptainer/Singularity container — rootless |
+| **Modal** | Serverless cloud execution | Cloud sandbox — hibernates when idle |
 | **Daytona** | Persistent remote dev environments | Remote dev environment — persistent across sessions |
-
----
-
-## Configuration
-
-Set the backend in **Settings → Headmaster's Library → Advanced → Terminal** or directly in the config file:
-
-```yaml
-# In the runtime config
-terminal:
-  backend: local    # or: docker, ssh, singularity, modal, daytona
-  cwd: "."          # Working directory
-  timeout: 180      # Command timeout in seconds
-```
-
----
-
-## Local backend
-
-The default. Commands run directly on your machine in the working directory. Full access to your file system, installed tools, and environment.
-
-**When to use:** Development, trusted tasks, when you want the agent to have full access to your project.
-
-**Security:** The agent can run any command you can. In Work Along mode, every command requires your approval. In Hands-Off mode, the agent runs commands without asking.
-
----
-
-## Docker backend
-
-Commands run inside a Docker container. The agent can't touch your host file system — only the container's file system.
-
-```yaml
-terminal:
-  backend: docker
-  docker_image: python:3.11-slim
-```
-
-### Under the hood
-
-- One persistent container, shared across the whole process.
-- Headmaster starts a single long-lived container on first use and routes every terminal, file, and `execute_code` call through `docker exec` into that same container.
-- Working-directory changes, installed packages, env tweaks, and files in `/workspace` carry over between tool calls.
-- Persists across new conversations and subagent delegations.
-- Container is stopped and removed on shutdown.
-- Behaves like a persistent sandbox VM, not a fresh container per command.
-
-### Container persistence
-
-```yaml
-terminal:
-  backend: docker
-  container_persistent: true    # Persist /workspace and /root across restarts (default: true)
-```
-
-With `container_persistent: true`, files in `/workspace` and `/root` survive Headmaster restarts. With `false`, the container starts fresh each time.
-
-### Container resources
-
-```yaml
-terminal:
-  backend: docker
-  container_cpu: 1              # CPU cores (default: 1)
-  container_memory: 5120        # Memory in MB (default: 5GB)
-  container_disk: 51200         # Disk in MB (default: 50GB)
-```
-
-### Container security
-
-All container backends run with security hardening:
-
-- Read-only root filesystem (Docker).
-- All Linux capabilities dropped.
-- No privilege escalation.
-- PID limits (256 processes).
-- Full namespace isolation.
-- Persistent workspace via volumes, not writable root layer.
-
----
-
-## SSH backend
-
-Commands run on a remote machine via SSH. The agent works on a server instead of your local machine.
-
-```yaml
-terminal:
-  backend: ssh
-```
-
-Set credentials in the runtime config or environment:
-
-```
-TERMINAL_SSH_HOST=my-server.example.com
-TERMINAL_SSH_USER=myuser
-TERMINAL_SSH_KEY=~/.ssh/id_rsa
-```
-
-**When to use:** Security — the agent can't touch your local files. Or when your project lives on a remote server.
-
-**Recommended for security:** If you're running the agent in Hands-Off or Autopilot mode, the SSH backend prevents the agent from accidentally modifying your local system.
-
----
-
-## Singularity / Apptainer backend
-
-For HPC (high-performance computing) cluster environments. Rootless — doesn't require root access.
-
-```bash
-apptainer build ~/python.sif docker://python:3.11-slim
-```
-
-```yaml
-terminal:
-  backend: singularity
-  singularity_image: ~/python.sif
-```
-
-**When to use:** You're on an HPC cluster that uses Apptainer/Singularity instead of Docker.
-
----
-
-## Modal backend (serverless cloud)
-
-Commands run in a serverless cloud sandbox. The sandbox hibernates when idle, costing nearly nothing.
-
-```bash
-uv pip install modal
-modal setup
-```
-
-```yaml
-terminal:
-  backend: modal
-```
-
-**When to use:** You want cloud execution without managing a server. The sandbox scales automatically and costs almost nothing when idle.
-
----
-
-## Daytona backend
-
-Persistent remote development environments. The agent works in a Daytona-managed environment that persists across sessions.
-
-```yaml
-terminal:
-  backend: daytona
-```
-
-**When to use:** You want a persistent remote dev environment that the agent can work in, without managing the infrastructure yourself.
 
 ---
 
@@ -183,12 +35,158 @@ terminal:
 
 ---
 
+## Configuration
+
+Set the backend in **Settings → Headmaster's Library → Advanced → Terminal** or directly in the config file:
+
+```yaml
+terminal:
+  backend: local    # or: docker, ssh, singularity, modal, daytona
+  cwd: "."
+  timeout: 180      # Command timeout in seconds
+```
+
+---
+
+## Backend details
+
+<Tabs>
+  <Tab title="Local">
+    Commands run directly on your machine in the working directory. Full access to your file system, installed tools, and environment.
+
+    **When to use:** Development, trusted tasks, when you want the agent to have full access to your project.
+
+    **Security:** The agent can run any command you can. In Work Along mode, every command requires your approval. In Hands-Off mode, the agent runs commands without asking.
+  </Tab>
+
+  <Tab title="Docker">
+    Commands run inside a Docker container. The agent can't touch your host file system — only the container's.
+
+    ```yaml
+    terminal:
+      backend: docker
+      docker_image: python:3.11-slim
+    ```
+
+    **Container behavior:**
+    - One persistent container, shared across the whole process.
+    - Headmaster starts a single long-lived container on first use and routes every terminal, file, and `execute_code` call through `docker exec` into that same container.
+    - Working-directory changes, installed packages, env tweaks, and files in `/workspace` carry over between tool calls.
+    - Container is stopped and removed on shutdown.
+
+    **Container persistence:**
+    ```yaml
+    terminal:
+      backend: docker
+      container_persistent: true    # Persist /workspace and /root across restarts
+    ```
+
+    **Container resources:**
+    ```yaml
+    terminal:
+      backend: docker
+      container_cpu: 1              # CPU cores (default: 1)
+      container_memory: 5120        # Memory in MB (default: 5GB)
+      container_disk: 51200         # Disk in MB (default: 50GB)
+    ```
+
+    **Security hardening:**
+    - Read-only root filesystem
+    - All Linux capabilities dropped
+    - No privilege escalation
+    - PID limits (256 processes)
+    - Full namespace isolation
+    - Persistent workspace via volumes
+  </Tab>
+
+  <Tab title="SSH">
+    Commands run on a remote machine via SSH. The agent works on a server instead of your local machine.
+
+    ```yaml
+    terminal:
+      backend: ssh
+    ```
+
+    Set credentials in the runtime config or environment:
+    ```
+    TERMINAL_SSH_HOST=my-server.example.com
+    TERMINAL_SSH_USER=myuser
+    TERMINAL_SSH_KEY=~/.ssh/id_rsa
+    ```
+
+    **When to use:** When your project lives on a remote server, or when you want the agent away from your local files.
+
+    <Tip>
+      SSH is the recommended backend for running the agent in Hands-Off or Autopilot mode — it prevents the agent from accidentally modifying your local system.
+    </Tip>
+  </Tab>
+
+  <Tab title="Singularity">
+    For HPC (high-performance computing) cluster environments. Rootless — doesn't require root access.
+
+    ```bash
+    # Build the image first
+    apptainer build ~/python.sif docker://python:3.11-slim
+    ```
+
+    ```yaml
+    terminal:
+      backend: singularity
+      singularity_image: ~/python.sif
+    ```
+
+    **When to use:** You're on an HPC cluster that uses Apptainer/Singularity instead of Docker.
+  </Tab>
+
+  <Tab title="Modal">
+    Commands run in a serverless cloud sandbox. The sandbox hibernates when idle, costing nearly nothing.
+
+    ```bash
+    uv pip install modal
+    modal setup
+    ```
+
+    ```yaml
+    terminal:
+      backend: modal
+    ```
+
+    **When to use:** You want cloud execution without managing a server. The sandbox scales automatically and costs almost nothing when idle.
+  </Tab>
+
+  <Tab title="Daytona">
+    Persistent remote development environments. The agent works in a Daytona-managed environment that persists across sessions.
+
+    ```yaml
+    terminal:
+      backend: daytona
+    ```
+
+    **When to use:** You want a persistent remote dev environment without managing the infrastructure yourself.
+  </Tab>
+</Tabs>
+
+---
+
 ## Terminal tool behavior
 
-Regardless of backend, the terminal tool:
+Regardless of backend:
 
-- **Timeout:** Commands time out after the configured timeout (default 180 seconds). Long-running commands can use background mode.
-- **Background execution:** Set `background=true` for long-running processes (servers, watchers, builds). The process runs in the background and you get a session ID to poll, wait, or kill it later.
-- **Working directory:** The agent can `cd` between directories. In container backends, the working directory persists across calls.
-- **Environment variables:** Exported env vars persist across calls in the same session (for local and container backends).
-- **Output capture:** stdout and stderr are captured. Output is truncated if it exceeds 50KB.
+| Behavior | Details |
+|---|---|
+| **Timeout** | Commands time out after the configured timeout (default 180 seconds). Long-running commands can use background mode. |
+| **Background execution** | Set `background=true` for long-running processes (servers, watchers, builds). You get a session ID to poll, wait, or kill later. |
+| **Working directory** | The agent can `cd` between directories. In container backends, the working directory persists across calls. |
+| **Environment variables** | Exported env vars persist across calls in the same session (for local and container backends). |
+| **Output capture** | stdout and stderr are captured. Output is truncated if it exceeds 50KB. |
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Security" icon="shield" href="/security">
+    Container isolation details and security model overview.
+  </Card>
+  <Card title="Tools & Toolsets" icon="wrench" href="/tools-and-toolsets">
+    Enabling/disabling the terminal tool per specialist.
+  </Card>
+</CardGroup>
