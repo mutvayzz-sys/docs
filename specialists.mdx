@@ -45,10 +45,10 @@ Headmaster ships with 20+ built-in specialists. You can also hire custom special
 
 ## What makes a specialist
 
-- **Local-first** — runs on your machine. Rules are stored as Markdown files under the data directory.
-- **Pluggable backend** — every specialist can pick its own agent (built-in, Claude Code, Codex, etc.).
-- **Customizable** — built-in specialists allow tweaking backend, rules, skills, and description.
-- **Stackable skills** — multiple skills can be enabled at once. Skills can be built-in, user-imported, or extension-contributed.
+- 🖥️ **Local-first** — runs on your machine. Rules are stored as Markdown files under the data directory.
+- 🔌 **Pluggable backend** — every specialist can pick its own agent (built-in, Claude Code, Codex, etc.).
+- 🎛️ **Customizable** — built-in specialists allow tweaking backend, rules, skills, and description.
+- 🧩 **Stackable skills** — multiple skills can be enabled at once. Skills can be built-in, user-imported, or extension-contributed.
 
 ---
 
@@ -93,10 +93,10 @@ You can also type `/specialist <name>` in the composer — e.g., `/specialist Th
 Rules are the specialist's **system prompt** — Markdown stored as `.md` files in the data directory. Fed to the backend agent as system instructions at runtime.
 
 **Good for:**
-- **Workflows** — "When the user asks for X, do A, then B, then C"
-- **Constraints** — "Never modify files outside the project root"
-- **Domain context** — "This codebase uses Bun + Vite; tests are Vitest"
-- **Output style** — "Always answer in Markdown with a TL;DR at the top"
+- 🔁 **Workflows** — "When the user asks for X, do A, then B, then C"
+- 🚧 **Constraints** — "Never modify files outside the project root"
+- 📚 **Domain context** — "This codebase uses Bun + Vite; tests are Vitest"
+- 🎨 **Output style** — "Always answer in Markdown with a TL;DR at the top"
 
 **Editing flow:**
 
@@ -129,10 +129,10 @@ Rules are the specialist's **system prompt** — Markdown stored as `.md` files 
 ```
 
 **Best practices:**
-- Be explicit — short imperative sentences work best.
-- Use headings and bullet lists; agents pay attention to structure.
-- Provide concrete examples for cases you care about.
-- Don't dump large reference docs into rules — use Skills for that.
+- ✏️ Be explicit — short imperative sentences work best.
+- 📋 Use headings and bullet lists; agents pay attention to structure.
+- 💡 Provide concrete examples for cases you care about.
+- 🚫 Don't dump large reference docs into rules — use Skills for that.
 
 ---
 

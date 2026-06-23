@@ -23,9 +23,9 @@ Switch modes from the mode selector in the composer area. You can also switch mi
 **The default mode.** The agent works alongside you, asking for approval before running tools, writing files, or making external calls. You see every action before it happens.
 
 **Use when:**
-- Exploring a new codebase and wanting to see what the agent does.
-- Working on something sensitive (production config, customer data).
-- Learning from the agent's approach.
+- 🔍 Exploring a new codebase and wanting to see what the agent does.
+- 🔒 Working on something sensitive (production config, customer data).
+- 🎓 Learning from the agent's approach.
 
 **How it works:**
 - The agent proposes an action, shows its parameters and expected outcome.
@@ -39,9 +39,9 @@ Switch modes from the mode selector in the composer area. You can also switch mi
 The agent handles the task end-to-end without asking for approval on each step. It still asks before doing anything **irreversible**.
 
 **Use when:**
-- You've given a clear task and trust the agent to execute.
-- The task has many steps and approving each one would be tedious.
-- Running a well-understood workflow.
+- ✅ You've given a clear task and trust the agent to execute.
+- ⚡ The task has many steps and approving each one would be tedious.
+- 🔁 Running a well-understood workflow.
 
 **How it works:**
 - The agent runs tools and writes files without per-action approval.
@@ -56,9 +56,9 @@ The agent handles the task end-to-end without asking for approval on each step. 
 Same as Run It Yourself, but the agent does **not** ask before destructive actions either. It just does them and reports what it did.
 
 **Use when:**
-- Running a well-tested automated workflow.
-- You're away from the keyboard.
-- You've set up guardrails (project folder scoping, allowed tools list) and trust the setup.
+- 🤖 Running a well-tested automated workflow.
+- 🚶 You're away from the keyboard.
+- 🛡️ You've set up guardrails (project folder scoping, allowed tools list) and trust the setup.
 
 **How it works:**
 - No approval prompts at all. The agent runs to completion.
@@ -76,9 +76,9 @@ Same as Run It Yourself, but the agent does **not** ask before destructive actio
 The agent runs on a schedule, 24/7. It picks up tasks from the Schedule, executes them in Hands-Off mode, and delivers results to your configured Channels.
 
 **Use when:**
-- You have recurring tasks (daily summaries, weekly reports, monitoring).
-- You want the agent to work while you sleep.
-- You've validated the workflow in Hands-Off first.
+- ⏰ You have recurring tasks (daily summaries, weekly reports, monitoring).
+- 🌙 You want the agent to work while you sleep.
+- ✅ You've validated the workflow in Hands-Off first.
 
 **How it works:**
 1. The agent wakes on a schedule trigger.
@@ -96,10 +96,10 @@ The agent runs on a schedule, 24/7. It picks up tasks from the Schedule, execute
 
 In Work Along and Run It Yourself, the agent asks for approval before:
 
-- **Running a tool** — web search, code execution, file read/write, MCP call.
-- **Accessing a file outside the project folder.**
-- **Making a network request** (external API call, HTTP request).
-- **Destructive actions** (delete, overwrite, send, push) — asked in all modes except Hands-Off.
+- 🔧 **Running a tool** — web search, code execution, file read/write, MCP call.
+- 📁 **Accessing a file outside the project folder.**
+- 🌐 **Making a network request** (external API call, HTTP request).
+- ⚠️ **Destructive actions** (delete, overwrite, send, push) — asked in all modes except Hands-Off.
 
 The approval prompt shows:
 - What the agent wants to do.

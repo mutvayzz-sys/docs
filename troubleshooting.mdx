@@ -100,10 +100,10 @@ The most common Headmaster issues, with the shortest fix that works.
   <Accordion title="Runtime won't start on Linux">
     Common Linux-specific issues:
 
-    - **Missing libraries** — install `libgtk-3-0`, `libnss3`, `libasound2`, `libxss1`.
-    - **Permission denied** — ensure the data folder is owned by the current user: `sudo chown -R $USER:$USER ~/.config/Headmaster`.
-    - **AppImage won't run** — ensure it's executable: `chmod +x Headmaster-*.AppImage`.
-    - **Running as root** — add the `--no-sandbox` flag.
+    - 📦 **Missing libraries** — install `libgtk-3-0`, `libnss3`, `libasound2`, `libxss1`.
+    - 🔐 **Permission denied** — ensure the data folder is owned by the current user: `sudo chown -R $USER:$USER ~/.config/Headmaster`.
+    - ▶️ **AppImage won't run** — ensure it's executable: `chmod +x Headmaster-*.AppImage`.
+    - 🔓 **Running as root** — add the `--no-sandbox` flag.
   </Accordion>
 </AccordionGroup>
 
@@ -113,10 +113,10 @@ The most common Headmaster issues, with the shortest fix that works.
 
 When reporting a bug, include:
 
-1. The most recent log file from `<data folder>/logs/`.
-2. The Headmaster version (from **Settings → About**).
-3. Your OS and version.
-4. Steps to reproduce the issue.
+1. 📄 The most recent log file from `<data folder>/logs/`.
+2. 🏷️ The Headmaster version (from **Settings → About**).
+3. 💻 Your OS and version.
+4. 🔁 Steps to reproduce the issue.
 
 Use **Settings → About → Report a bug** to send this automatically — it attaches the log file, app version, OS info, and the last 5 conversation IDs (not content — just IDs for correlation).
 

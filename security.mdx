@@ -13,12 +13,12 @@ Headmaster is designed to keep you in control of what the agent does. The securi
 
 The core security mechanism. In **Work Along** mode, the agent asks for your approval before every action that affects your system:
 
-- Running a terminal command
-- Reading or writing a file outside the project folder
-- Making a network request (external API call, HTTP request)
-- Executing code
-- Calling an MCP tool
-- Sending a message on a channel
+- ⌨️ Running a terminal command
+- 📁 Reading or writing a file outside the project folder
+- 🌐 Making a network request (external API call, HTTP request)
+- ⚙️ Executing code
+- 🔌 Calling an MCP tool
+- 💬 Sending a message on a channel
 
 In **Run It Yourself** mode, the agent runs most things without asking, but still requires approval for destructive actions: deleting a file, overwriting a file, sending messages, force-pushing to git, or running sudo commands.
 
@@ -49,10 +49,10 @@ See [Terminal backends](/terminal-backends) for configuration.
 
 Headmaster blocks the agent from exfiltrating secrets — your API keys, passwords, and tokens:
 
-- **URL encoding** — can't encode secrets in URL parameters to send externally.
-- **Base64 encoding** — can't base64-encode secrets to obfuscate them before sending.
-- **Prompt injection** — the agent is trained to recognize and resist attempts by web pages or file content to reveal secrets or run unauthorized commands.
-- **Env var access** — the agent reads only explicitly configured env vars, not a full env dump.
+- 🔗 **URL encoding** — can't encode secrets in URL parameters to send externally.
+- 🔒 **Base64 encoding** — can't base64-encode secrets to obfuscate them before sending.
+- 🧠 **Prompt injection** — the agent is trained to recognize and resist attempts by web pages or file content to reveal secrets or run unauthorized commands.
+- 🌿 **Env var access** — the agent reads only explicitly configured env vars, not a full env dump.
 
 When the agent detects an attempted exfiltration, it refuses the action, logs the attempt, and reports it in the chat.
 

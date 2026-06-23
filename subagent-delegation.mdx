@@ -66,13 +66,13 @@ The agent spawns 3 subagents — one per competitor — each doing its research 
 
 Each subagent:
 
-- Gets its own **conversation context** — it doesn't see your main conversation history.
-- Gets its own **terminal session** — separate working directory and state.
-- Gets a **specified toolset** — you can restrict what tools the subagent can use.
-- **Inherits the parent's model** (unless overridden).
-- **Cannot delegate further** — subagents are leaf workers by default.
-- **Cannot ask the user questions** — they work autonomously and report back.
-- Returns only a **final summary** — intermediate tool results stay in the subagent's context.
+- 💬 Gets its own **conversation context** — it doesn't see your main conversation history.
+- 🖥️ Gets its own **terminal session** — separate working directory and state.
+- 🔧 Gets a **specified toolset** — you can restrict what tools the subagent can use.
+- 🧬 **Inherits the parent's model** (unless overridden).
+- 🚫 **Cannot delegate further** — subagents are leaf workers by default.
+- 🤐 **Cannot ask the user questions** — they work autonomously and report back.
+- 📋 Returns only a **final summary** — intermediate tool results stay in the subagent's context.
 
 ---
 
@@ -93,10 +93,10 @@ Deeper nesting can be enabled in advanced settings.
 
 While subagents are running:
 
-- You see a **delegation indicator** in the chat showing how many subagents are active.
-- Click the indicator to see each subagent's status (running, completed, failed).
-- Expand a completed subagent's card to see its final summary.
-- You can continue chatting with the orchestrator while subagents run.
+- 📊 You see a **delegation indicator** in the chat showing how many subagents are active.
+- 👆 Click the indicator to see each subagent's status (running, completed, failed).
+- 🔍 Expand a completed subagent's card to see its final summary.
+- 💬 You can continue chatting with the orchestrator while subagents run.
 
 ---
 

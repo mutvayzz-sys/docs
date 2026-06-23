@@ -29,16 +29,16 @@ Headmaster is designed to be local-first. Your data lives on your machine.
 When the agent calls a model provider (Anthropic, OpenAI, Google, etc.):
 
 **Sent:**
-- Your message text
-- The conversation history (current session only)
-- Any file contents the agent read into context
-- The system prompt (specialist personality, memory facts, skill instructions)
+- 💬 Your message text
+- 📜 The conversation history (current session only)
+- 📎 Any file contents the agent read into context
+- 🧠 The system prompt (specialist personality, memory facts, skill instructions)
 
 **Not sent:**
-- Your API keys for other providers
-- Your full file system (only files explicitly read into context)
-- Other conversation transcripts
-- Memory facts not relevant to the current turn
+- 🔑 Your API keys for other providers
+- 📁 Your full file system (only files explicitly read into context)
+- 📂 Other conversation transcripts
+- 🚫 Memory facts not relevant to the current turn
 
 ---
 
