@@ -31,28 +31,34 @@
         ]
       },
       {
-        "group": "Configuration",
+        "group": "HeadmasterUI Settings",
         "pages": [
-          "models-providers",
-          "connections-mcp-servers",
           "settings-overview",
-          "runtime-settings",
+          "appearance-themes",
+          "models-providers",
           "channels",
           "integrations",
+          "runtime-settings"
+        ]
+      },
+      {
+        "group": "Runtime Settings",
+        "pages": [
+          "connections-mcp-servers",
+          "tools-and-toolsets",
+          "terminal-backends",
+          "the-schedule",
+          "personality-voice",
           "profiles",
-          "personality-voice"
+          "subagent-delegation"
         ]
       },
       {
         "group": "Features",
         "pages": [
-          "tools-and-toolsets",
-          "terminal-backends",
           "voice-mode",
-          "subagent-delegation",
           "session-search",
           "headmaster-on-the-go",
-          "the-schedule",
           "file-management",
           "documents",
           "image-generation",
@@ -60,7 +66,6 @@
           "kanban",
           "browser",
           "activity-deliverables",
-          "appearance-themes",
           "preview-panel"
         ]
       },
